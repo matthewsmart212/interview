@@ -1,13 +1,7 @@
 import Link from "next/link";
 import Phone from "../components/Phone";
-import Placeholder from "../components/Placeholder";
-import {
-  Sparkle,
-  FileText,
-  Mic,
-  Volume,
-  BarChart,
-} from "../components/Icons";
+import Avatar from "../components/Avatar";
+import { Sparkle, FileText, Mic, Volume, BarChart } from "../components/Icons";
 import styles from "./welcome.module.css";
 
 const FEATURES = [
@@ -34,11 +28,10 @@ export default function WelcomePage() {
                 Your AI interview coach that prepares you to get the job.
               </p>
             </div>
-            <Placeholder
-              label="Avatar"
+            <Avatar
+              pose="waving"
+              alt="AI coach waving"
               className={styles.avatar}
-              width={152}
-              height={210}
             />
           </div>
 

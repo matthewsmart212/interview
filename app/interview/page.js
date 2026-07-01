@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
 import TopBar from "../../components/TopBar";
-import Placeholder from "../../components/Placeholder";
+import Avatar from "../../components/Avatar";
 import Waveform from "../../components/Waveform";
 import { Volume } from "../../components/Icons";
 import m from "./interview.module.css";
@@ -20,7 +20,8 @@ export default function InterviewPage() {
       />
       <div className="screen">
         <div className={m.stage}>
-          <Placeholder label="AI Avatar" className={m.stageFill} />
+          <div className={m.stageBg} />
+          <Avatar pose="idle" fill alt="AI interviewer" />
           <div className={m.stageTop}>
             <span className={m.qbadge}>Question 2 of 8</span>
           </div>

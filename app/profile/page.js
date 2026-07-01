@@ -2,7 +2,7 @@ import Link from "next/link";
 import Phone from "../../components/Phone";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
-import Placeholder from "../../components/Placeholder";
+import Avatar from "../../components/Avatar";
 import {
   Settings,
   Edit,
@@ -64,7 +64,7 @@ export default function ProfilePage() {
       />
       <div className="screen screen-pad has-nav">
         <div className={s.header}>
-          <Placeholder label="You" className={s.pic} />
+          <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
           <div className="grow">
             <div className={s.name}>Alex Johnson</div>
             <div className={s.email}>alex.johnson@email.com</div>

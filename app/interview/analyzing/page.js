@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
-import Placeholder from "../../../components/Placeholder";
+import Avatar from "../../../components/Avatar";
 import m from "../interview.module.css";
 
 const METRICS = [
@@ -37,7 +37,8 @@ export default function AnalyzingPage() {
       <TopBar title="Analyzing..." back={false} />
       <div className="screen">
         <div className={m.stage}>
-          <Placeholder label="AI Avatar" className={m.stageFill} />
+          <div className={m.stageBg} />
+          <Avatar pose="thinking" fill alt="AI interviewer thinking" />
           <div className={m.stageBottom}>
             <div className={m.analyzeCard}>
               <div className={m.analyzeTitle}>Analyzing your answer</div>
