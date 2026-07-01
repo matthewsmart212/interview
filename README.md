@@ -31,14 +31,19 @@ on wider screens it is centered inside a phone frame.
 | `/progress`                    | Progress stats, score-over-time chart, top skills |
 | `/profile`                     | Profile & settings                                |
 
-## Placeholder assets
+## Image assets
 
-Brand assets that were not provided are rendered with a `Placeholder` component
-(`components/Placeholder.js`) showing a labelled box. Replace these with real images:
+The AI coach avatar and interview background are loaded from `public/`:
 
-- **Avatar** – the AI coach avatar (welcome screen + interview screens)
-- **Backgrounds** – the blurred interview background behind the avatar
-- **Profile picture** – on the profile screen
+- **Avatars** – `public/avatars/*.png` (see `public/avatars/README.md` for the exact
+  filenames and which pose is used on each screen). Rendered via the `Avatar`
+  component (`components/Avatar.js`).
+- **Background** – `public/backgrounds/room.png`, shown behind the avatar on the
+  interview screens (see `public/backgrounds/README.md`).
+
+Every avatar/background gracefully falls back to a placeholder (labelled box or a
+solid colour) if the file is missing, so the UI always renders. Add the PNGs at the
+documented paths and they appear automatically — no code changes required.
 
 Standard UI icons (chevrons, checks, mic, bookmark, nav, etc.) are implemented as
 inline SVGs in `components/Icons.js`.
