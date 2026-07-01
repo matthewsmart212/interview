@@ -1,0 +1,198 @@
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 0 16px;
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.stageFill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.stageTop {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+}
+.stageBottom {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  padding: 14px;
+}
+
+.qbadge {
+  background: rgba(20, 18, 30, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.qcard {
+  background: rgba(24, 22, 34, 0.72);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 16px;
+  color: #fff;
+}
+.qcardHead {
+  display: flex;
+  justify-content: flex-end;
+  color: rgba(255, 255, 255, 0.8);
+}
+.qtext {
+  font-size: 15.5px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.qwave {
+  margin-top: 14px;
+  color: #9d86f7;
+}
+
+.hint {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #cfc7f2;
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 16px 0 20px;
+}
+
+/* your turn / listening panel */
+.panel {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  text-align: center;
+  padding: 18px 20px 26px;
+}
+.listening {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+.speak {
+  color: var(--dark-muted);
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+.bigWave {
+  color: #9d86f7;
+  height: 48px;
+  justify-content: center;
+  margin: 18px 0;
+}
+.micWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.tapStop {
+  color: var(--dark-muted);
+  font-size: 13px;
+  background: none;
+  border: none;
+}
+
+/* analyzing */
+.analyzeCard {
+  background: rgba(24, 22, 34, 0.72);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 18px;
+  color: #fff;
+}
+.analyzeTitle {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.metricRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+}
+.metricRow span {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* feedback screen (dark) */
+.fbScreen {
+  padding: 6px 20px 28px;
+}
+.scoreTop {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 6px 0 18px;
+}
+.scoreTop .lab {
+  color: var(--dark-muted);
+  font-size: 13px;
+}
+.scoreTop .big {
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+.scoreTop .big small {
+  font-size: 16px;
+  color: var(--dark-muted);
+  font-weight: 500;
+}
+.scoreTop .good {
+  color: #b9a9f7;
+  font-size: 13px;
+  margin-top: 2px;
+}
+.ringScore {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+.fbBlock {
+  background: var(--dark-surface);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.fbBlock h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.fbBlock .fb-item {
+  color: rgba(255, 255, 255, 0.88);
+}
+.detailLink {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #cfc7f2;
+  font-weight: 600;
+  font-size: 14px;
+  background: none;
+  border: none;
+  padding: 14px 0 4px;
+}

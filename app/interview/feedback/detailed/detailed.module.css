@@ -1,0 +1,111 @@
+.head {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.playerRow {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.answer {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+.playCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.playBtn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
+}
+.time {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.scoreBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #6f52ee, #5636cf);
+  color: #fff;
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+.scoreBox .l {
+  font-size: 15px;
+  font-weight: 600;
+}
+.scoreBox .v {
+  font-size: 20px;
+  font-weight: 700;
+}
+.scoreBox .v small {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* transcript */
+.turn {
+  margin-bottom: 16px;
+}
+.speaker {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.bubble {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 15px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.bubble.ai {
+  background: var(--brand-050);
+  border-color: transparent;
+}
+
+/* better answer */
+.betterIntro {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.star + .star {
+  margin-top: 14px;
+}
+.starLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.02em;
+  margin-bottom: 5px;
+}
+.starText {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+}
