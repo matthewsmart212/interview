@@ -1,0 +1,53 @@
+.scoreCard {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.scoreBody {
+  flex: 1;
+}
+.scoreLabel {
+  font-size: 13px;
+  color: var(--muted);
+}
+.scoreHead {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.scoreSub {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 4px;
+  line-height: 1.45;
+}
+.viewBtn {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--brand-050);
+  color: var(--brand);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ringNum {
+  font-size: 22px;
+  font-weight: 700;
+}
+.download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 14.5px;
+  background: none;
+  border: none;
+  width: 100%;
+}

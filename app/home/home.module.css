@@ -1,0 +1,61 @@
+.greeting {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.greetSub {
+  color: var(--text-2);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.upcoming {
+  margin-top: 18px;
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  background: linear-gradient(135deg, #6f52ee, #5636cf);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
+}
+.upLabel {
+  font-size: 12px;
+  opacity: 0.85;
+}
+.upTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+.upDays {
+  font-size: 12.5px;
+  opacity: 0.9;
+  margin-top: 6px;
+}
+.dateChip {
+  flex-shrink: 0;
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.dateChip .d {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+.dateChip .m {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-top: 3px;
+}

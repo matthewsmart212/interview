@@ -1,0 +1,28 @@
+.qcard {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.qbody {
+  flex: 1;
+  min-width: 0;
+}
+.qtext {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.mark {
+  border: none;
+  background: none;
+  color: var(--muted);
+  padding: 0;
+  flex-shrink: 0;
+}
+.mark.on {
+  color: var(--brand);
+}
