@@ -14,6 +14,25 @@
   width: 100%;
   height: 100%;
 }
+.stageBg {
+  position: absolute;
+  inset: 0;
+  background-color: #4a3d78;
+  background-image: url("/backgrounds/room.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.stageBg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 40, 0) 45%,
+    rgba(20, 16, 40, 0.55) 100%
+  );
+}
 .stageTop {
   position: relative;
   z-index: 2;
@@ -137,7 +156,30 @@
 
 /* feedback screen (dark) */
 .fbScreen {
-  padding: 6px 20px 28px;
+  padding: 0 0 28px;
+}
+.fbHero {
+  position: relative;
+  height: 218px;
+  margin: 4px 16px 0;
+  border-radius: 22px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.fbScoreOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 16px 18px;
+}
+.fbBody {
+  padding: 18px 20px 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 .scoreTop {
   display: flex;
