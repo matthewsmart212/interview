@@ -10,6 +10,7 @@ export default function TopBar({
   right,
   left,
   dark,
+  overlay = false,
 }) {
   const router = useRouter();
 
@@ -19,7 +20,7 @@ export default function TopBar({
   };
 
   return (
-    <div className="topbar">
+    <div className={`topbar${overlay ? " overlay-bar" : ""}`}>
       <div className="tb-side">
         {left
           ? left

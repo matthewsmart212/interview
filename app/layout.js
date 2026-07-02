@@ -1,4 +1,5 @@
 import "./globals.css";
+import StatusBarTheme from "../components/StatusBarTheme";
 
 export const metadata = {
   title: "Interview Coach AI",
@@ -10,7 +11,8 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#6c4ce6",
+  viewportFit: "cover",
+  themeColor: "#f2f2f5",
 };
 
 export default function RootLayout({ children }) {
@@ -29,6 +31,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <StatusBarTheme />
         <div className="app-shell">{children}</div>
       </body>
     </html>

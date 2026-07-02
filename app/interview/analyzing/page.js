@@ -34,21 +34,22 @@ export default function AnalyzingPage() {
 
   return (
     <Phone dark>
-      <TopBar title="Analyzing..." back={false} />
-      <div className="screen">
-        <div className={m.stage}>
-          <div className={m.stageBg} />
-          <Avatar pose="thinking" fill alt="AI interviewer thinking" />
-          <div className={m.stageBottom}>
-            <div className={m.analyzeCard}>
-              <div className={m.analyzeTitle}>Analyzing your answer</div>
-              {METRICS.map((mt) => (
-                <div className={m.metricRow} key={mt.label}>
-                  <span>{mt.label}</span>
-                  <Dots on={mt.on} color={mt.color} />
-                </div>
-              ))}
-            </div>
+      <div className={m.immersive}>
+        <div className={m.stageBg} />
+        <Avatar pose="thinking" fill alt="AI interviewer thinking" />
+        <div className={m.immersiveShade} />
+
+        <TopBar title="Analyzing..." back={false} overlay />
+
+        <div className={m.bottomArea}>
+          <div className={m.analyzeCard}>
+            <div className={m.analyzeTitle}>Analyzing your answer</div>
+            {METRICS.map((mt) => (
+              <div className={m.metricRow} key={mt.label}>
+                <span>{mt.label}</span>
+                <Dots on={mt.on} color={mt.color} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
