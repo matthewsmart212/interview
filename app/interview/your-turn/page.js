@@ -9,7 +9,7 @@ import m from "../interview.module.css";
 export default function YourTurnPage() {
   return (
     <Phone dark immersive>
-      <div className={m.immersive}>
+      <div className={`${m.immersive} ${m.avatarUp}`}>
         <div className={m.stageBg} />
         <Avatar
           pose="listening"
