@@ -20,7 +20,13 @@ export default function FeedbackPage() {
       <div className={`screen ${m.fbScreen}`}>
         <div className={m.fbHero}>
           <div className={m.stageBg} />
-          <Avatar pose="thumbsup" fill alt="AI interviewer celebrating" />
+          <Avatar
+            pose="thumbsup"
+            fill
+            alt="AI interviewer celebrating"
+            style={{ objectFit: "cover", objectPosition: "center 26%" }}
+          />
+          <div className={m.stageShade} />
           <div className={m.fbScoreOverlay}>
             <CircularProgress
               value={82}

@@ -21,7 +21,8 @@ export default function YourTurnPage() {
       <div className="screen">
         <div className={m.stage}>
           <div className={m.stageBg} />
-          <Avatar pose="welcoming" fill alt="AI interviewer" />
+          <Avatar pose="idle" fill alt="AI interviewer" />
+          <div className={m.stageShade} />
           <div className={m.panel}>
             <div className={m.listening}>Listening...</div>
             <div className={m.speak}>Speak clearly</div>

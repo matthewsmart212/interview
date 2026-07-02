@@ -29,20 +29,33 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(20, 16, 40, 0) 45%,
-    rgba(20, 16, 40, 0.55) 100%
+    rgba(20, 16, 40, 0) 55%,
+    rgba(20, 16, 40, 0.45) 100%
+  );
+}
+/* darkens the lower part of the avatar so overlaid controls/text stay readable */
+.stageShade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 36, 0) 34%,
+    rgba(18, 14, 36, 0.5) 62%,
+    rgba(18, 14, 36, 0.94) 100%
   );
 }
 .stageTop {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   justify-content: center;
   padding: 14px;
 }
 .stageBottom {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   margin-top: auto;
   padding: 14px;
 }
@@ -95,7 +108,7 @@
 /* your turn / listening panel */
 .panel {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   margin-top: auto;
   text-align: center;
   padding: 18px 20px 26px;
@@ -106,7 +119,7 @@
   color: #fff;
 }
 .speak {
-  color: var(--dark-muted);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 13.5px;
   margin-top: 4px;
 }
@@ -123,7 +136,7 @@
   gap: 12px;
 }
 .tapStop {
-  color: var(--dark-muted);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
   background: none;
   border: none;
@@ -169,11 +182,11 @@
 .fbScoreOverlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: flex-end;
   gap: 16px;
-  padding: 16px 18px;
+  padding: 18px 20px;
 }
 .fbBody {
   padding: 18px 20px 0;
@@ -181,31 +194,27 @@
   flex-direction: column;
   flex: 1;
 }
-.scoreTop {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin: 6px 0 18px;
-}
-.scoreTop .lab {
-  color: var(--dark-muted);
+.lab {
+  color: rgba(255, 255, 255, 0.78);
   font-size: 13px;
 }
-.scoreTop .big {
+.big {
   font-size: 30px;
   font-weight: 700;
   color: #fff;
   line-height: 1.1;
+  margin-top: 2px;
 }
-.scoreTop .big small {
+.big small {
   font-size: 16px;
-  color: var(--dark-muted);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
-.scoreTop .good {
-  color: #b9a9f7;
+.good {
+  color: #c9baff;
   font-size: 13px;
-  margin-top: 2px;
+  font-weight: 600;
+  margin-top: 3px;
 }
 .ringScore {
   font-size: 20px;
