@@ -141,8 +141,7 @@
   padding-left: calc(16px + 15px);
   padding-right: calc(16px + 15px);
 }
-.questionScreen .avatar-fill,
-.questionScreen .avatar-fill.placeholder {
+.questionScreen :global(.avatar-fill) {
   transform: translateY(-180px);
 }
 .answerBtn {
