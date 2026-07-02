@@ -110,16 +110,16 @@
 }
 
 .qcard {
-  background: rgba(24, 22, 34, 0.72);
-  backdrop-filter: blur(10px);
+  background: #fff;
   border-radius: 18px;
   padding: 16px;
-  color: #fff;
+  color: var(--text);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 .qcardHead {
   display: flex;
   justify-content: flex-end;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--muted);
 }
 .qtext {
   font-size: 15.5px;
@@ -129,7 +129,7 @@
 }
 .qwave {
   margin-top: 14px;
-  color: #9d86f7;
+  color: var(--brand);
 }
 
 .hint {
