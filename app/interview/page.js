@@ -9,7 +9,7 @@ import m from "./interview.module.css";
 export default function InterviewPage() {
   return (
     <Phone dark immersive>
-      <div className={m.immersive}>
+      <div className={`${m.immersive} ${m.questionScreen}`}>
         <div className={m.stageBg} />
         <Avatar pose="idle" fill alt="AI interviewer" />
         <div className={m.immersiveShade} />
@@ -43,7 +43,7 @@ export default function InterviewPage() {
         </div>
 
         <div className={m.bottomBar}>
-          <Link href="/interview/your-turn" className={m.hint}>
+          <Link href="/interview/your-turn" className={m.answerBtn}>
             Tap to answer
           </Link>
         </div>
