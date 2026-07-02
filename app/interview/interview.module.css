@@ -142,7 +142,7 @@
   padding-right: calc(16px + 15px);
 }
 .questionScreen :global(.avatar-fill) {
-  transform: translateY(-180px);
+  transform: translateY(-100px);
 }
 .answerBtn {
   display: block;
