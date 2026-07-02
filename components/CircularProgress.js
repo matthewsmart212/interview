@@ -4,6 +4,7 @@ export default function CircularProgress({
   stroke = 12,
   color = "var(--brand)",
   track = "var(--brand-050)",
+  animated = false,
   children,
 }) {
   const r = (size - stroke) / 2;
@@ -33,6 +34,11 @@ export default function CircularProgress({
           strokeDasharray={c}
           strokeDashoffset={offset}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          style={
+            animated
+              ? { transition: "stroke-dashoffset 1.3s cubic-bezier(0.3, 0.6, 0.2, 1)" }
+              : undefined
+          }
         />
       </svg>
       <div className="ring-center">{children}</div>

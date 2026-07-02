@@ -21,18 +21,16 @@ export default function Avatar({
   className = "",
   style = {},
 }) {
-  const [src, setSrc] = useState(`/avatars/${pose}.png`);
-  const [failed, setFailed] = useState(false);
+  const [failedSrcs, setFailedSrcs] = useState({});
   const label = alt || "AI coach";
 
-  const handleError = () => {
-    const fallbackSrc = fallbackPose ? `/avatars/${fallbackPose}.png` : null;
-    if (fallbackSrc && src !== fallbackSrc) {
-      setSrc(fallbackSrc);
-    } else {
-      setFailed(true);
-    }
-  };
+  const primary = `/avatars/${pose}.png`;
+  const fallback = fallbackPose ? `/avatars/${fallbackPose}.png` : null;
+  const src = !failedSrcs[primary]
+    ? primary
+    : fallback && !failedSrcs[fallback]
+    ? fallback
+    : null;
 
   const cls = [
     fill ? "avatar-fill" : "avatar-img",
@@ -42,7 +40,7 @@ export default function Avatar({
     .filter(Boolean)
     .join(" ");
 
-  if (failed) {
+  if (!src) {
     return (
       <div
         className={`placeholder ${cls}`}
@@ -61,7 +59,7 @@ export default function Avatar({
       alt={label}
       className={cls}
       style={style}
-      onError={handleError}
+      onError={() => setFailedSrcs((p) => ({ ...p, [src]: true }))}
     />
   );
 }

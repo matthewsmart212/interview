@@ -22,11 +22,10 @@ on wider screens it is centered inside a phone frame.
 | `/setup`                       | "Let's get you ready" interview setup form        |
 | `/home`                        | Home dashboard                                    |
 | `/cv`                          | Improve My CV (match score + suggestions)         |
-| `/interview`                   | AI mock interview – question                      |
-| `/interview/your-turn`         | Your turn – listening/recording                   |
-| `/interview/analyzing`         | Analyzing answer (auto-advances to feedback)      |
-| `/interview/feedback`          | AI feedback summary                               |
-| `/interview/feedback/detailed` | Detailed feedback (Feedback / Transcript / Better Answer tabs) |
+| `/interview`                   | AI mock interview loop (question → answer × 5)    |
+| `/interview/analyzing`         | Animated analysis of all answers (auto-advances)  |
+| `/interview/feedback`          | Overall AI feedback (score, per-question breakdown) |
+| `/interview/feedback/detailed` | Per-question feedback (Q1–Q5 selector + Feedback / Transcript / Better Answer tabs) |
 | `/questions`                   | Interview questions (filterable + bookmark)       |
 | `/progress`                    | Progress stats, score-over-time chart, top skills |
 | `/profile`                     | Profile & settings                                |

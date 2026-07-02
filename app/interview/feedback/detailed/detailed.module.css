@@ -1,3 +1,17 @@
+@keyframes growBar {
+  from {
+    width: 0;
+  }
+}
+.qTitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.animBar {
+  width: var(--w);
+  animation: growBar 0.7s cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
 .head {
   font-size: 15px;
   font-weight: 600;

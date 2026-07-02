@@ -1,24 +1,45 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
 import Avatar from "../../../components/Avatar";
 import CircularProgress from "../../../components/CircularProgress";
-import { CheckCircle, AlertCircle } from "../../../components/Icons";
+import { CheckCircle, AlertCircle, ChevronRight } from "../../../components/Icons";
+import { QUESTIONS, OVERALL, questionScore } from "../../../lib/interview-data";
 import m from "../interview.module.css";
 
-const GOOD = [
-  "Good example with a clear situation",
-  "Explained your actions clearly",
-  "Positive outcome",
-];
-const IMPROVE = ["Could add more about the result", "Try to show more impact"];
+function useCountUp(target, duration = 1200, delay = 250) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    let raf;
+    const start = performance.now() + delay;
+    const tick = (now) => {
+      const t = Math.min(1, Math.max(0, (now - start) / duration));
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(eased * target));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, delay]);
+  return value;
+}
 
 export default function FeedbackPage() {
+  const displayed = useCountUp(OVERALL.score);
+  const [ringVal, setRingVal] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setRingVal(OVERALL.score), 250);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <Phone dark>
-      <TopBar title="AI Feedback" backHref="/interview" />
+      <TopBar title="AI Feedback" backHref="/home" />
       <div className={`screen ${m.fbScreen}`}>
-        <div className={m.fbHero}>
+        <div className={`${m.fbHero} anim-fade-up`}>
           <div className={m.stageBg} />
           <Avatar
             pose="thumbsup"
@@ -29,28 +50,65 @@ export default function FeedbackPage() {
           <div className={m.stageShade} />
           <div className={m.fbScoreOverlay}>
             <CircularProgress
-              value={82}
+              value={ringVal}
               size={88}
               stroke={10}
               color="#9d86f7"
               track="rgba(255,255,255,0.16)"
+              animated
             >
-              <span className={m.ringScore}>82</span>
+              <span className={m.ringScore}>{displayed}</span>
             </CircularProgress>
             <div>
               <div className={m.lab}>Overall Score</div>
               <div className={m.big}>
-                82<small>/100</small>
+                {displayed}
+                <small>/100</small>
               </div>
-              <div className={m.good}>Great job!</div>
+              <div className={m.good}>{OVERALL.headline}</div>
             </div>
           </div>
         </div>
 
         <div className={m.fbBody}>
-          <div className={m.fbBlock}>
+          <div
+            className={`${m.fbBlock} anim-fade-up`}
+            style={{ animationDelay: "0.1s" }}
+          >
+            <h3>Question breakdown</h3>
+            {QUESTIONS.map((q, i) => {
+              const score = questionScore(q);
+              return (
+                <Link
+                  href={`/interview/feedback/detailed?q=${i}`}
+                  key={q.id}
+                  className={m.qRow}
+                >
+                  <span className={m.qRowNum}>Q{i + 1}</span>
+                  <span className={m.qRowBody}>
+                    <span className={m.qRowText}>{q.text}</span>
+                    <span className={m.qRowBar} aria-hidden>
+                      <i
+                        style={{
+                          "--w": `${score}%`,
+                          animationDelay: `${0.35 + i * 0.12}s`,
+                        }}
+                      />
+                    </span>
+                  </span>
+                  <span className={m.qRowScore}>{score}</span>
+                  <ChevronRight size={16} className={m.qRowChev} />
+                </Link>
+              );
+            })}
+          </div>
+
+          <div
+            className={`${m.fbBlock} anim-fade-up`}
+            style={{ animationDelay: "0.2s" }}
+          >
             <h3>What you did well</h3>
-            {GOOD.map((t) => (
+            {OVERALL.strengths.map((t) => (
               <div className="fb-item fb-good" key={t}>
                 <span className="fb-ico">
                   <CheckCircle size={18} />
@@ -60,9 +118,12 @@ export default function FeedbackPage() {
             ))}
           </div>
 
-          <div className={m.fbBlock}>
+          <div
+            className={`${m.fbBlock} anim-fade-up`}
+            style={{ animationDelay: "0.3s" }}
+          >
             <h3>What to improve</h3>
-            {IMPROVE.map((t) => (
+            {OVERALL.improvements.map((t) => (
               <div className="fb-item fb-bad" key={t}>
                 <span className="fb-ico">
                   <AlertCircle size={18} />
@@ -72,19 +133,17 @@ export default function FeedbackPage() {
             ))}
           </div>
 
-          <Link href="/interview/feedback/detailed" className={m.detailLink}>
-            View detailed feedback
-          </Link>
-
-          <div className="grow" />
-
-          <Link
-            href="/interview"
-            className="btn btn-primary"
-            style={{ marginTop: 12 }}
+          <div
+            className={`${m.fbActions} anim-fade-up`}
+            style={{ animationDelay: "0.4s" }}
           >
-            Next Question
-          </Link>
+            <Link href="/interview/feedback/detailed" className="btn btn-primary">
+              View Detailed Feedback
+            </Link>
+            <Link href="/interview" className={m.practiceAgain}>
+              Practice Again
+            </Link>
+          </div>
         </div>
       </div>
     </Phone>
