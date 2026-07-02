@@ -37,10 +37,13 @@ export default function YourTurnPage() {
             >
               <Mic size={30} />
             </Link>
-            <Link href="/interview/analyzing" className={m.tapStop}>
-              Tap to stop
-            </Link>
           </div>
+        </div>
+
+        <div className={m.bottomBar}>
+          <Link href="/interview/analyzing" className={m.tapStop}>
+            Tap to stop
+          </Link>
         </div>
       </div>
     </Phone>

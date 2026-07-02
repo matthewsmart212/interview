@@ -52,6 +52,8 @@ export default function AnalyzingPage() {
             ))}
           </div>
         </div>
+
+        <div className={m.bottomBar} aria-hidden />
       </div>
     </Phone>
   );

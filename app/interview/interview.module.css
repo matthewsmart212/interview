@@ -56,7 +56,16 @@
   position: relative;
   z-index: 4;
   margin-top: auto;
-  padding: 14px 14px calc(18px + env(safe-area-inset-bottom));
+  padding: 14px 14px 12px;
+}
+/* solid footer bar matching the top bar / iOS chrome colour */
+.bottomBar {
+  position: relative;
+  z-index: 4;
+  background: var(--interview-bar-theme);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 13px 16px calc(13px + env(safe-area-inset-bottom));
+  text-align: center;
 }
 .stageFill {
   position: absolute;
@@ -150,7 +159,7 @@
   font-weight: 600;
   background: none;
   border: none;
-  padding: 14px 0 4px;
+  padding: 0;
 }
 
 /* your turn / listening panel */
@@ -159,7 +168,7 @@
   z-index: 4;
   margin-top: auto;
   text-align: center;
-  padding: 18px 20px calc(26px + env(safe-area-inset-bottom));
+  padding: 18px 20px 20px;
 }
 .listening {
   font-size: 18px;

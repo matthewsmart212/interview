@@ -40,6 +40,9 @@ export default function InterviewPage() {
             </p>
             <Waveform bars={30} className={m.qwave} height={30} />
           </div>
+        </div>
+
+        <div className={m.bottomBar}>
           <Link href="/interview/your-turn" className={m.hint}>
             Tap to answer
           </Link>
