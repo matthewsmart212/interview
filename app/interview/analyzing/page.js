@@ -16,8 +16,9 @@ const STEPS = [
   "Preparing your feedback",
 ];
 
-const STEP_MS = 1100;
-const REDIRECT_MS = 3700;
+const EXTRA_MS = 3000;
+const STEP_MS = 1100 + EXTRA_MS / STEPS.length;
+const REDIRECT_MS = 700;
 
 export default function AnalyzingPage() {
   const router = useRouter();
