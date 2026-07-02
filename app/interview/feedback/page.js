@@ -58,8 +58,8 @@ export default function FeedbackPage() {
             <div className={m.lab}>Overall Score</div>
             <CircularProgress
               value={ringVal}
-              size={118}
-              stroke={11}
+              size={124}
+              stroke={12}
               color="#9d86f7"
               track="rgba(255,255,255,0.12)"
               animated
