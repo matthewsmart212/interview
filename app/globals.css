@@ -96,6 +96,19 @@ img {
   background: var(--bg);
 }
 
+/* Interview routes: no light grey peeking above the immersive background */
+html:has(.interview-route),
+body:has(.interview-route),
+.app-shell:has(.interview-route) {
+  background-color: #4a3d78 !important;
+}
+
+.interview-route {
+  min-height: 100dvh;
+  min-height: 100svh;
+  background: #4a3d78;
+}
+
 .phone {
   position: relative;
   width: 100%;
@@ -171,11 +184,13 @@ img {
   color: var(--dark-text);
 }
 .topbar.overlay-bar {
-  position: relative;
-  z-index: 6;
-  background: rgba(20, 16, 38, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  /* Avoid backdrop-filter — on iOS it blurs the light page behind the fixed layer */
+  background: rgba(22, 16, 42, 0.55);
 }
 .topbar.overlay-bar .tb-title,
 .topbar.overlay-bar .icon-btn {
