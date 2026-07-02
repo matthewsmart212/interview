@@ -9,19 +9,30 @@ const POSE_LABEL = {
   welcoming: "Welcome",
   thinking: "Thinking",
   thumbsup: "Great!",
+  listening: "Listening",
 };
 
 export default function Avatar({
   pose = "idle",
+  fallbackPose,
   alt,
   fill = false,
   round = false,
   className = "",
   style = {},
 }) {
+  const [src, setSrc] = useState(`/avatars/${pose}.png`);
   const [failed, setFailed] = useState(false);
-  const src = `/avatars/${pose}.png`;
   const label = alt || "AI coach";
+
+  const handleError = () => {
+    const fallbackSrc = fallbackPose ? `/avatars/${fallbackPose}.png` : null;
+    if (fallbackSrc && src !== fallbackSrc) {
+      setSrc(fallbackSrc);
+    } else {
+      setFailed(true);
+    }
+  };
 
   const cls = [
     fill ? "avatar-fill" : "avatar-img",
@@ -33,7 +44,12 @@ export default function Avatar({
 
   if (failed) {
     return (
-      <div className={`placeholder ${cls}`} style={style} role="img" aria-label={label}>
+      <div
+        className={`placeholder ${cls}`}
+        style={style}
+        role="img"
+        aria-label={label}
+      >
         <span>{POSE_LABEL[pose] || "Avatar"}</span>
       </div>
     );
@@ -45,7 +61,7 @@ export default function Avatar({
       alt={label}
       className={cls}
       style={style}
-      onError={() => setFailed(true)}
+      onError={handleError}
     />
   );
 }

@@ -11,7 +11,12 @@ export default function YourTurnPage() {
     <Phone dark immersive>
       <div className={m.immersive}>
         <div className={m.stageBg} />
-        <Avatar pose="idle" fill alt="AI interviewer" />
+        <Avatar
+          pose="listening"
+          fallbackPose="idle"
+          fill
+          alt="AI interviewer listening"
+        />
         <div className={m.immersiveShade} />
 
         <TopBar
@@ -25,22 +30,20 @@ export default function YourTurnPage() {
           }
         />
 
-        <div className={m.panel}>
+        <div className={m.listenCard}>
           <div className={m.listening}>Listening...</div>
           <div className={m.speak}>Speak clearly</div>
-          <Waveform bars={32} className={m.bigWave} height={48} />
-          <div className={m.micWrap}>
+          <div className={m.listenRow}>
+            <Waveform bars={13} className={m.sideWave} height={40} />
             <Link
               href="/interview/analyzing"
-              className="mic-btn"
+              className={m.micLight}
               aria-label="Stop recording"
             >
-              <Mic size={30} />
+              <Mic size={28} />
             </Link>
+            <Waveform bars={13} className={m.sideWave} height={40} />
           </div>
-        </div>
-
-        <div className={m.bottomBar}>
           <Link href="/interview/analyzing" className={m.tapStop}>
             Tap to stop
           </Link>
