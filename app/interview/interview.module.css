@@ -64,7 +64,7 @@
   z-index: 4;
   background: var(--interview-bar-theme);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 13px 16px calc(13px + env(safe-area-inset-bottom));
+  padding: 23px 16px calc(23px + env(safe-area-inset-bottom));
   text-align: center;
 }
 .stageFill {
