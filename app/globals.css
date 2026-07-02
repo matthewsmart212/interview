@@ -189,8 +189,10 @@ body:has(.interview-route),
   left: 0;
   right: 0;
   z-index: 30;
-  /* Avoid backdrop-filter — on iOS it blurs the light page behind the fixed layer */
-  background: rgba(22, 16, 42, 0.55);
+  background: rgba(16, 12, 32, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .topbar.overlay-bar .tb-title,
 .topbar.overlay-bar .icon-btn {
