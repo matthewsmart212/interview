@@ -53,35 +53,30 @@ export default function FeedbackPage() {
     <Phone dark>
       <TopBar title="AI Feedback" backHref="/home" />
       <div className={`screen ${m.fbScreen}`}>
-        <div className={`${m.fbHero} anim-fade-up`}>
-          <div className={m.stageBg} />
+        <div className={`${m.fbAvatar} anim-fade-in`}>
           <Avatar
             pose="thumbsup"
             fill
             alt="AI interviewer celebrating"
-            style={{ objectFit: "cover", objectPosition: "center 26%" }}
+            style={{ objectFit: "cover", objectPosition: "center 16%" }}
           />
-          <div className={m.stageShade} />
-          <div className={m.fbScoreOverlay}>
-            <CircularProgress
-              value={ringVal}
-              size={88}
-              stroke={10}
-              color="#9d86f7"
-              track="rgba(255,255,255,0.16)"
-              animated
-            >
-              <span className={m.ringScore}>{displayed}</span>
-            </CircularProgress>
-            <div>
-              <div className={m.lab}>Overall Score</div>
-              <div className={m.big}>
-                {displayed}
-                <small>/100</small>
-              </div>
-              <span className={m.headlinePill}>{OVERALL.headline}</span>
-            </div>
-          </div>
+          <div className={m.fbAvatarFade} />
+        </div>
+
+        <div className={`${m.fbScore} anim-fade-up`}>
+          <div className={m.lab}>Overall Score</div>
+          <CircularProgress
+            value={ringVal}
+            size={134}
+            stroke={12}
+            color="#9d86f7"
+            track="rgba(255,255,255,0.12)"
+            animated
+          >
+            <span className={m.ringBig}>{displayed}</span>
+            <span className={m.ringOutOf}>out of 100</span>
+          </CircularProgress>
+          <span className={m.headlinePill}>{OVERALL.headline}</span>
         </div>
 
         <div
