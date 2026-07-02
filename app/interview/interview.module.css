@@ -387,11 +387,20 @@
 }
 .fbHero {
   position: relative;
-  height: 218px;
+  height: 236px;
   margin: 4px 16px 0;
-  border-radius: 22px;
+  border-radius: 24px;
   overflow: hidden;
   flex-shrink: 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.fbHero .stageShade {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 36, 0) 30%,
+    rgba(18, 14, 36, 0.55) 62%,
+    rgba(18, 14, 36, 0.96) 100%
+  );
 }
 .fbScoreOverlay {
   position: absolute;
@@ -399,8 +408,8 @@
   z-index: 3;
   display: flex;
   align-items: flex-end;
-  gap: 16px;
-  padding: 18px 20px;
+  gap: 18px;
+  padding: 20px 22px;
 }
 .fbBody {
   padding: 18px 20px 0;
@@ -409,62 +418,114 @@
   flex: 1;
 }
 .lab {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 .big {
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 34px;
+  font-weight: 800;
   color: #fff;
-  line-height: 1.1;
-  margin-top: 2px;
+  line-height: 1.05;
+  margin-top: 3px;
+  letter-spacing: -0.01em;
 }
 .big small {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
-.good {
-  color: #c9baff;
-  font-size: 13px;
+.headlinePill {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(157, 134, 247, 0.22);
+  border: 1px solid rgba(157, 134, 247, 0.4);
+  color: #d7ccff;
+  font-size: 12px;
   font-weight: 600;
-  margin-top: 3px;
 }
 .ringScore {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   color: #fff;
 }
+
+/* feedback summary stats strip */
+.fbStats {
+  display: flex;
+  gap: 10px;
+  margin: 14px 20px 4px;
+}
+.fbStat {
+  flex: 1;
+  background: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 13px 8px;
+  text-align: center;
+}
+.fbStatValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.fbStatLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 6px;
+}
+
 .fbBlock {
   background: var(--dark-surface);
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 16px 18px;
   margin-bottom: 14px;
 }
 .fbBlock h3 {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #fff;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fbBlock h3::before {
+  content: "";
+  width: 4px;
+  height: 15px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #9d86f7, #6c4ce6);
 }
 .fbBlock .fb-item {
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.92);
 }
 /* per-question rows on feedback screen */
 .qRow {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 0;
+  padding: 12px 0;
+  transition: opacity 0.15s ease;
+}
+.qRow:active {
+  opacity: 0.6;
 }
 .qRow + .qRow {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 .qRowNum {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
   background: rgba(157, 134, 247, 0.16);
   color: #c9baff;
   font-size: 12.5px;
@@ -480,15 +541,15 @@
 .qRowText {
   display: block;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 .qRowBar {
   display: block;
-  height: 5px;
+  height: 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
@@ -503,13 +564,40 @@
 }
 .qRowScore {
   flex-shrink: 0;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   color: #fff;
+  min-width: 24px;
+  text-align: right;
 }
 .qRowChev {
   flex-shrink: 0;
   color: rgba(255, 255, 255, 0.4);
+}
+
+/* score tiers (colour-code strength of each answer) */
+.qRowScore.tier_high {
+  color: #6ee7a8;
+}
+.qRowScore.tier_mid {
+  color: #c9baff;
+}
+.qRowScore.tier_low {
+  color: #f5b64e;
+}
+.qRowNum.tier_high {
+  background: rgba(52, 211, 153, 0.16);
+  color: #6ee7a8;
+}
+.qRowNum.tier_low {
+  background: rgba(245, 165, 36, 0.16);
+  color: #f5b64e;
+}
+.qRowBar i.tier_high {
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+}
+.qRowBar i.tier_low {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
 }
 
 /* feedback actions */
