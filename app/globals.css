@@ -1,5 +1,9 @@
 :root {
   --brand: #6c4ce6;
+  --interview-room: #4a3d78;
+  /* solid tint matching the frosted top bar over the room (for iOS status bar) */
+  --interview-bar-theme: #302651;
+  --interview-bar-tint: rgba(20, 14, 38, 0.45);
   --brand-600: #6042d8;
   --brand-700: #5637c9;
   --brand-050: #f1edfe;
@@ -100,13 +104,14 @@ img {
 html:has(.interview-route),
 body:has(.interview-route),
 .app-shell:has(.interview-route) {
-  background-color: #4a3d78 !important;
+  background-color: var(--interview-room) !important;
 }
 
 .interview-route {
   min-height: 100dvh;
   min-height: 100svh;
-  background: #4a3d78;
+  background: var(--interview-room);
+  color-scheme: dark;
 }
 
 .phone {
@@ -189,9 +194,14 @@ body:has(.interview-route),
   left: 0;
   right: 0;
   z-index: 30;
-  background: rgba(16, 12, 32, 0.38);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  box-sizing: border-box;
+  /* background fills the status-bar safe area; controls sit below it */
+  padding: env(safe-area-inset-top) 18px 10px;
+  min-height: calc(48px + env(safe-area-inset-top));
+  align-items: center;
+  background: var(--interview-bar-tint);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .topbar.overlay-bar .tb-title,

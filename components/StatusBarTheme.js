@@ -3,8 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-/** Matches the top of `public/backgrounds/room.png` fallback colour */
-const INTERVIEW = "#4a3d78";
+const INTERVIEW = "#302651";
 const LIGHT = "#f2f2f5";
 
 export default function StatusBarTheme() {
@@ -12,7 +11,8 @@ export default function StatusBarTheme() {
 
   useEffect(() => {
     const isInterview = pathname.startsWith("/interview");
-    const color = isInterview ? INTERVIEW : LIGHT;
+    const theme = isInterview ? INTERVIEW : LIGHT;
+    const pageBg = isInterview ? "#4a3d78" : LIGHT;
 
     let meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) {
@@ -20,10 +20,10 @@ export default function StatusBarTheme() {
       meta.setAttribute("name", "theme-color");
       document.head.appendChild(meta);
     }
-    meta.setAttribute("content", color);
+    meta.setAttribute("content", theme);
 
-    document.documentElement.style.backgroundColor = color;
-    document.body.style.backgroundColor = color;
+    document.documentElement.style.backgroundColor = pageBg;
+    document.body.style.backgroundColor = pageBg;
   }, [pathname]);
 
   return null;
