@@ -199,9 +199,9 @@ body:has(.interview-route),
   padding: env(safe-area-inset-top) 18px 10px;
   min-height: calc(48px + env(safe-area-inset-top));
   align-items: center;
-  background: var(--interview-bar-tint);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* solid colour identical to theme-color so the iOS status bar and this bar
+     read as one continuous surface */
+  background: var(--interview-bar-theme);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .topbar.overlay-bar .tb-title,
