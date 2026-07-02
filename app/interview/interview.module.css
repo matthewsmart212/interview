@@ -444,23 +444,29 @@
   flex: 1;
 }
 .lab {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 12px;
+  text-shadow: 0 1px 10px rgba(18, 14, 36, 0.8);
 }
 .headlinePill {
   display: inline-block;
   margin-top: 14px;
-  padding: 6px 16px;
+  padding: 7px 18px;
   border-radius: 999px;
-  background: rgba(157, 134, 247, 0.2);
-  border: 1px solid rgba(157, 134, 247, 0.42);
-  color: #ded4ff;
+  background: linear-gradient(
+    135deg,
+    rgba(157, 134, 247, 0.28),
+    rgba(108, 76, 230, 0.22)
+  );
+  border: 1px solid rgba(157, 134, 247, 0.45);
+  color: #e4dcff;
   font-size: 13px;
   font-weight: 600;
+  box-shadow: 0 4px 18px rgba(108, 76, 230, 0.25);
 }
 .ringBig {
   font-size: 42px;
@@ -486,50 +492,79 @@
 }
 .fbStat {
   flex: 1;
-  background: var(--dark-surface);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 13px 8px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.015)
+  );
+  background-color: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 17px;
+  padding: 14px 8px;
   text-align: center;
 }
 .fbStatValue {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 800;
   color: #fff;
   line-height: 1;
+  letter-spacing: -0.01em;
 }
 .fbStatLabel {
   font-size: 11px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 6px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 7px;
 }
 
 .fbBlock {
-  background: var(--dark-surface);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 18px;
-  padding: 16px 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.015)
+  );
+  background-color: var(--dark-surface);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  padding: 18px;
   margin-bottom: 14px;
 }
 .fbBlock h3 {
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  letter-spacing: 0.01em;
 }
 .fbBlock h3::before {
   content: "";
   width: 4px;
-  height: 15px;
+  height: 16px;
   border-radius: 999px;
   background: linear-gradient(180deg, #9d86f7, #6c4ce6);
+  box-shadow: 0 0 8px rgba(157, 134, 247, 0.5);
 }
-.fbBlock .fb-item {
-  color: rgba(255, 255, 255, 0.92);
+/* :global — fb-item lives in globals.css; without this the colour rule is
+   hashed away and the text renders near-black on the dark card */
+.fbBlock :global(.fb-item) {
+  color: rgba(255, 255, 255, 0.93);
+  font-size: 13.5px;
+  line-height: 1.55;
+  padding: 8px 0;
+}
+.fbBlock :global(.fb-item + .fb-item) {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.fbBlock :global(.fb-good .fb-ico) {
+  color: #4ade80;
+}
+.fbBlock :global(.fb-bad .fb-ico) {
+  color: #fbbf24;
 }
 /* per-question rows on feedback screen */
 .qRow {
@@ -637,5 +672,9 @@
   color: #cfc7f2;
   font-weight: 600;
   font-size: 14.5px;
-  padding: 13px 0 4px;
+  padding: 14px 0 4px;
+  transition: opacity 0.15s ease;
+}
+.practiceAgain:active {
+  opacity: 0.6;
 }
