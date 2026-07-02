@@ -33,7 +33,7 @@ export default function AnalyzingPage() {
   }, [router]);
 
   return (
-    <Phone dark>
+    <Phone dark immersive>
       <div className={m.immersive}>
         <div className={m.stageBg} />
         <Avatar pose="thinking" fill alt="AI interviewer thinking" />

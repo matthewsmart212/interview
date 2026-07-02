@@ -5,6 +5,11 @@ export const metadata = {
   title: "Interview Coach AI",
   description:
     "Your AI interview coach — practise mock interviews, build your CV and get instant feedback.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Interview Coach AI",
+  },
 };
 
 export const viewport = {

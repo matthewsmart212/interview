@@ -8,7 +8,7 @@ import m from "./interview.module.css";
 
 export default function InterviewPage() {
   return (
-    <Phone dark>
+    <Phone dark immersive>
       <div className={m.immersive}>
         <div className={m.stageBg} />
         <Avatar pose="idle" fill alt="AI interviewer" />

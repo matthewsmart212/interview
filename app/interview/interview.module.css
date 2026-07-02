@@ -10,12 +10,21 @@
 }
 /* full-bleed immersive stage (background covers the whole screen) */
 .immersive {
-  position: relative;
-  flex: 1;
-  min-height: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+.immersive .stageBg,
+.immersive .avatar-fill,
+.immersive .avatar-fill.placeholder,
+.immersive .immersiveShade {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 .immersiveShade {
   position: absolute;

@@ -3,15 +3,16 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const DARK = "#241f2e";
+/** Matches the top of `public/backgrounds/room.png` fallback colour */
+const INTERVIEW = "#4a3d78";
 const LIGHT = "#f2f2f5";
 
 export default function StatusBarTheme() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isDark = pathname.startsWith("/interview");
-    const color = isDark ? DARK : LIGHT;
+    const isInterview = pathname.startsWith("/interview");
+    const color = isInterview ? INTERVIEW : LIGHT;
 
     let meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) {

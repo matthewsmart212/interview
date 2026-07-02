@@ -53,10 +53,16 @@ body {
   padding: 0;
 }
 
+html {
+  height: -webkit-fill-available;
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--text);
   background: var(--bg);
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -101,6 +107,11 @@ img {
 
 .phone.dark {
   background: var(--dark-bg);
+}
+.phone.immersive-shell {
+  background: transparent;
+  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 .screen {
