@@ -3,16 +3,15 @@ import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
 import Avatar from "../../../components/Avatar";
 import Waveform from "../../../components/Waveform";
-import { Mic } from "../../../components/Icons";
 import m from "../interview.module.css";
 
 export default function YourTurnPage() {
   return (
     <Phone dark immersive>
-      <div className={`${m.immersive} ${m.avatarUp}`}>
+      <div className={`${m.immersive} ${m.questionScreen}`}>
         <div className={m.stageBg} />
         <Avatar
-          pose="listening"
+          pose="welcoming"
           fallbackPose="idle"
           fill
           alt="AI interviewer listening"
@@ -30,22 +29,19 @@ export default function YourTurnPage() {
           }
         />
 
-        <div className={m.listenCard}>
-          <div className={m.listening}>Listening...</div>
-          <div className={m.speak}>Speak clearly</div>
-          <div className={m.listenRow}>
-            <Waveform bars={13} className={m.sideWave} height={40} />
-            <Link
-              href="/interview/analyzing"
-              className={m.micLight}
-              aria-label="Stop recording"
-            >
-              <Mic size={28} />
-            </Link>
-            <Waveform bars={13} className={m.sideWave} height={40} />
+        <div className={m.bottomArea}>
+          <div className={`${m.qcard} ${m.darkCard}`}>
+            <div className={m.listening}>Listening...</div>
+            <div className={m.speak}>Speak clearly</div>
+            <div className={m.qfooter}>
+              <Waveform bars={28} className={m.qwave} height={30} />
+            </div>
           </div>
-          <Link href="/interview/analyzing" className={m.tapStop}>
-            Tap to stop
+        </div>
+
+        <div className={m.bottomBar}>
+          <Link href="/interview/analyzing" className={m.answerBtn}>
+            Tap to speak
           </Link>
         </div>
       </div>

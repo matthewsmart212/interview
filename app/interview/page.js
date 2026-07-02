@@ -11,7 +11,7 @@ export default function InterviewPage() {
     <Phone dark immersive>
       <div className={`${m.immersive} ${m.questionScreen}`}>
         <div className={m.stageBg} />
-        <Avatar pose="idle" fill alt="AI interviewer" />
+        <Avatar pose="presenting" fallbackPose="idle" fill alt="AI interviewer" />
         <div className={m.immersiveShade} />
 
         <TopBar
