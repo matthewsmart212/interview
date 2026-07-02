@@ -138,15 +138,17 @@
 .questionScreen .qcard {
   margin-left: 30px;
   margin-right: 30px;
-  padding-left: calc(16px + 15px);
-  padding-right: calc(16px + 15px);
+  padding: 27px calc(16px + 15px);
 }
 .questionScreen :global(.avatar-fill) {
   transform: translateY(-100px);
 }
 .answerBtn {
   display: block;
-  width: 100%;
+  width: auto;
+  /* align with the white card: bottomBar has 16px padding, card sits 30px
+     inside the 14px bottomArea padding (14 + 30 = 44), so add 28px */
+  margin: 0 28px;
   padding: 15px 20px;
   border-radius: 14px;
   border: none;
@@ -172,9 +174,32 @@
   font-weight: 500;
   margin-top: 4px;
 }
-.qwave {
-  margin-top: 14px;
+.qfooter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  min-height: 34px;
+}
+.qvolume {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand-050);
   color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qwave {
+  color: var(--brand);
+  justify-content: center;
 }
 
 .hint {

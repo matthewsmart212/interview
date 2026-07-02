@@ -31,14 +31,16 @@ export default function InterviewPage() {
 
         <div className={m.bottomArea}>
           <div className={m.qcard}>
-            <div className={m.qcardHead}>
-              <Volume size={20} />
-            </div>
             <p className={m.qtext}>
               Can you tell me about a time you had to deal with a difficult
               customer? How did you handle it?
             </p>
-            <Waveform bars={30} className={m.qwave} height={30} />
+            <div className={m.qfooter}>
+              <Waveform bars={28} className={m.qwave} height={30} />
+              <button className={m.qvolume} aria-label="Replay question audio">
+                <Volume size={18} />
+              </button>
+            </div>
           </div>
         </div>
 
