@@ -17,6 +17,7 @@ const STEPS = [
 ];
 
 const STEP_MS = 1100;
+const REDIRECT_MS = 3700;
 
 export default function AnalyzingPage() {
   const router = useRouter();
@@ -27,13 +28,13 @@ export default function AnalyzingPage() {
       const t = setTimeout(() => setDone((d) => d + 1), STEP_MS);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => router.push("/interview/feedback"), 700);
+    const t = setTimeout(() => router.push("/interview/feedback"), REDIRECT_MS);
     return () => clearTimeout(t);
   }, [done, router]);
 
   return (
     <Phone dark immersive>
-      <div className={m.immersive}>
+      <div className={`${m.immersive} ${m.questionScreen} ${m.analyzeScreen}`}>
         <div className={m.stageBg} />
         <Avatar pose="thinking" fill alt="AI interviewer thinking" />
         <div className={m.immersiveShade} />
@@ -77,8 +78,6 @@ export default function AnalyzingPage() {
             </div>
           </div>
         </div>
-
-        <div className={m.bottomBar} aria-hidden />
       </div>
     </Phone>
   );

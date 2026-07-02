@@ -137,6 +137,11 @@
 .avatarUp :global(.avatar-fill) {
   transform: translateY(-100px);
 }
+
+/* analyzing screen: no bottom CTA bar — pad for safe area instead */
+.analyzeScreen .bottomArea {
+  padding-bottom: calc(23px + env(safe-area-inset-bottom));
+}
 .answerBtn {
   display: block;
   width: 100%;
