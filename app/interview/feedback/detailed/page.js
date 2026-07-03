@@ -183,7 +183,7 @@ export default function QuestionFeedbackDetailPage() {
 
   return (
     <Phone dark>
-      <TopBar title="Question Feedback" backHref="/interview/feedback" />
+      <TopBar title="Question Feedback" backHref="/interview/feedback" overlay />
       {result === undefined ? null : result === null ? (
         <DetailEmptyState />
       ) : (

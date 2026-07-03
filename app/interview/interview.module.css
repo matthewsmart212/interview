@@ -540,9 +540,9 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
-/* feedback screen (dark) */
+/* feedback screen (dark) — pad below the fixed overlay top bar */
 .fbScreen {
-  padding: 0 0 28px;
+  padding: calc(58px + env(safe-area-inset-top)) 0 28px;
 }
 /* feedback hero: score left, avatar right */
 .fbHero {
@@ -867,7 +867,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 24px 32px calc(48px + env(safe-area-inset-bottom));
+  padding: calc(58px + env(safe-area-inset-top)) 32px
+    calc(48px + env(safe-area-inset-bottom));
   gap: 6px;
 }
 .fbEmptyAvatar {

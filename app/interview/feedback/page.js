@@ -42,7 +42,7 @@ function useCountUp(target, duration = 1200, delay = 250) {
 function FeedbackEmptyState() {
   return (
     <Phone dark>
-      <TopBar title="AI Feedback" backHref="/home" />
+      <TopBar title="AI Feedback" backHref="/home" overlay />
       <div className={`screen ${m.fbEmpty}`}>
         <div className={m.fbEmptyAvatar}>
           <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
@@ -95,7 +95,7 @@ function FeedbackSummaryScreen({ result }) {
 
   return (
     <Phone dark>
-      <TopBar title="AI Feedback" backHref="/home" />
+      <TopBar title="AI Feedback" backHref="/home" overlay />
       <div className={`screen ${m.fbScreen}`}>
         <div className={`${m.fbHero} anim-fade-up`}>
           <div className={m.fbScore}>
@@ -248,7 +248,12 @@ export default function FeedbackPage() {
     setResult(loadResult());
   }, []);
 
-  if (result === undefined) return <Phone dark />;
+  if (result === undefined)
+    return (
+      <Phone dark>
+        <TopBar title="AI Feedback" backHref="/home" overlay />
+      </Phone>
+    );
   if (result === null) return <FeedbackEmptyState />;
   return <FeedbackSummaryScreen result={result} />;
 }
