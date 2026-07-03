@@ -301,6 +301,165 @@
   margin-top: 4px;
 }
 
+/* live transcript preview while listening */
+.liveLine {
+  margin-top: 12px;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+  max-height: 60px;
+  overflow: hidden;
+}
+/* mic error / fallback note */
+.micNote {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #f0c869;
+  background: rgba(245, 165, 36, 0.12);
+  border: 1px solid rgba(245, 165, 36, 0.25);
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+
+/* ---- transcript review phase ---- */
+.reviewScreen {
+  --interview-inset: 24px;
+}
+.reviewScroll {
+  position: relative;
+  z-index: 4;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px var(--interview-inset, 20px) 18px;
+  display: flex;
+  flex-direction: column;
+}
+.reviewHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.reviewAvatar {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(157, 134, 247, 0.55);
+  box-shadow: 0 0 26px rgba(157, 134, 247, 0.35);
+  background: rgba(157, 134, 247, 0.14);
+  flex-shrink: 0;
+}
+.reviewSub {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: center;
+}
+.reviewScreen .qcard.reviewCard {
+  margin: 0;
+  padding: 18px;
+  background: rgba(28, 24, 44, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  text-align: left;
+}
+.reviewQLabel {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c9baff;
+  background: rgba(157, 134, 247, 0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+  margin-bottom: 10px;
+}
+.reviewQText {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff;
+}
+.reviewDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 14px 0;
+}
+.transcriptBox {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: pre-wrap;
+}
+.transcriptTextarea {
+  width: 100%;
+  min-height: 132px;
+  resize: none;
+  border-radius: 12px;
+  border: 1px solid rgba(157, 134, 247, 0.4);
+  background: rgba(18, 14, 36, 0.55);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  outline: none;
+}
+.transcriptTextarea:focus {
+  border-color: rgba(157, 134, 247, 0.8);
+  box-shadow: 0 0 0 3px rgba(157, 134, 247, 0.18);
+}
+.transcriptTextarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* secondary actions under the primary CTA */
+.secondaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.ghostBtn {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8e4f8;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.ghostBtn:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+.textBtn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #c9baff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 14px;
+}
+.textBtn:active {
+  opacity: 0.6;
+}
+.answerBtn:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+}
+
 /* analyzing */
 .analyzeBox {
   text-align: left;
@@ -703,6 +862,77 @@
   background: linear-gradient(90deg, #fbbf24, #f59e0b);
 }
 
+/* feedback empty state */
+.fbEmpty {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 32px calc(48px + env(safe-area-inset-bottom));
+  gap: 6px;
+}
+.fbEmptyAvatar {
+  position: relative;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(157, 134, 247, 0.5);
+  box-shadow: 0 0 36px rgba(157, 134, 247, 0.3);
+  background: rgba(157, 134, 247, 0.14);
+  margin-bottom: 14px;
+}
+.fbEmptyTitle {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+.fbEmptySub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 280px;
+  margin-bottom: 22px;
+}
+
+/* stronger sample answers reveal */
+.sampleAnswer {
+  padding: 12px 0;
+}
+.sampleAnswer + .sampleAnswer {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+.sampleQ {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c9baff;
+  margin-bottom: 6px;
+}
+.sampleText {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* secondary CTA on feedback screen */
+.ghostCta {
+  display: block;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ece8fb;
+  border-radius: 16px;
+  padding: 15px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+.ghostCta:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* feedback actions */
 .fbActions {
   margin-top: 6px;
@@ -712,6 +942,9 @@
 }
 .practiceAgain {
   display: block;
+  width: 100%;
+  background: none;
+  border: none;
   text-align: center;
   color: #cfc7f2;
   font-weight: 600;

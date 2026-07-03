@@ -1,40 +1,40 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Phone from "../../../../components/Phone";
 import TopBar from "../../../../components/TopBar";
-import { Play, CheckCircle, AlertCircle } from "../../../../components/Icons";
-import { QUESTIONS, questionScore } from "../../../../lib/interview-data";
+import Avatar from "../../../../components/Avatar";
+import CircularProgress from "../../../../components/CircularProgress";
+import {
+  CheckCircle,
+  AlertCircle,
+  Refresh,
+  Sparkle,
+} from "../../../../components/Icons";
+import { loadResult } from "../../../../lib/interview-session";
+import m from "../../interview.module.css";
 import s from "./detailed.module.css";
 
-const TABS = ["Feedback", "Transcript", "Better Answer"];
+const STAR_ORDER = ["Situation", "Task", "Action", "Result"];
 
-const BAR_COLORS = {
-  Relevance: "#22c55e",
-  "Structure (STAR)": "#6c4ce6",
-  Clarity: "#3b82f6",
-  Confidence: "#f5a524",
-  Impact: "#ef4444",
-};
-
-function DetailedFeedback() {
+function QuestionFeedbackDetail({ result }) {
   const params = useSearchParams();
   const initial = Math.min(
-    QUESTIONS.length - 1,
+    result.questions.length - 1,
     Math.max(0, parseInt(params.get("q") || "0", 10) || 0)
   );
   const [qi, setQi] = useState(initial);
-  const [tab, setTab] = useState("Feedback");
-  const q = QUESTIONS[qi];
+  const qf = result.questions[qi];
 
   return (
-    <>
-      <div className="chips" style={{ marginBottom: 14 }}>
-        {QUESTIONS.map((question, i) => (
+    <div className={`screen ${s.detailScreen}`}>
+      <div className="chips" style={{ padding: "0 20px", marginBottom: 14 }}>
+        {result.questions.map((question, i) => (
           <button
             key={question.id}
-            className={`chip${qi === i ? " active" : ""}`}
+            className={`chip ${s.darkChip}${qi === i ? " active" : ""}`}
             onClick={() => setQi(i)}
           >
             Q{i + 1}
@@ -42,128 +42,155 @@ function DetailedFeedback() {
         ))}
       </div>
 
-      <p className={`${s.qTitle} anim-fade-up`} key={`t-${qi}`}>
-        {q.text}
-      </p>
-
-      <div className="tabs" style={{ margin: "14px 0 18px" }}>
-        {TABS.map((t) => (
-          <button
-            key={t}
-            className={tab === t ? "active" : ""}
-            onClick={() => setTab(t)}
+      <div key={qi} className={s.detailBody}>
+        {/* header: question number + score */}
+        <div className={`${s.headRow} anim-fade-up`}>
+          <div>
+            <div className={s.headLabel}>
+              Question {qi + 1} of {result.questions.length}
+            </div>
+            <span className={s.headCat}>{qf.category}</span>
+          </div>
+          <CircularProgress
+            value={qf.score}
+            size={64}
+            stroke={7}
+            color="#9d86f7"
+            track="rgba(255,255,255,0.14)"
           >
-            {t}
-          </button>
-        ))}
-      </div>
+            <span className={s.headScore}>{qf.score}</span>
+          </CircularProgress>
+        </div>
 
-      <div key={`${qi}-${tab}`} className="anim-fade-up">
-        {tab === "Feedback" && (
-          <>
-            <div className="card mb-16">
-              <div className={s.head}>Your Answer</div>
-              <div className={s.playerRow}>
-                <p className={s.answer}>{q.transcript}</p>
-                <div className={s.playCol}>
-                  <button className={s.playBtn} aria-label="Play answer">
-                    <Play size={20} />
-                  </button>
-                  <span className={s.time}>{q.duration}</span>
-                </div>
-              </div>
-            </div>
+        <p className={`${s.questionText} anim-fade-up`}>{qf.question}</p>
 
-            <div className="card mb-16">
-              <div className={s.head}>Feedback Breakdown</div>
-              {Object.entries(q.scores).map(([label, value], i) => (
-                <div className="meter-row" key={label}>
-                  <span className="m-label">{label}</span>
-                  <span className="m-val">{value}/20</span>
-                  <span className="meter m-bar">
-                    <i
-                      className={s.animBar}
-                      style={{
-                        "--w": `${(value / 20) * 100}%`,
-                        animationDelay: `${0.1 + i * 0.08}s`,
-                        background: BAR_COLORS[label],
-                      }}
-                    />
-                  </span>
-                </div>
-              ))}
-            </div>
+        {/* summary */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.05s" }}>
+          <h3>Summary</h3>
+          <p className={s.bodyText}>{qf.summary}</p>
+        </div>
 
-            <div className="card mb-16">
-              <div className={s.head}>Notes</div>
-              {q.good.map((t) => (
-                <div className="fb-item fb-good" key={t}>
-                  <span className="fb-ico">
+        {/* transcript */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.1s" }}>
+          <h3>Your answer</h3>
+          <p className={s.transcript}>
+            {qf.transcript ? `“${qf.transcript}”` : "No answer was recorded."}
+          </p>
+        </div>
+
+        {/* STAR breakdown */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.15s" }}>
+          <h3>STAR breakdown</h3>
+          {STAR_ORDER.map((part) => {
+            const item = qf.starBreakdown[part];
+            return (
+              <div className={s.starRow} key={part}>
+                <span
+                  className={`${s.starIcon} ${item.covered ? s.starOk : s.starMiss}`}
+                >
+                  {item.covered ? (
                     <CheckCircle size={18} />
-                  </span>
-                  <span>{t}</span>
-                </div>
-              ))}
-              {q.improve.map((t) => (
-                <div className="fb-item fb-bad" key={t}>
-                  <span className="fb-ico">
+                  ) : (
                     <AlertCircle size={18} />
-                  </span>
-                  <span>{t}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className={s.scoreBox}>
-              <span className={s.l}>Question Score</span>
-              <span className={s.v}>
-                {questionScore(q)}
-                <small>/100</small>
-              </span>
-            </div>
-          </>
-        )}
-
-        {tab === "Transcript" && (
-          <>
-            <div className={s.turn}>
-              <div className={s.speaker}>AI Interviewer</div>
-              <div className={`${s.bubble} ${s.ai}`}>{q.text}</div>
-            </div>
-            <div className={s.turn}>
-              <div className={s.speaker}>You</div>
-              <div className={s.bubble}>{q.transcript}</div>
-            </div>
-          </>
-        )}
-
-        {tab === "Better Answer" && (
-          <>
-            <p className={s.betterIntro}>
-              Here&apos;s an example of a stronger answer:
-            </p>
-            {Object.entries(q.better).map(([label, text]) => (
-              <div className={s.star} key={label}>
-                <div className={s.starLabel}>{label.toUpperCase()}</div>
-                <p className={s.starText}>{text}</p>
+                  )}
+                </span>
+                <span className={s.starBody}>
+                  <span className={s.starName}>{part}</span>
+                  <span className={s.starNote}>{item.note}</span>
+                </span>
               </div>
-            ))}
-          </>
-        )}
+            );
+          })}
+        </div>
+
+        {/* strengths */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.2s" }}>
+          <h3>What went well</h3>
+          {qf.strengths.map((t) => (
+            <div className="fb-item fb-good" key={t}>
+              <span className="fb-ico">
+                <CheckCircle size={18} />
+              </span>
+              <span>{t}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* improvements */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.25s" }}>
+          <h3>What to improve</h3>
+          {qf.improvements.map((t) => (
+            <div className="fb-item fb-bad" key={t}>
+              <span className="fb-ico">
+                <AlertCircle size={18} />
+              </span>
+              <span>{t}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* better answer */}
+        <div className={`${m.fbBlock} anim-fade-up`} style={{ animationDelay: "0.3s" }}>
+          <h3>Better answer example</h3>
+          <p className={s.bodyText}>{qf.betterAnswer}</p>
+        </div>
+
+        {/* quick tip */}
+        <div className={`${s.tipCard} anim-fade-up`} style={{ animationDelay: "0.35s" }}>
+          <span className={s.tipIcon}>
+            <Sparkle size={18} />
+          </span>
+          <div>
+            <div className={s.tipLabel}>Quick tip</div>
+            <p className={s.tipText}>{qf.quickTip}</p>
+          </div>
+        </div>
+
+        <div className={`${s.detailActions} anim-fade-up`} style={{ animationDelay: "0.4s" }}>
+          <Link href={`/interview?retry=${qi}`} className="btn btn-primary">
+            <Refresh size={18} />
+            Retry this question
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default function DetailedFeedbackPage() {
+function DetailEmptyState() {
   return (
-    <Phone>
-      <TopBar title="Detailed Feedback" backHref="/interview/feedback" />
-      <div className="screen screen-pad">
-        <Suspense fallback={null}>
-          <DetailedFeedback />
-        </Suspense>
+    <div className={`screen ${m.fbEmpty}`}>
+      <div className={m.fbEmptyAvatar}>
+        <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
       </div>
+      <h2 className={m.fbEmptyTitle}>No feedback yet</h2>
+      <p className={m.fbEmptySub}>
+        Complete a mock interview to see detailed feedback for every answer.
+      </p>
+      <Link href="/interview" className="btn btn-primary" style={{ maxWidth: 280 }}>
+        Start mock interview
+      </Link>
+    </div>
+  );
+}
+
+export default function QuestionFeedbackDetailPage() {
+  // undefined = still reading localStorage, null = nothing stored
+  const [result, setResult] = useState(undefined);
+  useEffect(() => {
+    setResult(loadResult());
+  }, []);
+
+  return (
+    <Phone dark>
+      <TopBar title="Question Feedback" backHref="/interview/feedback" />
+      {result === undefined ? null : result === null ? (
+        <DetailEmptyState />
+      ) : (
+        <Suspense fallback={null}>
+          <QuestionFeedbackDetail result={result} />
+        </Suspense>
+      )}
     </Phone>
   );
 }

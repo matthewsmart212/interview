@@ -1,125 +1,145 @@
-@keyframes growBar {
-  from {
-    width: 0;
-  }
+/* Question feedback detail (dark theme, matches the summary screen) */
+
+.detailScreen {
+  padding: 4px 0 calc(28px + env(safe-area-inset-bottom));
 }
-.qTitle {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.45;
-}
-.animBar {
-  width: var(--w);
-  animation: growBar 0.7s cubic-bezier(0.3, 0.6, 0.2, 1) both;
-}
-.head {
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-.playerRow {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.answer {
-  flex: 1;
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--text-2);
-}
-.playCol {
+.detailBody {
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.playBtn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: none;
-  background: var(--brand);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 3px;
-}
-.time {
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 600;
 }
 
-.scoreBox {
+/* dark variant of the shared chip pills */
+.darkChip {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* header row: question number + category + score ring */
+.headRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #6f52ee, #5636cf);
-  color: #fff;
-  border-radius: 16px;
-  padding: 16px 18px;
-  margin-top: 16px;
+  gap: 14px;
+  margin-bottom: 12px;
 }
-.scoreBox .l {
+.headLabel {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 7px;
+}
+.headCat {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c9baff;
+  background: rgba(157, 134, 247, 0.16);
+  border-radius: 6px;
+  padding: 4px 9px;
+}
+.headScore {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.questionText {
   font-size: 15px;
   font-weight: 600;
-}
-.scoreBox .v {
-  font-size: 20px;
-  font-weight: 700;
-}
-.scoreBox .v small {
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-/* transcript */
-.turn {
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.94);
   margin-bottom: 16px;
 }
-.speaker {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  margin-bottom: 5px;
+
+.bodyText {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
 }
-.bubble {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 13px 15px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--text);
-}
-.bubble.ai {
-  background: var(--brand-050);
-  border-color: transparent;
+.transcript {
+  font-size: 13.5px;
+  line-height: 1.65;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: pre-wrap;
 }
 
-/* better answer */
-.betterIntro {
-  font-size: 14px;
-  color: var(--text-2);
-  margin-bottom: 14px;
-  line-height: 1.5;
+/* STAR rows */
+.starRow {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 9px 0;
 }
-.star + .star {
-  margin-top: 14px;
+.starRow + .starRow {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
-.starLabel {
+.starIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.starOk {
+  color: #4ade80;
+}
+.starMiss {
+  color: #fbbf24;
+}
+.starBody {
+  flex: 1;
+  min-width: 0;
+}
+.starName {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+.starNote {
+  display: block;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* quick tip accent card */
+.tipCard {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(
+    135deg,
+    rgba(157, 134, 247, 0.2),
+    rgba(108, 76, 230, 0.12)
+  );
+  border: 1px solid rgba(157, 134, 247, 0.38);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.tipIcon {
+  flex-shrink: 0;
+  color: #c9baff;
+  margin-top: 1px;
+}
+.tipLabel {
   font-size: 12px;
   font-weight: 700;
-  color: var(--brand);
-  letter-spacing: 0.02em;
-  margin-bottom: 5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c9baff;
+  margin-bottom: 4px;
 }
-.starText {
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--text);
+.tipText {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.detailActions {
+  margin-top: 4px;
 }

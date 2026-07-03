@@ -6,7 +6,9 @@ import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
 import Avatar from "../../../components/Avatar";
 import { Check } from "../../../components/Icons";
-import { TOTAL_QUESTIONS } from "../../../lib/interview-data";
+import { QUESTIONS, TOTAL_QUESTIONS } from "../../../lib/interview-data";
+import { generateInterviewFeedback } from "../../../lib/feedback-generator";
+import { loadSession, saveResult } from "../../../lib/interview-session";
 import m from "../interview.module.css";
 
 const STEPS = [
@@ -23,6 +25,18 @@ const REDIRECT_MS = 700;
 export default function AnalyzingPage() {
   const router = useRouter();
   const [done, setDone] = useState(0);
+
+  // Generate + persist the feedback while the step animation plays.
+  useEffect(() => {
+    const session = loadSession();
+    const answers = session?.answers ?? {};
+    if (Object.keys(answers).length === 0) {
+      // Nothing to analyze — the feedback screen shows a friendly empty state.
+      router.replace("/interview/feedback");
+      return;
+    }
+    generateInterviewFeedback({ questions: QUESTIONS, answers }).then(saveResult);
+  }, [router]);
 
   useEffect(() => {
     if (done < STEPS.length) {

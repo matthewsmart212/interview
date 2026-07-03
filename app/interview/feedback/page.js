@@ -1,13 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
 import Avatar from "../../../components/Avatar";
 import CircularProgress from "../../../components/CircularProgress";
-import { CheckCircle, AlertCircle, ChevronRight } from "../../../components/Icons";
-import { QUESTIONS, OVERALL, questionScore } from "../../../lib/interview-data";
+import { CheckCircle, AlertCircle, ChevronRight, Sparkle } from "../../../components/Icons";
+import {
+  clearResult,
+  clearSession,
+  loadResult,
+} from "../../../lib/interview-session";
 import m from "../interview.module.css";
 
 function scoreTier(score) {
@@ -33,21 +38,60 @@ function useCountUp(target, duration = 1200, delay = 250) {
   return value;
 }
 
-export default function FeedbackPage() {
-  const displayed = useCountUp(OVERALL.score);
+/* Friendly empty state when the user lands here without any answers. */
+function FeedbackEmptyState() {
+  return (
+    <Phone dark>
+      <TopBar title="AI Feedback" backHref="/home" />
+      <div className={`screen ${m.fbEmpty}`}>
+        <div className={m.fbEmptyAvatar}>
+          <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
+        </div>
+        <h2 className={m.fbEmptyTitle}>No feedback yet</h2>
+        <p className={m.fbEmptySub}>
+          Complete a mock interview and your personalised AI feedback will
+          appear here.
+        </p>
+        <Link href="/interview" className="btn btn-primary" style={{ maxWidth: 280 }}>
+          Start mock interview
+        </Link>
+      </div>
+    </Phone>
+  );
+}
+
+function FeedbackSummaryScreen({ result }) {
+  const router = useRouter();
+  const [showSamples, setShowSamples] = useState(false);
+  const samplesRef = useRef(null);
+
+  const displayed = useCountUp(result.overallScore);
   const [ringVal, setRingVal] = useState(0);
   useEffect(() => {
-    const t = setTimeout(() => setRingVal(OVERALL.score), 250);
+    const t = setTimeout(() => setRingVal(result.overallScore), 250);
     return () => clearTimeout(t);
-  }, []);
+  }, [result.overallScore]);
 
-  const scores = QUESTIONS.map((q) => questionScore(q));
-  const bestIndex = scores.indexOf(Math.max(...scores));
+  const scores = result.questions.map((q) => q.score);
+  const weakestIndex = scores.indexOf(Math.min(...scores));
   const stats = [
-    { label: "Questions", value: QUESTIONS.length },
-    { label: "Average", value: OVERALL.score },
-    { label: "Top answer", value: `Q${bestIndex + 1}` },
+    { label: "Questions", value: result.questions.length },
+    { label: "Average", value: result.averageScore },
+    { label: "Top answer", value: `Q${result.topAnswerIndex + 1}` },
   ];
+
+  const startAnother = () => {
+    clearSession();
+    clearResult();
+    router.push("/interview");
+  };
+
+  const toggleSamples = () => {
+    setShowSamples((v) => {
+      if (!v) setTimeout(() => samplesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+      return !v;
+    });
+  };
 
   return (
     <Phone dark>
@@ -67,7 +111,7 @@ export default function FeedbackPage() {
               <span className={m.ringBig}>{displayed}</span>
               <span className={m.ringOutOf}>out of 100</span>
             </CircularProgress>
-            <span className={m.headlinePill}>{OVERALL.headline}</span>
+            <span className={m.headlinePill}>{result.headline}</span>
           </div>
           <div className={m.fbAvatarSide}>
             <Avatar
@@ -97,32 +141,31 @@ export default function FeedbackPage() {
             style={{ animationDelay: "0.1s" }}
           >
             <h3>Question breakdown</h3>
-            {QUESTIONS.map((q, i) => {
-              const score = scores[i];
-              const tier = scoreTier(score);
+            {result.questions.map((qf, i) => {
+              const tier = scoreTier(qf.score);
               return (
                 <Link
                   href={`/interview/feedback/detailed?q=${i}`}
-                  key={q.id}
+                  key={qf.id}
                   className={m.qRow}
                 >
                   <span className={`${m.qRowNum} ${m["tier_" + tier]}`}>
                     Q{i + 1}
                   </span>
                   <span className={m.qRowBody}>
-                    <span className={m.qRowText}>{q.text}</span>
+                    <span className={m.qRowText}>{qf.question}</span>
                     <span className={m.qRowBar} aria-hidden>
                       <i
                         className={m["tier_" + tier]}
                         style={{
-                          "--w": `${score}%`,
+                          "--w": `${qf.score}%`,
                           animationDelay: `${0.35 + i * 0.12}s`,
                         }}
                       />
                     </span>
                   </span>
                   <span className={`${m.qRowScore} ${m["tier_" + tier]}`}>
-                    {score}
+                    {qf.score}
                   </span>
                   <ChevronRight size={16} className={m.qRowChev} />
                 </Link>
@@ -135,7 +178,7 @@ export default function FeedbackPage() {
             style={{ animationDelay: "0.2s" }}
           >
             <h3>What you did well</h3>
-            {OVERALL.strengths.map((t) => (
+            {result.overallStrengths.map((t) => (
               <div className="fb-item fb-good" key={t}>
                 <span className="fb-ico">
                   <CheckCircle size={18} />
@@ -150,7 +193,7 @@ export default function FeedbackPage() {
             style={{ animationDelay: "0.3s" }}
           >
             <h3>What to improve</h3>
-            {OVERALL.improvements.map((t) => (
+            {result.overallImprovements.map((t) => (
               <div className="fb-item fb-bad" key={t}>
                 <span className="fb-ico">
                   <AlertCircle size={18} />
@@ -160,19 +203,52 @@ export default function FeedbackPage() {
             ))}
           </div>
 
+          {showSamples && (
+            <div ref={samplesRef} className={`${m.fbBlock} anim-fade-up`}>
+              <h3>Stronger sample answers</h3>
+              {result.questions.map((qf, i) => (
+                <div className={m.sampleAnswer} key={qf.id}>
+                  <span className={m.sampleQ}>
+                    Q{i + 1} — {qf.category}
+                  </span>
+                  <p className={m.sampleText}>{qf.betterAnswer}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div
             className={`${m.fbActions} anim-fade-up`}
             style={{ animationDelay: "0.4s" }}
           >
-            <Link href="/interview/feedback/detailed" className="btn btn-primary">
-              View Detailed Feedback
+            <Link
+              href={`/interview?retry=${weakestIndex}`}
+              className="btn btn-primary"
+            >
+              Practise weakest answer again
             </Link>
-            <Link href="/interview" className={m.practiceAgain}>
-              Practice Again
-            </Link>
+            <button className={m.ghostCta} onClick={startAnother}>
+              Start another mock interview
+            </button>
+            <button className={m.practiceAgain} onClick={toggleSamples}>
+              <Sparkle size={15} style={{ verticalAlign: "-2px", marginRight: 6 }} />
+              {showSamples ? "Hide sample answers" : "Generate stronger sample answers"}
+            </button>
           </div>
         </div>
       </div>
     </Phone>
   );
+}
+
+export default function FeedbackPage() {
+  // undefined = still reading localStorage, null = nothing stored
+  const [result, setResult] = useState(undefined);
+  useEffect(() => {
+    setResult(loadResult());
+  }, []);
+
+  if (result === undefined) return <Phone dark />;
+  if (result === null) return <FeedbackEmptyState />;
+  return <FeedbackSummaryScreen result={result} />;
 }
