@@ -133,11 +133,11 @@ function FeedbackSummaryScreen({ result }) {
             </span>
           </div>
           <div className={m.fbAvatarSide}>
-            <div className={m.fbBubble}>
-              <b>{cheer.title}</b>
-              <span>{cheer.text}</span>
-            </div>
             <Avatar pose="thumbsup" fill alt="AI interviewer celebrating" />
+          </div>
+          <div className={m.fbBubble}>
+            <b>{cheer.title}</b>
+            <span>{cheer.text}</span>
           </div>
           <span className={m.fbSpark1} aria-hidden>
             <Sparkle size={22} />

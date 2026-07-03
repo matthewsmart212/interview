@@ -34,7 +34,13 @@ export default function TranscriptReviewScreen({
       <div className={m.reviewScroll}>
         <div className={`${m.reviewHead} anim-fade-up`}>
           <div className={m.reviewAvatar}>
-            <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
+            <Avatar
+              pose="welcoming"
+              fallbackPose="idle"
+              round
+              fill
+              alt="AI interviewer"
+            />
           </div>
           <p className={m.reviewSub}>Make sure we heard you correctly.</p>
         </div>
