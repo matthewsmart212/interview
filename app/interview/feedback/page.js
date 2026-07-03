@@ -7,7 +7,13 @@ import Phone from "../../../components/Phone";
 import TopBar from "../../../components/TopBar";
 import Avatar from "../../../components/Avatar";
 import CircularProgress from "../../../components/CircularProgress";
-import { CheckCircle, AlertCircle, ChevronRight, Sparkle } from "../../../components/Icons";
+import {
+  CheckCircle,
+  AlertCircle,
+  ChevronRight,
+  Sparkle,
+  Star,
+} from "../../../components/Icons";
 import {
   clearResult,
   clearSession,
@@ -19,6 +25,16 @@ function scoreTier(score) {
   if (score >= 85) return "high";
   if (score >= 70) return "mid";
   return "low";
+}
+
+function encouragement(score) {
+  if (score >= 85)
+    return { title: "Incredible!", text: "You're ready to impress for real." };
+  if (score >= 75)
+    return { title: "So close!", text: "A little polish and you'll shine." };
+  if (score >= 60)
+    return { title: "Nice work!", text: "Your answers are taking shape." };
+  return { title: "Keep going!", text: "You're building great habits." };
 }
 
 function useCountUp(target, duration = 1200, delay = 250) {
@@ -74,6 +90,7 @@ function FeedbackSummaryScreen({ result }) {
 
   const scores = result.questions.map((q) => q.score);
   const weakestIndex = scores.indexOf(Math.min(...scores));
+  const cheer = encouragement(result.overallScore);
   const stats = [
     { label: "Questions", value: result.questions.length },
     { label: "Average", value: result.averageScore },
@@ -111,16 +128,23 @@ function FeedbackSummaryScreen({ result }) {
               <span className={m.ringBig}>{displayed}</span>
               <span className={m.ringOutOf}>out of 100</span>
             </CircularProgress>
-            <span className={m.headlinePill}>{result.headline}</span>
+            <span className={m.headlinePill}>
+              <Star size={15} /> {result.headline}
+            </span>
           </div>
           <div className={m.fbAvatarSide}>
-            <Avatar
-              pose="thumbsup"
-              fill
-              alt="AI interviewer celebrating"
-              style={{ objectFit: "cover", objectPosition: "center 12%" }}
-            />
+            <div className={m.fbBubble}>
+              <b>{cheer.title}</b>
+              <span>{cheer.text}</span>
+            </div>
+            <Avatar pose="thumbsup" fill alt="AI interviewer celebrating" />
           </div>
+          <span className={m.fbSpark1} aria-hidden>
+            <Sparkle size={22} />
+          </span>
+          <span className={m.fbSpark2} aria-hidden>
+            <Sparkle size={12} />
+          </span>
         </div>
 
         <div
