@@ -88,6 +88,21 @@ function InterviewFlow() {
   const isRetry = retryIndex !== null;
   const isLast = index === TOTAL_QUESTIONS - 1;
 
+  // Recognition engines often deliver the final chunk just after stop() —
+  // adopt it on the review screen if we captured nothing at tap time.
+  useEffect(() => {
+    if (
+      phase === "reviewTranscript" &&
+      !transcript.trim() &&
+      speech.finalTranscript.trim()
+    ) {
+      const heard = speech.finalTranscript.trim();
+      setTranscript(heard);
+      persist({ draft: { questionId: q.id, transcript: heard } });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [speech.finalTranscript]);
+
   /* ---- phase transitions ---- */
 
   const startAnswer = () => {
