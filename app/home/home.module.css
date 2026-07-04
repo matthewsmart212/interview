@@ -59,3 +59,32 @@
   letter-spacing: 0.06em;
   margin-top: 3px;
 }
+
+/* quick status pills under the hero */
+.pillRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pillRow::-webkit-scrollbar {
+  display: none;
+}
+.pill {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  box-shadow: var(--shadow-sm);
+}
+.pill svg {
+  color: var(--brand);
+}

@@ -1,7 +1,9 @@
+import Link from "next/link";
 import Phone from "../../components/Phone";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
-import { Mic, Target, Trophy, Clock } from "../../components/Icons";
+import { Mic, Target, Trophy, Clock, ChevronRight } from "../../components/Icons";
+import { MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./progress.module.css";
 
 const STATS = [
@@ -141,6 +143,37 @@ export default function ProgressPage() {
                 <i style={{ width: `${sk.value}%` }} />
               </div>
             </div>
+          ))}
+        </div>
+
+        <div className={styles.histHead}>
+          <p className="section-title" style={{ marginBottom: 0 }}>
+            Recent Mock Interviews
+          </p>
+          <Link href="/history" className="link-btn">
+            See all
+          </Link>
+        </div>
+        <div className="card">
+          {MOCK_HISTORY.slice(0, 3).map((mk) => (
+            <Link href={`/history/${mk.id}`} className={styles.histRow} key={mk.id}>
+              <span
+                className={`${styles.histScore}${
+                  mk.score >= 80 ? " " + styles.good : mk.score < 65 ? " " + styles.low : ""
+                }`}
+              >
+                {mk.score}
+              </span>
+              <span className={styles.histBody}>
+                <span className={styles.histTitle}>
+                  {mk.role} · {mk.company}
+                </span>
+                <span className={styles.histSub}>
+                  {mk.date} · {mk.questions} questions
+                </span>
+              </span>
+              <ChevronRight size={17} className="chev" />
+            </Link>
           ))}
         </div>
       </div>

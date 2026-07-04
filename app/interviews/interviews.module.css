@@ -1,0 +1,469 @@
+/* ---------- shared: interviews list / prep hub / JD / tailored CV ---------- */
+
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.headRow h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(108, 76, 230, 0.28);
+}
+
+/* interview list card */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 15px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.logo {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+.body {
+  flex: 1;
+  min-width: 0;
+}
+.role {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.countdown {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--brand-050);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-top: 8px;
+}
+.countdown.soon {
+  color: #d97706;
+  background: var(--amber-050);
+}
+.countdown.done {
+  color: var(--green);
+  background: var(--green-050);
+}
+.side {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.readyMini {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.readyMini b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* empty list */
+.empty {
+  text-align: center;
+  padding: 44px 24px;
+}
+.emptyIcon {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.emptyTitle {
+  font-size: 17px;
+  font-weight: 700;
+}
+.emptySub {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin: 8px auto 20px;
+  max-width: 260px;
+}
+
+/* ---------- add interview flow ---------- */
+
+.stepDots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 2px 0 20px;
+}
+.stepDots i {
+  width: 26px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+  transition: background 0.3s ease;
+}
+.stepDots i.on {
+  background: var(--brand);
+}
+.choiceCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 17px 16px;
+  margin-bottom: 12px;
+}
+.choiceCard.active {
+  border-color: var(--brand);
+  background: var(--brand-050);
+}
+.choiceIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.choiceCard.active .choiceIcon {
+  background: var(--brand);
+  color: #fff;
+}
+.choiceTitle {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+.choiceSub {
+  display: block;
+  font-size: 12.5px;
+  color: var(--text-2);
+  margin-top: 2px;
+  line-height: 1.45;
+}
+.skipNote {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 14px;
+  padding: 0 12px;
+}
+
+/* success step */
+.doneWrap {
+  text-align: center;
+  padding-top: 26px;
+}
+.doneIcon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--green-050);
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+/* ---------- prep hub ---------- */
+
+.hero {
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  background: linear-gradient(135deg, #6f52ee, #5636cf);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.heroBody {
+  flex: 1;
+  min-width: 0;
+}
+.heroLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.heroTitle {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 6px;
+}
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.heroChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 4px 11px;
+}
+.heroRing {
+  flex-shrink: 0;
+  text-align: center;
+}
+.heroRingLab {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-top: 6px;
+}
+.ringPct {
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* checklist */
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 2px;
+}
+.checkRow + .checkRow {
+  border-top: 1px solid var(--border);
+}
+.checkText {
+  flex: 1;
+  min-width: 0;
+}
+.checkTitle {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.checkSub {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.checkCta {
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--brand-050);
+  border: none;
+  border-radius: 999px;
+  padding: 7px 13px;
+}
+
+/* past mocks rows */
+.mockRow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 2px;
+}
+.mockRow + .mockRow {
+  border-top: 1px solid var(--border);
+}
+.mockScore {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14.5px;
+  font-weight: 800;
+  background: var(--brand-050);
+  color: var(--brand);
+}
+.mockScore.good {
+  background: var(--green-050);
+  color: var(--green);
+}
+.mockScore.low {
+  background: var(--amber-050);
+  color: #d97706;
+}
+.mockBody {
+  flex: 1;
+  min-width: 0;
+}
+.mockTitle {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+.mockSub {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ---------- job description screen ---------- */
+
+.jdCard {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px;
+}
+.jdText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-2);
+  white-space: pre-wrap;
+}
+.jdHighlight {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 9px 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.jdHighlight + .jdHighlight {
+  border-top: 1px solid var(--border);
+}
+.jdDot {
+  flex-shrink: 0;
+  margin-top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+/* ---------- tailored CV screen ---------- */
+
+.cvCompare {
+  display: flex;
+  gap: 10px;
+}
+.cvCol {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  text-align: center;
+}
+.cvCol.brand {
+  border-color: var(--brand-200);
+  background: var(--brand-050);
+}
+.cvColLab {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cvCol.brand .cvColLab {
+  color: var(--brand);
+}
+.cvColScore {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+.cvCol.brand .cvColScore {
+  color: var(--brand);
+}
+.cvColSub {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.changeRow {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 10px 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.changeRow + .changeRow {
+  border-top: 1px solid var(--border);
+}
+.changeIcon {
+  flex-shrink: 0;
+  color: var(--green);
+  margin-top: 1px;
+}
+.keepNote {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--brand-050);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--brand-700);
+  margin-top: 14px;
+}

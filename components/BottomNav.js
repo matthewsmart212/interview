@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FileText, Mic, BarChart, User } from "./Icons";
+import { Home, FileText, Calendar, BarChart, User } from "./Icons";
 
 const ITEMS = [
   { href: "/home", label: "Home", Icon: Home },
+  { href: "/interviews", label: "Interviews", Icon: Calendar },
   { href: "/cv", label: "CV", Icon: FileText },
-  { href: "/interview", label: "Interview", Icon: Mic },
   { href: "/progress", label: "Progress", Icon: BarChart },
   { href: "/profile", label: "Profile", Icon: User },
 ];

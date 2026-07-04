@@ -1,0 +1,268 @@
+/* ---------- CV hub ---------- */
+
+.fileCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.fileIcon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fileBody {
+  flex: 1;
+  min-width: 0;
+}
+.fileName {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileMeta {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.scorePill {
+  flex-shrink: 0;
+  text-align: center;
+  background: var(--brand-050);
+  color: var(--brand);
+  border-radius: 13px;
+  padding: 8px 12px;
+}
+.scorePill b {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1;
+}
+.scorePill span {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 3px;
+  letter-spacing: 0.03em;
+}
+
+/* tailored versions rows */
+.tRow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 2px;
+}
+.tRow + .tRow {
+  border-top: 1px solid var(--border);
+}
+.tLogo {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tBody {
+  flex: 1;
+  min-width: 0;
+}
+.tTitle {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tSub {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.tScore {
+  flex-shrink: 0;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--brand);
+}
+
+/* explainer note */
+.note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--brand-050);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--brand-700);
+}
+
+/* ---------- start (have a CV?) ---------- */
+
+.startWrap {
+  padding-top: 10px;
+}
+.bigChoice {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.bigChoiceIcon {
+  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bigChoiceTitle {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+}
+.bigChoiceSub {
+  display: block;
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+/* ---------- upload ---------- */
+
+.dropzone {
+  border: 2px dashed var(--brand-200);
+  background: var(--brand-050);
+  border-radius: var(--radius-lg);
+  padding: 38px 22px;
+  text-align: center;
+  width: 100%;
+}
+.dropIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 14px;
+}
+.dropTitle {
+  font-size: 15.5px;
+  font-weight: 700;
+}
+.dropSub {
+  font-size: 12.5px;
+  color: var(--text-2);
+  margin-top: 6px;
+}
+.formats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.formats span {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand);
+  background: #fff;
+  border-radius: 6px;
+  padding: 4px 9px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* parsing / success */
+.parseWrap {
+  text-align: center;
+  padding-top: 34px;
+}
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 4px solid var(--brand-050);
+  border-top-color: var(--brand);
+  margin: 0 auto 18px;
+  animation: cvspin 0.8s linear infinite;
+}
+@keyframes cvspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.parsedList {
+  text-align: left;
+  margin-top: 22px;
+}
+
+/* ---------- create (builder) ---------- */
+
+.chipsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skillChip {
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text-2);
+  border-radius: 999px;
+  padding: 8px 15px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.skillChip.on {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+.expCard {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.expTitle {
+  font-size: 14px;
+  font-weight: 600;
+}
+.expMeta {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}

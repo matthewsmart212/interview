@@ -104,6 +104,11 @@ export const Download = (p) => (
     <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" />
   </Svg>
 );
+export const Upload = (p) => (
+  <Svg {...p}>
+    <path d="M12 15V3m0 0L8 7m4-4l4 4M4 21h16" />
+  </Svg>
+);
 export const AlertCircle = (p) => (
   <Svg {...p} fill="currentColor" stroke="none">
     <circle cx="12" cy="12" r="10" fill="currentColor" />

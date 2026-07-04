@@ -1,62 +1,132 @@
+import Link from "next/link";
 import Phone from "../../components/Phone";
 import TopBar from "../../components/TopBar";
 import BottomNav from "../../components/BottomNav";
-import CircularProgress from "../../components/CircularProgress";
-import { Check, ChevronRight, Sparkle, Download } from "../../components/Icons";
-import styles from "./cv.module.css";
+import {
+  FileText,
+  Sparkle,
+  Download,
+  Upload,
+  ChevronRight,
+  Shield,
+  Plus,
+} from "../../components/Icons";
+import { MASTER_CV, INTERVIEWS } from "../../lib/app-data";
+import s from "./cvhub.module.css";
 
-const SUGGESTIONS = [
-  { text: "Add more impact to your work experience", done: true },
-  { text: "Highlight customer service skills", done: true },
-  { text: "Include metrics and achievements", done: true },
-  { text: "Add a strong personal summary", done: false },
-];
+export default function CvHubPage() {
+  const tailored = INTERVIEWS.filter((iv) => iv.tailoredCv.exists);
 
-export default function CvPage() {
   return (
     <Phone>
-      <TopBar title="Improve My CV" backHref="/home" />
+      <TopBar title="My CV" back={false} />
       <div className="screen screen-pad has-nav">
-        <div className={`card ${styles.scoreCard}`}>
-          <CircularProgress value={78} size={96} stroke={11}>
-            <span className={styles.ringNum}>78%</span>
-          </CircularProgress>
-          <div className={styles.scoreBody}>
-            <div className={styles.scoreLabel}>Your CV Match Score</div>
-            <div className={styles.scoreSub}>
-              Great start! Let&apos;s make it even better.
-            </div>
-            <button className={styles.viewBtn}>
-              View Breakdown <ChevronRight size={15} />
-            </button>
-          </div>
+        {/* master CV card */}
+        <div className={`card ${s.fileCard}`}>
+          <span className={s.fileIcon}>
+            <FileText size={24} />
+          </span>
+          <span className={s.fileBody}>
+            <span className={s.fileName}>{MASTER_CV.fileName}</span>
+            <span className={s.fileMeta}>
+              Original CV · updated {MASTER_CV.updatedAt}
+            </span>
+          </span>
+          <span className={s.scorePill}>
+            <b>{MASTER_CV.score}</b>
+            <span>SCORE</span>
+          </span>
         </div>
 
-        <p className="section-title" style={{ marginTop: 24 }}>
-          Suggestions to improve your CV
-        </p>
-
-        <div className="card">
-          {SUGGESTIONS.map((s) => (
-            <div className="suggest" key={s.text}>
-              <span className={`check${s.done ? "" : " todo"}`}>
-                {s.done ? (
-                  <Check size={15} stroke={3} />
-                ) : (
-                  <ChevronRight size={15} stroke={3} />
-                )}
+        <div className="stack" style={{ marginTop: 14 }}>
+          <Link href="/cv/improve" className="action-row">
+            <span className="ar-icon">
+              <Sparkle size={22} />
+            </span>
+            <span className="ar-body">
+              <span className="ar-title">Improve my CV</span>
+              <span className="ar-sub">
+                AI suggestions to lift your score
               </span>
-              <span className="s-text">{s.text}</span>
-            </div>
-          ))}
+            </span>
+            <ChevronRight size={20} className="chev" />
+          </Link>
+          <Link href="/cv/upload" className="action-row">
+            <span className="ar-icon">
+              <Upload size={22} />
+            </span>
+            <span className="ar-body">
+              <span className="ar-title">Replace my CV</span>
+              <span className="ar-sub">Upload a newer version</span>
+            </span>
+            <ChevronRight size={20} className="chev" />
+          </Link>
+          <button className="action-row" style={{ border: "none", textAlign: "left" }}>
+            <span className="ar-icon">
+              <Download size={22} />
+            </span>
+            <span className="ar-body">
+              <span className="ar-title">Download my CV</span>
+              <span className="ar-sub">PDF, ready to send</span>
+            </span>
+            <ChevronRight size={20} className="chev" />
+          </button>
         </div>
 
-        <button className="btn btn-primary" style={{ marginTop: 22 }}>
-          Optimise My CV <Sparkle size={18} />
-        </button>
-        <button className={styles.download}>
-          <Download size={18} /> Download My CV (PDF)
-        </button>
+        {/* tailored versions */}
+        <p className="section-title" style={{ marginTop: 26 }}>
+          Tailored versions
+        </p>
+        {tailored.length > 0 ? (
+          <div className="card">
+            {tailored.map((iv) => (
+              <Link
+                href={`/interviews/${iv.id}/cv`}
+                className={s.tRow}
+                key={iv.id}
+              >
+                <span className={s.tLogo} style={{ background: iv.accent }}>
+                  {iv.initials}
+                </span>
+                <span className={s.tBody}>
+                  <span className={s.tTitle}>
+                    {iv.role} · {iv.company}
+                  </span>
+                  <span className={s.tSub}>
+                    Updated {iv.tailoredCv.updatedAt}
+                  </span>
+                </span>
+                <span className={s.tScore}>{iv.tailoredCv.score}%</span>
+                <ChevronRight size={17} className="chev" />
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="card" style={{ textAlign: "center", padding: 22 }}>
+            <p className="page-sub" style={{ marginBottom: 14 }}>
+              No tailored versions yet. Open one of your interviews to create
+              one.
+            </p>
+            <Link href="/interviews" className="btn btn-soft">
+              <Plus size={16} /> Tailor for an interview
+            </Link>
+          </div>
+        )}
+
+        <div className={s.note} style={{ marginTop: 18 }}>
+          <Shield size={16} style={{ flexShrink: 0, marginTop: 1 }} />
+          <span>
+            Your original CV never changes — each interview gets its own
+            tailored copy.
+          </span>
+        </div>
+
+        <p className="page-sub" style={{ textAlign: "center", marginTop: 20 }}>
+          Starting fresh?{" "}
+          <Link href="/cv/start" className="link-btn">
+            Upload or create a new CV
+          </Link>
+        </p>
       </div>
       <BottomNav active="cv" />
     </Phone>
