@@ -19,6 +19,14 @@ import s from "./detailed.module.css";
 
 const STAR_ORDER = ["Situation", "Task", "Action", "Result"];
 
+function EndButton() {
+  return (
+    <Link href="/home" className="pill-end">
+      End
+    </Link>
+  );
+}
+
 function QuestionFeedbackDetail({ result }) {
   const params = useSearchParams();
   const initial = Math.min(
@@ -29,8 +37,8 @@ function QuestionFeedbackDetail({ result }) {
   const qf = result.questions[qi];
 
   return (
-    <div className={`screen ${s.detailScreen}`}>
-      <div className="chips" style={{ padding: "0 20px", marginBottom: 14 }}>
+    <div className={`screen ${m.fbScreen} ${s.detailScreen}`}>
+      <div className={`chips ${s.detailChips}`}>
         {result.questions.map((question, i) => (
           <button
             key={question.id}
@@ -151,6 +159,9 @@ function QuestionFeedbackDetail({ result }) {
             <Refresh size={18} />
             Retry this question
           </Link>
+          <Link href="/interview/feedback" className={m.ghostCta}>
+            Back to AI feedback
+          </Link>
         </div>
       </div>
     </div>
@@ -159,7 +170,7 @@ function QuestionFeedbackDetail({ result }) {
 
 function DetailEmptyState() {
   return (
-    <div className={`screen ${m.fbEmpty}`}>
+    <div className={`screen ${m.fbScreen} ${m.fbEmpty}`}>
       <div className={m.fbEmptyAvatar}>
         <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
       </div>
@@ -183,7 +194,12 @@ export default function QuestionFeedbackDetailPage() {
 
   return (
     <Phone dark>
-      <TopBar title="Question Feedback" backHref="/interview/feedback" overlay />
+      <TopBar
+        title="Question Feedback"
+        backHref="/interview/feedback"
+        overlay
+        right={<EndButton />}
+      />
       {result === undefined ? null : result === null ? (
         <DetailEmptyState />
       ) : (

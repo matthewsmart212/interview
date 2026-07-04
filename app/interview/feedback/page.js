@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Phone from "../../../components/Phone";
@@ -54,12 +54,20 @@ function useCountUp(target, duration = 1200, delay = 250) {
   return value;
 }
 
+function EndButton() {
+  return (
+    <Link href="/home" className="pill-end">
+      End
+    </Link>
+  );
+}
+
 /* Friendly empty state when the user lands here without any answers. */
 function FeedbackEmptyState() {
   return (
     <Phone dark>
-      <TopBar title="AI Feedback" backHref="/home" overlay />
-      <div className={`screen ${m.fbEmpty}`}>
+      <TopBar title="AI Feedback" backHref="/home" overlay right={<EndButton />} />
+      <div className={`screen ${m.fbScreen} ${m.fbEmpty}`}>
         <div className={m.fbEmptyAvatar}>
           <Avatar pose="welcoming" fallbackPose="idle" round fill alt="AI interviewer" />
         </div>
@@ -78,8 +86,6 @@ function FeedbackEmptyState() {
 
 function FeedbackSummaryScreen({ result }) {
   const router = useRouter();
-  const [showSamples, setShowSamples] = useState(false);
-  const samplesRef = useRef(null);
 
   const displayed = useCountUp(result.overallScore);
   const [ringVal, setRingVal] = useState(0);
@@ -103,16 +109,9 @@ function FeedbackSummaryScreen({ result }) {
     router.push("/interview");
   };
 
-  const toggleSamples = () => {
-    setShowSamples((v) => {
-      if (!v) setTimeout(() => samplesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
-      return !v;
-    });
-  };
-
   return (
     <Phone dark>
-      <TopBar title="AI Feedback" backHref="/home" overlay />
+      <TopBar title="AI Feedback" backHref="/home" overlay right={<EndButton />} />
       <div className={`screen ${m.fbScreen}`}>
         <div className={`${m.fbHero} anim-fade-up`}>
           <div className={m.fbScore}>
@@ -227,20 +226,6 @@ function FeedbackSummaryScreen({ result }) {
             ))}
           </div>
 
-          {showSamples && (
-            <div ref={samplesRef} className={`${m.fbBlock} anim-fade-up`}>
-              <h3>Stronger sample answers</h3>
-              {result.questions.map((qf, i) => (
-                <div className={m.sampleAnswer} key={qf.id}>
-                  <span className={m.sampleQ}>
-                    Q{i + 1} — {qf.category}
-                  </span>
-                  <p className={m.sampleText}>{qf.betterAnswer}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
           <div
             className={`${m.fbActions} anim-fade-up`}
             style={{ animationDelay: "0.4s" }}
@@ -254,10 +239,9 @@ function FeedbackSummaryScreen({ result }) {
             <button className={m.ghostCta} onClick={startAnother}>
               Start another mock interview
             </button>
-            <button className={m.practiceAgain} onClick={toggleSamples}>
-              <Sparkle size={15} style={{ verticalAlign: "-2px", marginRight: 6 }} />
-              {showSamples ? "Hide sample answers" : "Generate stronger sample answers"}
-            </button>
+            <Link href="/home" className={m.practiceAgain}>
+              Exit mock interview
+            </Link>
           </div>
         </div>
       </div>
@@ -275,7 +259,7 @@ export default function FeedbackPage() {
   if (result === undefined)
     return (
       <Phone dark>
-        <TopBar title="AI Feedback" backHref="/home" overlay />
+        <TopBar title="AI Feedback" backHref="/home" overlay right={<EndButton />} />
       </Phone>
     );
   if (result === null) return <FeedbackEmptyState />;

@@ -1,8 +1,12 @@
-/* Question feedback detail (dark theme, matches the summary screen) */
+/* Question feedback detail — shares AI feedback page background via .fbScreen */
 
 .detailScreen {
-  padding: calc(58px + env(safe-area-inset-top)) 0
-    calc(28px + env(safe-area-inset-bottom));
+  padding-bottom: calc(28px + env(safe-area-inset-bottom));
+}
+.detailChips {
+  margin-top: 20px;
+  padding: 0 20px;
+  margin-bottom: 14px;
 }
 .detailBody {
   padding: 0 20px;
@@ -143,4 +147,7 @@
 
 .detailActions {
   margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

@@ -917,8 +917,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: calc(58px + env(safe-area-inset-top)) 32px
-    calc(48px + env(safe-area-inset-bottom));
+  padding: 0 32px calc(48px + env(safe-area-inset-bottom));
   gap: 6px;
 }
 .fbEmptyAvatar {
