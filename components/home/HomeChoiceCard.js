@@ -9,7 +9,7 @@ const DETAIL = {
 };
 
 const ICON_SIZE = 16;
-const CTA_ARROW = 14;
+const CTA_ARROW = 13;
 
 export default function HomeChoiceCard({
   href,
@@ -25,20 +25,20 @@ export default function HomeChoiceCard({
 
   return (
     <Link href={href} className={`${s.card} ${s[variant]}`}>
-      <div className={s.textScrim} aria-hidden />
-      <div className={s.avatarFade} aria-hidden />
-
-      <span className={s.iconBadge} aria-hidden>
-        <DetailIcon size={ICON_SIZE} />
-      </span>
-
-      <div className={s.content}>
-        <span className={s.eyebrow}>{eyebrow}</span>
-        <h2 className={s.title}>{title}</h2>
-        <p className={s.sub}>{subtitle}</p>
+      <div className={s.top}>
+        <div className={s.textScrim} aria-hidden />
+        <span className={s.iconBadge} aria-hidden>
+          <DetailIcon size={ICON_SIZE} />
+        </span>
+        <div className={s.content}>
+          <span className={s.eyebrow}>{eyebrow}</span>
+          <h2 className={s.title}>{title}</h2>
+          <p className={s.sub}>{subtitle}</p>
+        </div>
       </div>
 
-      <div className={s.avatarZone} aria-hidden>
+      <div className={s.avatarStage} aria-hidden>
+        <div className={s.avatarFade} />
         <Avatar
           pose={avatarPose}
           alt={avatarAlt}
@@ -46,10 +46,12 @@ export default function HomeChoiceCard({
         />
       </div>
 
-      <span className={s.cta}>
-        <span className={s.ctaText}>{cta}</span>
-        <ChevronRight size={CTA_ARROW} className={s.ctaArrow} aria-hidden />
-      </span>
+      <div className={s.footer}>
+        <span className={s.cta}>
+          <span className={s.ctaText}>{cta}</span>
+          <ChevronRight size={CTA_ARROW} className={s.ctaArrow} aria-hidden />
+        </span>
+      </div>
     </Link>
   );
 }
