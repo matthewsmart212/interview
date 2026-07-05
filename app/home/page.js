@@ -70,6 +70,8 @@ export default function HomePage() {
           )}
         </StatPillRow>
 
+        <hr className={styles.choiceDivider} aria-hidden />
+
         <div className={styles.choiceGrid}>
           <HomeChoiceCard
             href="/mock"
