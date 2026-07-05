@@ -152,8 +152,9 @@
 .avatar {
   position: absolute;
   top: 0;
+  left: 0;
   object-fit: contain;
-  object-position: top center;
+  object-position: left top;
   z-index: 1;
   -webkit-mask-image: linear-gradient(
     to top,
@@ -170,19 +171,19 @@
 }
 
 .avatar_interview {
-  right: -4%;
+  left: -4%;
   width: 84%;
   height: 100%;
-  object-position: 58% top;
+  object-position: left top;
   opacity: 0.94;
   filter: drop-shadow(0 4px 12px rgba(91, 58, 214, 0.2));
 }
 
 .avatar_apply {
-  right: 0;
+  left: 0;
   width: 72%;
   height: 100%;
-  object-position: 50% top;
+  object-position: left top;
   opacity: 0.9;
   filter: drop-shadow(0 3px 10px rgba(67, 56, 202, 0.16));
 }
