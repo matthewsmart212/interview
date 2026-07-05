@@ -8,7 +8,8 @@ const DETAIL = {
   apply: FileText,
 };
 
-const ICON_SIZE = 18;
+const ICON_SIZE = 16;
+const CTA_ARROW = 14;
 
 export default function HomeChoiceCard({
   href,
@@ -24,6 +25,9 @@ export default function HomeChoiceCard({
 
   return (
     <Link href={href} className={`${s.card} ${s[variant]}`}>
+      <div className={s.textScrim} aria-hidden />
+      <div className={s.avatarFade} aria-hidden />
+
       <span className={s.iconBadge} aria-hidden>
         <DetailIcon size={ICON_SIZE} />
       </span>
@@ -34,15 +38,17 @@ export default function HomeChoiceCard({
         <p className={s.sub}>{subtitle}</p>
       </div>
 
-      <Avatar
-        pose={avatarPose}
-        alt={avatarAlt}
-        className={`${s.avatar} ${s[`avatar_${variant}`]}`}
-      />
+      <div className={s.avatarZone} aria-hidden>
+        <Avatar
+          pose={avatarPose}
+          alt={avatarAlt}
+          className={`${s.avatar} ${s[`avatar_${variant}`]}`}
+        />
+      </div>
 
       <span className={s.cta}>
         <span className={s.ctaText}>{cta}</span>
-        <ChevronRight size={ICON_SIZE} className={s.ctaArrow} aria-hidden />
+        <ChevronRight size={CTA_ARROW} className={s.ctaArrow} aria-hidden />
       </span>
     </Link>
   );

@@ -38,7 +38,7 @@ export default function HomePage() {
   return (
     <Phone>
       <div
-        className={`screen screen-pad has-nav has-app-header ${styles.home}`}
+        className={`screen screen-pad has-nav has-app-header ${styles.home} ${styles.homeScroll}`}
       >
         <PageHeader
           icon="home"
