@@ -20,7 +20,7 @@ export default function InterviewsPage() {
       <PageHeader
         icon="calendar"
         title="My Interviews"
-        description="Track your upcoming and past interviews"
+        description="Upcoming and past interviews"
         right={
           <Link href="/interviews/new" className={s.addBtn}>
             <Plus size={15} stroke={2.6} /> Add

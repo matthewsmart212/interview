@@ -288,6 +288,11 @@ body:has(.interview-route),
   line-height: 1.4;
   text-align: left;
 }
+.page-header:has(.page-header-right) .page-header-sub {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .page-header-right {
   display: flex;
   align-items: center;
