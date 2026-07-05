@@ -27,6 +27,7 @@
   --text-2: #55555f;
   --muted: #8e8e98;
   --border: #ececf0;
+  --divider: #d0d0d8;
 
   --green: #22c55e;
   --green-050: #e9faf0;
@@ -198,9 +199,10 @@ body:has(.interview-route),
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 0 0 18px;
-  padding: 15px 0 16px;
-  border-bottom: 1px solid var(--border);
+  margin: 0 -20px 18px;
+  padding: 15px 20px 16px;
+  border-bottom: 1px solid var(--divider);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 .page-header-back {
   flex-shrink: 0;
