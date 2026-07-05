@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import { Upload, Check, FileText } from "../../../components/Icons";
 import s from "../cvhub.module.css";
 
@@ -26,8 +27,9 @@ export default function CvUploadPage() {
 
   return (
     <Phone>
-      <TopBar title="Upload CV" backHref="/cv/start" />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader title="Upload CV" back backHref="/cv/start" />
         {stage === "idle" && (
           <div className="anim-fade-up">
             <h1 className="page-h1">Upload your CV</h1>

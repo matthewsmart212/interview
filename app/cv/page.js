@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import {
   FileText,
@@ -19,8 +20,9 @@ export default function CvHubPage() {
 
   return (
     <Phone>
-      <TopBar title="My CV" back={false} />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader title="My CV" />
         {/* master CV card */}
         <div className={`card ${s.fileCard}`}>
           <span className={s.fileIcon}>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import Avatar from "../../components/Avatar";
 import {
@@ -53,16 +54,9 @@ function Menu({ items }) {
 export default function ProfilePage() {
   return (
     <Phone>
-      <TopBar
-        title="Profile"
-        back={false}
-        right={
-          <button className="icon-btn" aria-label="Settings">
-            <Settings size={22} />
-          </button>
-        }
-      />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader title="Profile" />
         <div className={s.header}>
           <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
           <div className="grow">

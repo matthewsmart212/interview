@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import { Calendar, FileText, Sparkle, Check } from "../../../components/Icons";
 import s from "../interviews.module.css";
 
@@ -23,20 +24,25 @@ export default function NewInterviewPage() {
 
   return (
     <Phone>
-      <TopBar
-        backHref={step === 0 ? "/interviews" : undefined}
-        back={step === 0}
-        left={
-          step > 0 && step < 2 ? (
-            <button className="link-btn" onClick={() => setStep(step - 1)}>
-              Back
-            </button>
-          ) : undefined
-        }
-        title="Add Interview"
-        right={<span className="step-count">Step {Math.min(step + 1, 3)} of 3</span>}
-      />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader
+          title="Add Interview"
+          back={step === 0}
+          backHref={step === 0 ? "/interviews" : undefined}
+          left={
+            step > 0 && step < 2 ? (
+              <button className="link-btn" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            ) : undefined
+          }
+          right={
+            <span className="step-count">
+              Step {Math.min(step + 1, 3)} of 3
+            </span>
+          }
+        />
         <div className={s.stepDots} aria-hidden>
           {[0, 1, 2].map((i) => (
             <i key={i} className={i <= step ? "on" : ""} />

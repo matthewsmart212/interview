@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import Logo from "../../components/Logo";
+import AppHeader from "../../components/AppHeader";
 import BottomNav from "../../components/BottomNav";
 import {
-  Menu,
   FileText,
   Mic,
   MessageCircle,
@@ -49,23 +48,8 @@ export default function HomePage() {
 
   return (
     <Phone>
-      <div className="topbar">
-        <div className="tb-side">
-          <button className="icon-btn" aria-label="Menu">
-            <Menu size={24} />
-          </button>
-        </div>
-        <div className="tb-title">
-          <Logo size="md" />
-        </div>
-        <div className="tb-side right">
-          <span className="streak">
-            <span aria-hidden>🔥</span> {USER.streak}
-          </span>
-        </div>
-      </div>
-
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
         <h1 className={styles.greeting}>
           Hi {USER.name} <span aria-hidden>👋</span>
         </h1>
@@ -107,6 +91,9 @@ export default function HomePage() {
         )}
 
         <div className={styles.pillRow}>
+          <span className={styles.pill}>
+            <span aria-hidden>🔥</span> {USER.streak}-day streak
+          </span>
           <Link href="/interviews" className={styles.pill}>
             <Calendar size={16} />
             {upcomingCount} upcoming

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { Plus, Calendar, ChevronRight } from "../../components/Icons";
 import { INTERVIEWS } from "../../lib/app-data";
@@ -46,16 +47,16 @@ export default function InterviewsPage() {
 
   return (
     <Phone>
-      <TopBar
-        title="My Interviews"
-        back={false}
-        right={
-          <Link href="/interviews/new" className={s.addBtn}>
-            <Plus size={15} stroke={2.6} /> Add
-          </Link>
-        }
-      />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader
+          title="My Interviews"
+          right={
+            <Link href="/interviews/new" className={s.addBtn}>
+              <Plus size={15} stroke={2.6} /> Add
+            </Link>
+          }
+        />
         {INTERVIEWS.length === 0 ? (
           <div className={s.empty}>
             <span className={s.emptyIcon}>

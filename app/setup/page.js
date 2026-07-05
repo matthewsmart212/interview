@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import { Calendar } from "../../components/Icons";
 
 const SAMPLE_JD =
@@ -19,11 +20,13 @@ export default function SetupPage() {
 
   return (
     <Phone>
-      <TopBar
-        backHref="/"
-        right={<span className="step-count">Step 1 of 4</span>}
-      />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader
+          back
+          backHref="/"
+          right={<span className="step-count">Step 1 of 4</span>}
+        />
         <h1 className="page-h1">Let&apos;s get you ready!</h1>
 
         <p className="form-h" style={{ marginTop: 22 }}>

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import CircularProgress from "../../../components/CircularProgress";
 import {
   CheckCircle,
@@ -22,8 +23,9 @@ export default function MockDetailPage() {
   if (!mk) {
     return (
       <Phone>
-        <TopBar title="Mock Interview" backHref="/history" />
-        <div className="screen screen-pad">
+        <AppHeader />
+        <div className="screen screen-pad has-app-header">
+          <PageHeader title="Mock Interview" back backHref="/history" />
           <div className={iv.empty}>
             <div className={iv.emptyTitle}>Session not found</div>
             <Link href="/history" className="btn btn-primary" style={{ marginTop: 16 }}>
@@ -39,8 +41,9 @@ export default function MockDetailPage() {
 
   return (
     <Phone>
-      <TopBar title="Mock Interview" backHref="/history" />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader title="Mock Interview" back backHref="/history" />
         <div className={`${s.hero} anim-fade-up`}>
           <div className={s.heroBody}>
             <div className={s.heroHeadline}>{mk.headline}</div>

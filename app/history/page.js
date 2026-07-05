@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { ChevronRight, Mic } from "../../components/Icons";
 import { MOCK_HISTORY } from "../../lib/app-data";
@@ -16,8 +17,9 @@ function scoreCls(score) {
 export default function HistoryPage() {
   return (
     <Phone>
-      <TopBar title="Mock History" backHref="/progress" />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader title="Mock History" back backHref="/progress" />
         {MOCK_HISTORY.length === 0 ? (
           <div className={iv.empty}>
             <span className={iv.emptyIcon}>

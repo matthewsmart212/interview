@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import Phone from "../../../../components/Phone";
-import TopBar from "../../../../components/TopBar";
+import AppHeader from "../../../../components/AppHeader";
+import PageHeader from "../../../../components/PageHeader";
 import { Sparkle } from "../../../../components/Icons";
 import { getInterview } from "../../../../lib/app-data";
 import s from "../../interviews.module.css";
@@ -22,8 +23,9 @@ export default function JobDescriptionPage() {
   if (!iv) {
     return (
       <Phone>
-        <TopBar title="Job Description" backHref="/interviews" />
-        <div className="screen screen-pad">
+        <AppHeader />
+        <div className="screen screen-pad has-app-header">
+          <PageHeader title="Job Description" back backHref="/interviews" />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <Link href="/interviews" className="btn btn-primary" style={{ marginTop: 16 }}>
@@ -39,8 +41,13 @@ export default function JobDescriptionPage() {
   if (iv.hasJD) {
     return (
       <Phone>
-        <TopBar title="Job Description" backHref={`/interviews/${iv.id}`} />
-        <div className="screen screen-pad">
+        <AppHeader />
+        <div className="screen screen-pad has-app-header">
+          <PageHeader
+            title="Job Description"
+            back
+            backHref={`/interviews/${iv.id}`}
+          />
           <h1 className="page-h1">
             {iv.role} at {iv.company}
           </h1>
@@ -78,8 +85,13 @@ export default function JobDescriptionPage() {
   /* -------- no JD yet: paste it in -------- */
   return (
     <Phone>
-      <TopBar title="Add Job Description" backHref={`/interviews/${iv.id}`} />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader
+          title="Add Job Description"
+          back
+          backHref={`/interviews/${iv.id}`}
+        />
         {!saved ? (
           <>
             <h1 className="page-h1">Add the job description</h1>

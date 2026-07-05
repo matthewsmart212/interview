@@ -2,16 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { ChevronLeft } from "./Icons";
-import Logo from "./Logo";
 
+/** Immersive mock-interview top bar only (purple overlay). */
 export default function TopBar({
   title,
   back = true,
   backHref,
   right,
   left,
-  dark,
-  overlay = false,
 }) {
   const router = useRouter();
 
@@ -21,7 +19,7 @@ export default function TopBar({
   };
 
   return (
-    <div className={`topbar${overlay ? " overlay-bar" : ""}`}>
+    <div className="topbar overlay-bar">
       <div className="tb-side">
         {left
           ? left
@@ -35,16 +33,7 @@ export default function TopBar({
               </button>
             )}
       </div>
-      <div className="tb-title">
-        {overlay ? (
-          title
-        ) : (
-          <div className="tb-brand">
-            <Logo size={title ? "sm" : "md"} />
-            {title ? <span className="tb-brand-title">{title}</span> : null}
-          </div>
-        )}
-      </div>
+      <div className="tb-title">{title}</div>
       <div className="tb-side right">{right}</div>
     </div>
   );

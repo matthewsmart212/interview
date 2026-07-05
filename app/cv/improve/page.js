@@ -1,5 +1,6 @@
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import CircularProgress from "../../../components/CircularProgress";
 import { Check, ChevronRight, Sparkle, Download } from "../../../components/Icons";
 import { MASTER_CV } from "../../../lib/app-data";
@@ -15,8 +16,9 @@ const SUGGESTIONS = [
 export default function CvImprovePage() {
   return (
     <Phone>
-      <TopBar title="Improve My CV" backHref="/cv" />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader title="Improve My CV" back backHref="/cv" />
         <div className={`card ${styles.scoreCard}`}>
           <CircularProgress value={MASTER_CV.score} size={96} stroke={11}>
             <span className={styles.ringNum}>{MASTER_CV.score}%</span>

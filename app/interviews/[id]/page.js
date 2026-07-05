@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import BottomNav from "../../../components/BottomNav";
 import CircularProgress from "../../../components/CircularProgress";
 import {
@@ -32,8 +33,9 @@ export default function InterviewPrepPage() {
   if (!iv) {
     return (
       <Phone>
-        <TopBar title="Interview" backHref="/interviews" />
-        <div className="screen screen-pad has-nav">
+        <AppHeader />
+        <div className="screen screen-pad has-nav has-app-header">
+          <PageHeader title="Interview" back backHref="/interviews" />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <p className={s.emptySub}>It may have been removed.</p>
@@ -86,8 +88,9 @@ export default function InterviewPrepPage() {
 
   return (
     <Phone>
-      <TopBar title="Interview Prep" backHref="/interviews" />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader title="Interview Prep" back backHref="/interviews" />
         <div className={`${s.hero} anim-fade-up`}>
           <div className={s.heroBody}>
             <div className={s.heroLabel}>

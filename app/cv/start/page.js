@@ -1,14 +1,16 @@
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import { Upload, Edit, ChevronRight } from "../../../components/Icons";
 import s from "../cvhub.module.css";
 
 export default function CvStartPage() {
   return (
     <Phone>
-      <TopBar title="Your CV" backHref="/cv" />
-      <div className={`screen screen-pad ${s.startWrap}`}>
+      <AppHeader />
+      <div className={`screen screen-pad has-app-header ${s.startWrap}`}>
+        <PageHeader title="Your CV" back backHref="/cv" />
         <h1 className="page-h1">Do you have a CV?</h1>
         <p className="page-sub">
           Your CV powers everything — tailored questions, match scores and

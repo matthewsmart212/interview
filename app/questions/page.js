@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Phone from "../../components/Phone";
-import TopBar from "../../components/TopBar";
+import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { Bookmark } from "../../components/Icons";
 import s from "./questions.module.css";
@@ -30,8 +31,9 @@ export default function QuestionsPage() {
 
   return (
     <Phone>
-      <TopBar title="Interview Questions" backHref="/home" />
-      <div className="screen screen-pad has-nav">
+      <AppHeader />
+      <div className="screen screen-pad has-nav has-app-header">
+        <PageHeader title="Interview Questions" back backHref="/home" />
         <div className="chips" style={{ marginBottom: 16 }}>
           {FILTERS.map((f) => (
             <button

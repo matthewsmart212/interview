@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../../components/Phone";
-import TopBar from "../../../../components/TopBar";
+import AppHeader from "../../../../components/AppHeader";
+import PageHeader from "../../../../components/PageHeader";
 import {
   CheckCircle,
   Sparkle,
@@ -23,8 +24,9 @@ export default function TailoredCvPage() {
   if (!iv) {
     return (
       <Phone>
-        <TopBar title="Tailored CV" backHref="/interviews" />
-        <div className="screen screen-pad">
+        <AppHeader />
+        <div className="screen screen-pad has-app-header">
+          <PageHeader title="Tailored CV" back backHref="/interviews" />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <Link href="/interviews" className="btn btn-primary" style={{ marginTop: 16 }}>
@@ -53,8 +55,13 @@ export default function TailoredCvPage() {
   if (!hasTailored) {
     return (
       <Phone>
-        <TopBar title="Tailor My CV" backHref={`/interviews/${iv.id}`} />
-        <div className="screen screen-pad">
+        <AppHeader />
+        <div className="screen screen-pad has-app-header">
+          <PageHeader
+            title="Tailor My CV"
+            back
+            backHref={`/interviews/${iv.id}`}
+          />
           <h1 className="page-h1">
             Tailor your CV for {iv.company}
           </h1>
@@ -119,8 +126,13 @@ export default function TailoredCvPage() {
   /* -------- tailored CV exists -------- */
   return (
     <Phone>
-      <TopBar title="Tailored CV" backHref={`/interviews/${iv.id}`} />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader
+          title="Tailored CV"
+          back
+          backHref={`/interviews/${iv.id}`}
+        />
         <h1 className="page-h1">
           CV for {iv.role} at {iv.company}
         </h1>

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import TopBar from "../../../components/TopBar";
+import AppHeader from "../../../components/AppHeader";
+import PageHeader from "../../../components/PageHeader";
 import { Plus, Check, Sparkle } from "../../../components/Icons";
 import s from "../cvhub.module.css";
 import i from "../../interviews/interviews.module.css";
@@ -36,20 +37,25 @@ export default function CvCreatePage() {
 
   return (
     <Phone>
-      <TopBar
-        back={step === 0}
-        backHref={step === 0 ? "/cv/start" : undefined}
-        left={
-          step > 0 && step < 3 ? (
-            <button className="link-btn" onClick={() => setStep(step - 1)}>
-              Back
-            </button>
-          ) : undefined
-        }
-        title="Create CV"
-        right={<span className="step-count">Step {Math.min(step + 1, 4)} of 4</span>}
-      />
-      <div className="screen screen-pad">
+      <AppHeader />
+      <div className="screen screen-pad has-app-header">
+        <PageHeader
+          title="Create CV"
+          back={step === 0}
+          backHref={step === 0 ? "/cv/start" : undefined}
+          left={
+            step > 0 && step < 3 ? (
+              <button className="link-btn" onClick={() => setStep(step - 1)}>
+                Back
+              </button>
+            ) : undefined
+          }
+          right={
+            <span className="step-count">
+              Step {Math.min(step + 1, 4)} of 4
+            </span>
+          }
+        />
         <div className={i.stepDots} aria-hidden>
           {[0, 1, 2, 3].map((n) => (
             <i key={n} className={n <= step ? "on" : ""} />
