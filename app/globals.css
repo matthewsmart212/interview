@@ -735,7 +735,7 @@ body:has(.interview-route),
 /* center standout mock tab */
 .nav-item-mock {
   position: relative;
-  margin-top: -36px;
+  margin-top: -33px;
   gap: 4px;
 }
 .nav-mock-btn {
