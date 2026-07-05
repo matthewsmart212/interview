@@ -70,7 +70,7 @@ export default function QuestionsPage() {
           ))}
         </div>
       </div>
-      <BottomNav active="interview" />
+      <BottomNav />
     </Phone>
   );
 }

@@ -97,7 +97,7 @@ export default function InterviewsPage() {
 
             <p className={s.skipNote}>
               Preparing without a set date?{" "}
-              <Link href="/interview" className="link-btn">
+              <Link href="/mock" className="link-btn">
                 Start a practice mock →
               </Link>
             </p>

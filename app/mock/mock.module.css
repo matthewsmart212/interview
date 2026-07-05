@@ -1,0 +1,316 @@
+/* ---------- Mock interview hub ---------- */
+
+.heroCard {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 20px 18px;
+  background:
+    radial-gradient(
+      120% 150% at 100% 0%,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0) 45%
+    ),
+    linear-gradient(135deg, #6f52ee 0%, #5b3ad6 55%, #4a2fb8 100%);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
+  overflow: hidden;
+}
+.heroKicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.heroTitle {
+  font-size: 19px;
+  font-weight: 700;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+.heroSub {
+  font-size: 12.5px;
+  opacity: 0.88;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.heroStats {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.heroStat {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 10px 8px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+.heroStat b {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+}
+.heroStat span {
+  display: block;
+  font-size: 10.5px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+/* job-specific practice cards */
+.jobCard {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 15px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.jobTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.jobLogo {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-050);
+  color: var(--brand);
+  font-size: 17px;
+  font-weight: 700;
+}
+.jobBody {
+  flex: 1;
+  min-width: 0;
+}
+.jobRole {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jobMeta {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.jobSoon {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #d97706;
+  background: var(--amber-050);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.jobFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.jobHistory {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.jobHistory b {
+  color: var(--text);
+}
+.jobHistory .none {
+  color: var(--muted);
+}
+.startBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(108, 76, 230, 0.26);
+}
+.jdBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-050);
+  border-radius: 999px;
+  padding: 3px 8px;
+  margin-top: 6px;
+}
+.jdBadge.missing {
+  color: var(--muted);
+  background: var(--surface-2);
+}
+
+/* generic quick practice */
+.genericCard {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.genericHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.genericIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.genericTitle {
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.genericSub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.45;
+}
+.jdToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--brand);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 0;
+  margin-top: 14px;
+}
+.jdArea {
+  margin-top: 12px;
+}
+.genericActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* recent mocks */
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 13px 15px;
+  box-shadow: var(--shadow-sm);
+}
+.recentScore {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--brand-050);
+  color: var(--brand);
+}
+.recentScore.good {
+  background: var(--green-050);
+  color: #16a34a;
+}
+.recentScore.low {
+  background: var(--amber-050);
+  color: #d97706;
+}
+.recentBody {
+  flex: 1;
+  min-width: 0;
+}
+.recentTitle {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recentSub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.sectionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 26px;
+  margin-bottom: 12px;
+}
+.sectionRow p {
+  margin-bottom: 0;
+}
+.seeAll {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+/* empty upcoming state */
+.emptyJobs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px dashed var(--brand-200);
+  border-radius: var(--radius);
+  padding: 15px 16px;
+}
+.emptyJobsIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.emptyJobsTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.emptyJobsSub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.45;
+}

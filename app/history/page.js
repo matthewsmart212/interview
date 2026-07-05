@@ -34,7 +34,7 @@ export default function HistoryPage() {
               Your completed practice sessions will appear here so you can
               revisit them any time.
             </p>
-            <Link href="/interview" className="btn btn-primary">
+            <Link href="/mock" className="btn btn-primary">
               Start your first mock
             </Link>
           </div>
@@ -65,7 +65,7 @@ export default function HistoryPage() {
               ))}
             </div>
 
-            <Link href="/interview" className="btn btn-primary" style={{ marginTop: 24 }}>
+            <Link href="/mock" className="btn btn-primary" style={{ marginTop: 24 }}>
               <Mic size={18} /> Start a new mock interview
             </Link>
           </>

@@ -85,7 +85,7 @@ export default function InterviewPrepPage() {
         mocks.length > 0
           ? `Latest score ${mocks[0].score}/100 — keep practising`
           : "10 minutes with your AI interviewer",
-      href: "/interview",
+      href: `/interview?for=${iv.id}`,
       cta: "Practise",
     },
   ];
@@ -161,7 +161,7 @@ export default function InterviewPrepPage() {
           Practise
         </p>
         <div className="stack">
-          <Link href="/interview" className="action-row">
+          <Link href={`/interview?for=${iv.id}`} className="action-row">
             <span className="ar-icon">
               <Mic size={22} />
             </span>

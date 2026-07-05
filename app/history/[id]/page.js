@@ -135,7 +135,7 @@ export default function MockDetailPage() {
             className="action-row"
             style={{ marginTop: 20 }}
           >
-            <span className="ar-icon" style={{ background: linkedInterview.accent, color: "#fff" }}>
+            <span className="ar-icon" style={{ fontWeight: 700, fontSize: 17 }}>
               {linkedInterview.initials}
             </span>
             <span className="ar-body">
@@ -148,7 +148,11 @@ export default function MockDetailPage() {
           </Link>
         )}
 
-        <Link href="/interview" className="btn btn-primary" style={{ marginTop: 14 }}>
+        <Link
+          href={mk.interviewId ? `/interview?for=${mk.interviewId}` : "/interview"}
+          className="btn btn-primary"
+          style={{ marginTop: 14 }}
+        >
           <Mic size={18} /> Practise again
         </Link>
       </div>

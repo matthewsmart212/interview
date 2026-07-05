@@ -100,7 +100,7 @@ export default function ProfilePage() {
           </Link>
         </div>
       </div>
-      <BottomNav active="profile" />
+      <BottomNav />
     </Phone>
   );
 }

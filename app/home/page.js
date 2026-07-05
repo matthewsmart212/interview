@@ -16,7 +16,7 @@ import styles from "./home.module.css";
 
 const ACTIONS = [
   {
-    href: "/interview",
+    href: "/mock",
     Icon: Mic,
     title: "AI Mock Interview",
     sub: "Practice with your AI interviewer",
