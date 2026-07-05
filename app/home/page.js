@@ -1,11 +1,11 @@
-import Link from "next/link";
 import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import HomeChoiceCard from "../../components/home/HomeChoiceCard";
-import StatPill from "../../components/home/StatPill";
+import NextInterviewCard from "../../components/home/NextInterviewCard";
+import StatPillRow, { StatPill } from "../../components/home/StatPillRow";
 import QuickActionRow from "../../components/home/QuickActionRow";
-import { FileText, Mic, MessageCircle, Plus, Calendar } from "../../components/Icons";
+import { FileText, Mic, MessageCircle, Calendar } from "../../components/Icons";
 import { USER, INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./home.module.css";
 
@@ -37,7 +37,9 @@ export default function HomePage() {
 
   return (
     <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
+      <div
+        className={`screen screen-pad has-nav has-app-header ${styles.home}`}
+      >
         <PageHeader
           icon="home"
           title={`Hi ${USER.name} 👋`}
@@ -48,50 +50,25 @@ export default function HomePage() {
           }
         />
 
-        {next ? (
-          <Link href={`/interviews/${next.id}`} className={styles.upcoming}>
-            <div>
-              <div className={styles.upLabel}>Next interview</div>
-              <div className={styles.upTitle}>
-                {next.role} at {next.company}
-              </div>
-              <div className={styles.upDays}>
-                in {next.daysAway} days · {next.readiness}% ready — keep going
-              </div>
-            </div>
-            <div className={styles.dateChip}>
-              <span className="d">{next.dateChip.d}</span>
-              <span className="m">{next.dateChip.m}</span>
-            </div>
-          </Link>
-        ) : (
-          <Link href="/interviews/new" className={styles.upcoming}>
-            <div>
-              <div className={styles.upLabel}>No interviews yet</div>
-              <div className={styles.upTitle}>Add your first interview</div>
-              <div className={styles.upDays}>
-                We&apos;ll build a prep plan around it
-              </div>
-            </div>
-            <div className={styles.dateChip}>
-              <Plus size={26} />
-            </div>
-          </Link>
-        )}
+        <NextInterviewCard interview={next} />
 
-        <div className={styles.pillRow}>
+        <StatPillRow>
           <StatPill href="/interviews" icon={Calendar}>
             {upcomingCount} upcoming
           </StatPill>
           <StatPill href="/cv" icon={FileText}>
             CV score {MASTER_CV.score}
           </StatPill>
-          {lastMock && (
+          {lastMock ? (
             <StatPill href={`/history/${lastMock.id}`} icon={Mic}>
               Last mock {lastMock.score}
             </StatPill>
+          ) : (
+            <StatPill href="/mock" icon={Mic}>
+              Start mock
+            </StatPill>
           )}
-        </div>
+        </StatPillRow>
 
         <div className={styles.choiceGrid}>
           <HomeChoiceCard
@@ -120,7 +97,7 @@ export default function HomePage() {
           />
         </div>
 
-        <section className={styles.quickSection}>
+        <section className={styles.quickSection} aria-label="Quick actions">
           <h2 className={styles.quickTitle}>Quick actions</h2>
           <div className={styles.quickStack}>
             {QUICK_ACTIONS.map((action) => (

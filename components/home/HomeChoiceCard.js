@@ -4,9 +4,11 @@ import { Mic, FileText, ChevronRight } from "../Icons";
 import s from "./home-choice-card.module.css";
 
 const DETAIL = {
-  interview: { Icon: Mic, label: "Mock interview" },
-  apply: { Icon: FileText, label: "CV & applications" },
+  interview: Mic,
+  apply: FileText,
 };
+
+const ICON_SIZE = 18;
 
 export default function HomeChoiceCard({
   href,
@@ -18,12 +20,12 @@ export default function HomeChoiceCard({
   avatarAlt,
   variant = "interview",
 }) {
-  const { Icon: DetailIcon } = DETAIL[variant] ?? DETAIL.interview;
+  const DetailIcon = DETAIL[variant] ?? DETAIL.interview;
 
   return (
     <Link href={href} className={`${s.card} ${s[variant]}`}>
       <span className={s.iconBadge} aria-hidden>
-        <DetailIcon size={15} />
+        <DetailIcon size={ICON_SIZE} />
       </span>
 
       <div className={s.content}>
@@ -40,7 +42,7 @@ export default function HomeChoiceCard({
 
       <span className={s.cta}>
         <span className={s.ctaText}>{cta}</span>
-        <ChevronRight size={14} className={s.ctaArrow} aria-hidden />
+        <ChevronRight size={ICON_SIZE} className={s.ctaArrow} aria-hidden />
       </span>
     </Link>
   );

@@ -1,0 +1,16 @@
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+  width: 100%;
+}
+
+@media (max-width: 359px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .row > :last-child:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}

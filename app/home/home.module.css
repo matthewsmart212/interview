@@ -1,86 +1,46 @@
-.upcoming {
-  margin-top: 18px;
-  border-radius: var(--radius-lg);
-  padding: 18px;
-  background: linear-gradient(135deg, #6f52ee, #5636cf);
-  color: #fff;
-  display: flex;
+/* Home screen layout — iPhone 13/14/15 (~390px) tuned */
+
+.home {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+.home :global(.page-header) {
+  margin-bottom: 14px;
+  padding-top: 12px;
+  padding-bottom: 14px;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
 }
-.upLabel {
-  font-size: 12px;
-  opacity: 0.85;
+
+.home :global(.page-header-title) {
+  font-size: 21px;
+  line-height: 1.2;
 }
-.upTitle {
-  font-size: 16px;
-  font-weight: 600;
-  margin-top: 6px;
-  line-height: 1.35;
-}
-.upDays {
-  font-size: 12.5px;
-  opacity: 0.9;
-  margin-top: 6px;
-}
-.dateChip {
-  flex-shrink: 0;
-  width: 62px;
-  height: 62px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.18);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.dateChip .d {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-}
-.dateChip .m {
+
+.home :global(.page-header-sub) {
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  margin-top: 3px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* stat pills — scroll edge-to-edge so the last pill isn't clipped */
-.pillRow {
-  display: flex;
-  gap: 8px;
-  margin: 14px -20px 0;
-  padding: 0 20px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.pillRow::-webkit-scrollbar {
-  display: none;
-}
-
-/* two primary choice cards */
 .choiceGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-top: 28px;
+  gap: 14px;
+  margin-top: 24px;
+  align-items: stretch;
 }
 
-/* compact quick actions below */
 .quickSection {
-  margin-top: 32px;
-  padding-bottom: 12px;
+  margin-top: 28px;
+  padding-bottom: 16px;
 }
 
 .quickTitle {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  margin: 0 0 12px;
+  composes: sectionTitle from "../../components/home/home-shared.module.css";
 }
 
 .quickStack {

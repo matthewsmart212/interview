@@ -1,17 +1,18 @@
 .pill {
-  flex-shrink: 0;
+  composes: glass tapMin from "./home-shared.module.css";
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
   border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 12.5px;
+  padding: 10px 8px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-2);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: transform 0.12s ease;
 }
 
@@ -22,4 +23,10 @@
 .pill svg {
   color: var(--brand);
   flex-shrink: 0;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

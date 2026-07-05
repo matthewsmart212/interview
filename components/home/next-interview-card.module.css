@@ -1,0 +1,74 @@
+.card {
+  composes: tapMin from "./home-shared.module.css";
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 15px 16px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #6f52ee, #5636cf);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.88;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin: 5px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta {
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0.9;
+  margin: 4px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dateChip {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.day {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.month {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
