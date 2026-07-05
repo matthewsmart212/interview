@@ -152,9 +152,11 @@
 .avatar {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  height: 100%;
   object-fit: contain;
-  object-position: left top;
+  object-position: center top;
+  transform: translateX(-50%);
   z-index: 1;
   -webkit-mask-image: linear-gradient(
     to top,
@@ -171,19 +173,13 @@
 }
 
 .avatar_interview {
-  left: -4%;
   width: 84%;
-  height: 100%;
-  object-position: left top;
   opacity: 0.94;
   filter: drop-shadow(0 4px 12px rgba(91, 58, 214, 0.2));
 }
 
 .avatar_apply {
-  left: 0;
   width: 72%;
-  height: 100%;
-  object-position: left top;
   opacity: 0.9;
   filter: drop-shadow(0 3px 10px rgba(67, 56, 202, 0.16));
 }
@@ -194,17 +190,18 @@
   z-index: 3;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   padding: 4px 14px 14px;
   min-height: 36px;
 }
 
 .cta {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2px;
-  min-height: 26px;
-  padding: 4px 10px 4px 11px;
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 10px;
   font-weight: 600;
