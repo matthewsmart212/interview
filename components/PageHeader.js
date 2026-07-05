@@ -57,10 +57,6 @@ export default function PageHeader({
 
   return (
     <div className="page-header">
-      <span className="page-header-sparkle" aria-hidden>
-        <Sparkle size={52} />
-      </span>
-
       {left ??
         (showBack && (
           <button

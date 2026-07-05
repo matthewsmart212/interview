@@ -192,29 +192,17 @@ body:has(.interview-route),
   padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
 }
 
-/* ------- Page title band (below app header) ------- */
+/* ------- Page title card (below app header) ------- */
 .page-header {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0 -20px 18px;
-  padding: 15px 20px;
+  margin: 0 0 18px;
+  padding: 15px 16px;
   background: var(--page-header-bg);
-  border-bottom: 1px solid var(--page-header-border);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    0 4px 14px rgba(86, 54, 207, 0.06);
-  overflow: hidden;
-}
-.page-header-sparkle {
-  position: absolute;
-  right: 72px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(108, 76, 230, 0.12);
-  pointer-events: none;
-  line-height: 0;
+  border: 1px solid var(--page-header-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 .page-header-back {
   flex-shrink: 0;
@@ -230,12 +218,14 @@ body:has(.interview-route),
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: rgba(108, 76, 230, 0.12);
+  background: var(--card);
+  border: 1px solid var(--border);
   color: var(--brand);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
 .page-header-text {
   min-width: 0;
@@ -251,7 +241,7 @@ body:has(.interview-route),
   color: #2a2248;
 }
 .page-header-sub {
-  font-size: 13px;
+  font-size: 10px;
   color: var(--page-header-sub);
   margin: 3px 0 0;
   line-height: 1.4;
@@ -261,8 +251,6 @@ body:has(.interview-route),
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  position: relative;
-  z-index: 1;
 }
 
 .app-logo {
