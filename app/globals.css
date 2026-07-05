@@ -577,6 +577,14 @@ body:has(.interview-route),
   color: #fde68a;
   background: rgba(245, 165, 36, 0.18);
 }
+.status-pill.soon {
+  color: #fbbf24;
+  background: var(--amber-050);
+}
+.status-pill.done {
+  color: var(--green);
+  background: var(--green-050);
+}
 
 .page-h1 {
   font-size: 24px;
