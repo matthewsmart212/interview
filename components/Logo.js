@@ -8,7 +8,7 @@ const HEIGHT = {
 };
 
 const ASPECT = 2008 / 523;
-const TEXT_START = 0.35;
+const TEXT_START = 0.32;
 const ICON_END = TEXT_START;
 const TEXT_SCALE = 1.3;
 
