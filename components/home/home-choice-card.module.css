@@ -22,36 +22,45 @@
   transform: scale(0.98);
 }
 
+/* Primary — interview prep */
 .interview {
   background:
     radial-gradient(
-      circle at 90% 4%,
-      rgba(157, 134, 247, 0.2),
-      rgba(157, 134, 247, 0) 46%
+      circle at 88% 0%,
+      rgba(167, 139, 250, 0.32),
+      rgba(167, 139, 250, 0) 52%
     ),
     radial-gradient(
-      circle at 80% 88%,
-      rgba(124, 92, 255, 0.28),
-      rgba(124, 92, 255, 0) 48%
+      circle at 72% 92%,
+      rgba(124, 92, 255, 0.38),
+      rgba(124, 92, 255, 0) 54%
     ),
-    linear-gradient(168deg, rgba(44, 34, 82, 0.95), rgba(26, 20, 50, 0.98));
-  border-color: rgba(167, 139, 250, 0.2);
+    linear-gradient(168deg, rgba(48, 36, 88, 0.97), rgba(28, 20, 54, 0.99));
+  border-color: rgba(196, 181, 253, 0.28);
+  box-shadow:
+    0 14px 32px rgba(91, 58, 214, 0.22),
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+/* Secondary — applying / CV */
 .apply {
   background:
     radial-gradient(
-      circle at 10% 6%,
-      rgba(129, 140, 248, 0.14),
-      rgba(129, 140, 248, 0) 44%
+      circle at 12% 4%,
+      rgba(129, 140, 248, 0.18),
+      rgba(129, 140, 248, 0) 46%
     ),
     radial-gradient(
-      circle at 75% 88%,
-      rgba(99, 102, 241, 0.22),
-      rgba(99, 102, 241, 0) 48%
+      circle at 78% 90%,
+      rgba(79, 70, 229, 0.2),
+      rgba(79, 70, 229, 0) 50%
     ),
-    linear-gradient(168deg, rgba(32, 30, 64, 0.95), rgba(20, 18, 42, 0.98));
-  border-color: rgba(129, 140, 248, 0.15);
+    linear-gradient(168deg, rgba(28, 28, 58, 0.95), rgba(18, 16, 38, 0.98));
+  border-color: rgba(129, 140, 248, 0.14);
+  box-shadow:
+    0 10px 24px rgba(8, 4, 24, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* ---- top: label + title + subtitle (text stays above avatar lane) ---- */
@@ -86,13 +95,14 @@
 }
 
 .interview .iconBadge {
-  background: rgba(124, 92, 255, 0.2);
-  color: #ddd6fe;
+  background: rgba(124, 92, 255, 0.28);
+  color: #ede9fe;
+  border-color: rgba(196, 181, 253, 0.18);
 }
 
 .apply .iconBadge {
-  background: rgba(99, 102, 241, 0.16);
-  color: #c7d2fe;
+  background: rgba(99, 102, 241, 0.18);
+  color: #dbeafe;
 }
 
 .content {
@@ -107,11 +117,11 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(196, 181, 253, 0.55);
+  color: rgba(221, 214, 254, 0.76);
 }
 
 .apply .eyebrow {
-  color: rgba(165, 180, 252, 0.52);
+  color: rgba(199, 210, 254, 0.7);
 }
 
 .title {
@@ -125,6 +135,10 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.interview .title {
+  font-size: 15px;
 }
 
 .sub {
@@ -142,11 +156,39 @@
   color: #a9b4d9;
 }
 
-/* ---- middle: avatar lane below copy, no background box ---- */
+/* ---- middle: avatar lane below copy ---- */
 .avatarStage {
   position: relative;
   overflow: hidden;
   pointer-events: none;
+}
+
+.avatarStage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.interview .avatarStage::before {
+  background:
+    radial-gradient(
+      circle at 50% 88%,
+      rgba(124, 92, 255, 0.28),
+      rgba(124, 92, 255, 0.06) 42%,
+      rgba(12, 8, 28, 0.72) 100%
+    );
+}
+
+.apply .avatarStage::before {
+  background:
+    radial-gradient(
+      circle at 50% 88%,
+      rgba(99, 102, 241, 0.2),
+      rgba(99, 102, 241, 0.04) 40%,
+      rgba(10, 10, 26, 0.68) 100%
+    );
 }
 
 .avatar {
@@ -174,14 +216,14 @@
 
 .avatar_interview {
   width: 84%;
-  opacity: 0.94;
-  filter: drop-shadow(0 4px 12px rgba(91, 58, 214, 0.2));
+  opacity: 0.96;
+  filter: drop-shadow(0 6px 16px rgba(91, 58, 214, 0.28));
 }
 
 .avatar_apply {
   width: 72%;
-  opacity: 0.9;
-  filter: drop-shadow(0 3px 10px rgba(67, 56, 202, 0.16));
+  opacity: 0.88;
+  filter: drop-shadow(0 4px 12px rgba(67, 56, 202, 0.18));
 }
 
 /* ---- bottom: protected CTA strip ---- */
@@ -212,11 +254,16 @@
 }
 
 .interview .cta {
-  color: rgba(233, 213, 255, 0.9);
+  color: #f3e8ff;
+  background: rgba(124, 92, 255, 0.2);
+  border-color: rgba(196, 181, 253, 0.28);
+  box-shadow: 0 4px 14px rgba(91, 58, 214, 0.18);
 }
 
 .apply .cta {
-  color: rgba(219, 234, 254, 0.85);
+  color: rgba(219, 234, 254, 0.82);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .ctaText {

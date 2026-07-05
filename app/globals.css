@@ -197,7 +197,7 @@ body:has(.interview-route),
 .app-header-logo .app-logo {
   width: auto;
   height: 28px;
-  max-width: 132px;
+  max-width: 148px;
 }
 .app-header-side {
   min-width: 40px;
@@ -305,10 +305,10 @@ body:has(.interview-route),
 }
 
 .app-logo-img--text {
-  width: calc(var(--logo-full-w) * var(--logo-text-scale, 1.3));
-  height: calc(var(--logo-h) * var(--logo-text-scale, 1.3));
-  margin-left: calc(var(--logo-text-start) * var(--logo-text-scale, 1.3) * -1);
-  margin-top: calc(var(--logo-h) * (var(--logo-text-scale, 1.3) - 1) / -2);
+  width: calc(var(--logo-full-w) * var(--logo-text-scale, 1.495));
+  height: calc(var(--logo-h) * var(--logo-text-scale, 1.495));
+  margin-left: calc(var(--logo-text-start) * var(--logo-text-scale, 1.495) * -1);
+  margin-top: calc(var(--logo-h) * (var(--logo-text-scale, 1.495) - 1) / -2);
 }
 
 /* ------- Top bar (mock interview overlay only) ------- */

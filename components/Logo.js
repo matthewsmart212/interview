@@ -10,7 +10,7 @@ const HEIGHT = {
 const ASPECT = 2008 / 523;
 const TEXT_START = 0.3;
 const ICON_END = TEXT_START;
-const TEXT_SCALE = 1.3;
+const TEXT_SCALE = 1.495;
 
 export default function Logo({ size = "md", className = "", priority = false }) {
   const h = HEIGHT[size] ?? HEIGHT.md;

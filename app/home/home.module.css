@@ -19,7 +19,7 @@
 .choiceGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
   align-items: stretch;
   grid-auto-rows: 1fr;
 }
