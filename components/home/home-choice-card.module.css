@@ -1,13 +1,12 @@
 .card {
   position: relative;
   width: 100%;
-  min-height: 292px;
+  min-height: 288px;
   height: 100%;
   border-radius: 24px;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto 118px auto;
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow:
     0 12px 28px rgba(8, 4, 24, 0.26),
@@ -55,12 +54,11 @@
   border-color: rgba(129, 140, 248, 0.15);
 }
 
-/* ---- top: label + title + subtitle ---- */
+/* ---- top: label + title + subtitle (text stays above avatar lane) ---- */
 .top {
   position: relative;
-  z-index: 3;
-  flex: 1;
-  padding: 18px 18px 12px;
+  z-index: 2;
+  padding: 18px 18px 10px;
 }
 
 .textScrim {
@@ -68,8 +66,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(10, 6, 22, 0.5) 0%,
-    rgba(10, 6, 22, 0.15) 70%,
+    rgba(10, 6, 22, 0.42) 0%,
+    rgba(10, 6, 22, 0.08) 72%,
     transparent 100%
   );
   pointer-events: none;
@@ -99,6 +97,7 @@
 
 .content {
   position: relative;
+  max-width: 100%;
   padding-right: 26px;
 }
 
@@ -143,90 +142,60 @@
   color: #a9b4d9;
 }
 
-/* ---- decorative avatar: card-level, head fully visible above CTA ---- */
-.avatarWrap {
-  position: absolute;
-  right: 0;
-  bottom: 34px;
-  width: 72%;
-  height: 196px;
-  z-index: 1;
+/* ---- middle: avatar lane below copy, no background box ---- */
+.avatarStage {
+  position: relative;
+  overflow: hidden;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(0, 0, 0, 0.45) 14%,
-    #000 36%
-  );
-  mask-image: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(0, 0, 0, 0.45) 14%,
-    #000 36%
-  );
-}
-
-.avatarFade {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(14, 10, 30, 0.88) 0%,
-    rgba(14, 10, 30, 0.18) 42%,
-    transparent 72%
-  );
-  z-index: 2;
 }
 
 .avatar {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  top: 0;
   object-fit: contain;
-  object-position: right top;
+  object-position: top center;
   z-index: 1;
+  -webkit-mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 16%,
+    #000 38%
+  );
+  mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 16%,
+    #000 38%
+  );
 }
 
 .avatar_interview {
-  width: 108%;
-  height: 108%;
-  right: -6%;
-  bottom: -4%;
-  left: auto;
-  top: auto;
-  object-position: 58% 0%;
+  right: -4%;
+  width: 84%;
+  height: 100%;
+  object-position: 58% top;
   opacity: 0.94;
   filter: drop-shadow(0 4px 12px rgba(91, 58, 214, 0.2));
 }
 
 .avatar_apply {
-  width: 96%;
-  height: 104%;
   right: 0;
-  bottom: 0;
-  left: auto;
-  top: auto;
-  object-position: 50% 0%;
+  width: 72%;
+  height: 100%;
+  object-position: 50% top;
   opacity: 0.9;
   filter: drop-shadow(0 3px 10px rgba(67, 56, 202, 0.16));
 }
 
-/* ---- bottom: protected CTA strip (avatars never overlap) ---- */
+/* ---- bottom: protected CTA strip ---- */
 .footer {
   position: relative;
-  z-index: 5;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 6px 14px 14px;
-  min-height: 38px;
-  background: linear-gradient(
-    to top,
-    rgba(12, 8, 26, 0.98) 35%,
-    rgba(12, 8, 26, 0.75) 70%,
-    transparent 100%
-  );
+  padding: 4px 14px 14px;
+  min-height: 36px;
 }
 
 .cta {
