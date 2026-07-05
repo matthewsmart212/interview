@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import Phone from "../../../../components/Phone";
-import AppHeader from "../../../../components/AppHeader";
 import PageHeader from "../../../../components/PageHeader";
 import { Sparkle, FileText } from "../../../../components/Icons";
 import { getInterview } from "../../../../lib/app-data";
@@ -23,7 +22,6 @@ export default function JobDescriptionPage() {
   if (!iv) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
             icon="fileText"
@@ -47,7 +45,6 @@ export default function JobDescriptionPage() {
   if (iv.hasJD) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
             icon="fileText"
@@ -93,7 +90,6 @@ export default function JobDescriptionPage() {
   /* -------- no JD yet: paste it in -------- */
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="fileText"

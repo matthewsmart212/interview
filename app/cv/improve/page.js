@@ -1,5 +1,4 @@
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import CircularProgress from "../../../components/CircularProgress";
 import { Check, ChevronRight, Sparkle, Download } from "../../../components/Icons";
@@ -16,7 +15,6 @@ const SUGGESTIONS = [
 export default function CvImprovePage() {
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="sparkle"

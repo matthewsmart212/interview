@@ -169,7 +169,7 @@ body:has(.interview-route),
   align-items: center;
   gap: 12px;
   padding: env(safe-area-inset-top) 18px 10px;
-  min-height: calc(var(--app-header-bar) + env(safe-area-inset-top));
+  height: calc(var(--app-header-bar) + env(safe-area-inset-top));
   background: var(--card);
   border-bottom: 1px solid var(--border);
   box-sizing: border-box;
@@ -180,6 +180,12 @@ body:has(.interview-route),
   align-items: center;
   justify-content: center;
   min-width: 0;
+  height: 28px;
+}
+.app-header-logo .app-logo {
+  width: auto;
+  height: 28px;
+  max-width: 104px;
 }
 .app-header-side {
   min-width: 40px;

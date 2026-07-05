@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { ChevronRight, Mic } from "../../components/Icons";
@@ -17,7 +16,6 @@ function scoreCls(score) {
 export default function HistoryPage() {
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
           icon="mic"

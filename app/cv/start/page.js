@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import { Upload, Edit, ChevronRight, FileText } from "../../../components/Icons";
 import s from "../cvhub.module.css";
@@ -8,7 +7,6 @@ import s from "../cvhub.module.css";
 export default function CvStartPage() {
   return (
     <Phone>
-      <AppHeader />
       <div className={`screen screen-pad has-app-header ${s.startWrap}`}>
         <PageHeader
           icon="fileText"

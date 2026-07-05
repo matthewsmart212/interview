@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Phone from "../../components/Phone";
-import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { Bookmark } from "../../components/Icons";
@@ -31,7 +30,6 @@ export default function QuestionsPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
           icon="messageCircle"

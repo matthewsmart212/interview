@@ -1,5 +1,6 @@
 import "./globals.css";
 import StatusBarTheme from "../components/StatusBarTheme";
+import AppShellHeader from "../components/AppShellHeader";
 
 export const metadata = {
   title: "Interview Coach AI",
@@ -33,12 +34,13 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=optional"
           rel="stylesheet"
         />
       </head>
       <body>
         <StatusBarTheme />
+        <AppShellHeader />
         <div className="app-shell">{children}</div>
       </body>
     </html>

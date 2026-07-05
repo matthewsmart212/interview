@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import BottomNav from "../../../components/BottomNav";
 import CircularProgress from "../../../components/CircularProgress";
@@ -33,7 +32,6 @@ export default function InterviewPrepPage() {
   if (!iv) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-nav has-app-header">
           <PageHeader
             icon="calendar"
@@ -94,7 +92,6 @@ export default function InterviewPrepPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
           icon="calendar"

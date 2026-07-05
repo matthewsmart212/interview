@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Phone from "../../components/Phone";
-import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
 import { Calendar, Sparkle } from "../../components/Icons";
 
@@ -20,7 +19,6 @@ export default function SetupPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="sparkle"

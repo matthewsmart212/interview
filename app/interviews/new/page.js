@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import { Calendar, FileText, Sparkle, Check, Plus } from "../../../components/Icons";
 import s from "../interviews.module.css";
@@ -24,7 +23,6 @@ export default function NewInterviewPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="plus"

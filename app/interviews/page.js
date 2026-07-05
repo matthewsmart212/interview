@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
-import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import { Plus, Calendar, ChevronRight } from "../../components/Icons";
@@ -49,7 +48,6 @@ export default function InterviewsPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
           icon="calendar"

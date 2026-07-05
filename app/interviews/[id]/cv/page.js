@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../../components/Phone";
-import AppHeader from "../../../../components/AppHeader";
 import PageHeader from "../../../../components/PageHeader";
 import {
   CheckCircle,
@@ -25,7 +24,6 @@ export default function TailoredCvPage() {
   if (!iv) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
             icon="fileText"
@@ -62,7 +60,6 @@ export default function TailoredCvPage() {
   if (!hasTailored) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
             icon="fileText"
@@ -135,7 +132,6 @@ export default function TailoredCvPage() {
   /* -------- tailored CV exists -------- */
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="fileText"

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import { Upload, Check, FileText } from "../../../components/Icons";
 import s from "../cvhub.module.css";
@@ -27,7 +26,6 @@ export default function CvUploadPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="upload"

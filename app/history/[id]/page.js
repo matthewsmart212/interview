@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import CircularProgress from "../../../components/CircularProgress";
 import {
@@ -23,7 +22,6 @@ export default function MockDetailPage() {
   if (!mk) {
     return (
       <Phone>
-        <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
             icon="mic"
@@ -47,7 +45,6 @@ export default function MockDetailPage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="mic"

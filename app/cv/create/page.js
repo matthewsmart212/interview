@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
-import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
 import { Plus, Check, Sparkle, Edit } from "../../../components/Icons";
 import s from "../cvhub.module.css";
@@ -37,7 +36,6 @@ export default function CvCreatePage() {
 
   return (
     <Phone>
-      <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
           icon="edit"
