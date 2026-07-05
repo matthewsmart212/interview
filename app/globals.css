@@ -194,63 +194,105 @@ body:has(.interview-route),
 
 /* ------- Page title card (below app header) ------- */
 .page-header {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 18px;
-  padding: 15px 16px;
-  background: var(--page-header-bg);
-  border: 1px solid var(--page-header-border);
+  gap: 14px;
+  margin: 0 0 20px;
+  padding: 17px 18px;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
+  background:
+    radial-gradient(
+      120% 140% at 0% 0%,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0) 42%
+    ),
+    linear-gradient(135deg, #6f52ee 0%, #5b3ad6 52%, #4a2fb8 100%);
+  box-shadow:
+    0 16px 34px rgba(74, 47, 184, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+  isolation: isolate;
+}
+.page-header::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  top: -60px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 .page-header-back {
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
 }
 .page-header-content {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex: 1;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 .page-header-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: #fff;
   color: var(--brand);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    0 8px 18px rgba(30, 16, 84, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .page-header-text {
   min-width: 0;
   flex: 1;
 }
 .page-header-title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.22;
   margin: 0;
   text-align: left;
-  color: #2a2248;
+  color: #fff;
 }
 .page-header-sub {
   font-size: 10px;
-  color: var(--page-header-sub);
-  margin: 3px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 4px 0 0;
   line-height: 1.4;
   text-align: left;
+  letter-spacing: 0.01em;
 }
 .page-header-right {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.page-header-right .step-count {
+  color: rgba(255, 255, 255, 0.88);
+}
+.page-header .link-btn {
+  color: #fff;
 }
 
 .app-logo {
