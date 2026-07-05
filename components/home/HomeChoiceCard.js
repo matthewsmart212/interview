@@ -37,7 +37,7 @@ export default function HomeChoiceCard({
         </div>
       </div>
 
-      <div className={s.avatarStage} aria-hidden>
+      <div className={s.avatarWrap} aria-hidden>
         <div className={s.avatarFade} />
         <Avatar
           pose={avatarPose}
