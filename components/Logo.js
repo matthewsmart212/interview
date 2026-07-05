@@ -10,7 +10,7 @@ const HEIGHT = {
 const ASPECT = 2008 / 523;
 const ICON_END = 1099 / 2008;
 const TEXT_START = 1117 / 2008;
-const TEXT_SCALE = 1.1;
+const TEXT_SCALE = 1.2;
 
 export default function Logo({ size = "md", className = "", priority = false }) {
   const h = HEIGHT[size] ?? HEIGHT.md;
@@ -25,6 +25,7 @@ export default function Logo({ size = "md", className = "", priority = false }) 
     "--logo-icon-w": `${iconW}px`,
     "--logo-text-w": `${textW}px`,
     "--logo-text-start": `${fullW * TEXT_START}px`,
+    "--logo-text-scale": `${TEXT_SCALE}`,
     height: `${h}px`,
     width: `${wrapW}px`,
   };
