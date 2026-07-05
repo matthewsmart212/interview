@@ -8,19 +8,56 @@ const HEIGHT = {
 };
 
 const ASPECT = 2008 / 523;
+const ICON_END = 1099 / 2008;
+const TEXT_START = 1117 / 2008;
+const TEXT_SCALE = 1.1;
 
 export default function Logo({ size = "md", className = "", priority = false }) {
   const h = HEIGHT[size] ?? HEIGHT.md;
-  const w = Math.round(ASPECT * h);
+  const fullW = ASPECT * h;
+  const iconW = fullW * ICON_END;
+  const textW = fullW * (1 - TEXT_START) * TEXT_SCALE;
+  const wrapW = iconW + textW;
+
+  const style = {
+    "--logo-h": `${h}px`,
+    "--logo-full-w": `${fullW}px`,
+    "--logo-icon-w": `${iconW}px`,
+    "--logo-text-w": `${textW}px`,
+    "--logo-text-start": `${fullW * TEXT_START}px`,
+    height: `${h}px`,
+    width: `${wrapW}px`,
+  };
+
+  const imgW = Math.round(fullW);
+  const imgH = h;
 
   return (
-    <Image
-      src="/logo.png"
-      alt="Interview Coach AI"
-      width={w}
-      height={h}
+    <span
       className={`app-logo app-logo--${size}${className ? ` ${className}` : ""}`}
-      priority={priority}
-    />
+      style={style}
+      role="img"
+      aria-label="Interview Coach AI"
+    >
+      <span className="app-logo-icon" aria-hidden>
+        <Image
+          src="/logo.png"
+          alt=""
+          width={imgW}
+          height={imgH}
+          priority={priority}
+          className="app-logo-img"
+        />
+      </span>
+      <span className="app-logo-text" aria-hidden>
+        <Image
+          src="/logo.png"
+          alt=""
+          width={imgW}
+          height={imgH}
+          className="app-logo-img app-logo-img--text"
+        />
+      </span>
+    </span>
   );
 }

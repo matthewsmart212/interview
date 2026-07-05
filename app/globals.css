@@ -197,7 +197,7 @@ body:has(.interview-route),
 .app-header-logo .app-logo {
   width: auto;
   height: 28px;
-  max-width: 104px;
+  max-width: 112px;
 }
 .app-header-side {
   min-width: 40px;
@@ -274,10 +274,41 @@ body:has(.interview-route),
 }
 
 .app-logo {
-  width: auto;
-  height: auto;
-  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
+  line-height: 0;
+  max-width: 100%;
+}
+
+.app-logo-icon,
+.app-logo-text {
+  display: block;
+  height: var(--logo-h);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.app-logo-icon {
+  width: var(--logo-icon-w);
+}
+
+.app-logo-text {
+  width: var(--logo-text-w);
+}
+
+.app-logo-img {
+  display: block;
+  width: var(--logo-full-w);
+  height: var(--logo-h);
+  max-width: none;
+}
+
+.app-logo-img--text {
+  width: calc(var(--logo-full-w) * 1.1);
+  height: calc(var(--logo-h) * 1.1);
+  margin-left: calc(var(--logo-text-start) * -1.1);
+  margin-top: calc(var(--logo-h) * -0.05);
 }
 
 /* ------- Top bar (mock interview overlay only) ------- */
