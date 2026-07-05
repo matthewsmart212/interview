@@ -6,9 +6,14 @@ import { usePathname } from "next/navigation";
 const INTERVIEW = "#302651";
 const LIGHT = "#f2f2f5";
 
-/** True only for the immersive mock-interview flow, not /interviews management. */
+/** Immersive mock-interview flow + mock hub. */
 function isMockInterviewRoute(pathname) {
-  return pathname === "/interview" || pathname.startsWith("/interview/");
+  return (
+    pathname === "/interview" ||
+    pathname.startsWith("/interview/") ||
+    pathname === "/mock" ||
+    pathname.startsWith("/mock/")
+  );
 }
 
 export default function StatusBarTheme() {

@@ -4,9 +4,9 @@ import Link from "next/link";
 import { Menu, Settings } from "./Icons";
 import Logo from "./Logo";
 
-export default function AppHeader() {
+export default function AppHeader({ dark = false }) {
   return (
-    <header className="app-header">
+    <header className={`app-header${dark ? " app-header-dark" : ""}`}>
       <div className="app-header-side">
         <button type="button" className="icon-btn" aria-label="Open menu">
           <Menu size={24} />

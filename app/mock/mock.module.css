@@ -1,26 +1,48 @@
-/* ---------- Mock interview hub ---------- */
+/* ---------- Mock hub — immersive dark purple ---------- */
 
+.hubHeader {
+  margin: 0 -20px 20px;
+  padding: 8px 20px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* glass card base */
+.glass {
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* hero */
 .heroCard {
   position: relative;
   border-radius: var(--radius-lg);
   padding: 20px 18px;
   background:
     radial-gradient(
-      120% 150% at 100% 0%,
-      rgba(255, 255, 255, 0.14) 0%,
-      rgba(255, 255, 255, 0) 45%
+      90% 120% at 100% 0%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 50%
     ),
-    linear-gradient(135deg, #6f52ee 0%, #5b3ad6 55%, #4a2fb8 100%);
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: #fff;
-  box-shadow: 0 14px 30px rgba(86, 54, 207, 0.32);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
   overflow: hidden;
+  backdrop-filter: blur(12px);
 }
 .heroKicker {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.65);
 }
 .heroTitle {
   font-size: 19px;
@@ -30,7 +52,7 @@
 }
 .heroSub {
   font-size: 12.5px;
-  opacity: 0.88;
+  color: rgba(255, 255, 255, 0.78);
   margin-top: 6px;
   line-height: 1.5;
 }
@@ -41,11 +63,11 @@
 }
 .heroStat {
   flex: 1;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   padding: 10px 8px;
   text-align: center;
-  backdrop-filter: blur(4px);
 }
 .heroStat b {
   display: block;
@@ -55,18 +77,25 @@
 .heroStat span {
   display: block;
   font-size: 10.5px;
-  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.65);
   margin-top: 2px;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 26px 0 12px;
 }
 
 /* job-specific practice cards */
 .jobCard {
+  composes: glass;
   display: flex;
   flex-direction: column;
-  background: var(--card);
-  border-radius: var(--radius);
   padding: 15px 16px;
-  box-shadow: var(--shadow-sm);
 }
 .jobTop {
   display: flex;
@@ -81,10 +110,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-050);
-  color: var(--brand);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
   font-size: 17px;
   font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 .jobBody {
   flex: 1;
@@ -94,6 +124,7 @@
   display: block;
   font-size: 14.5px;
   font-weight: 600;
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -101,15 +132,15 @@
 .jobMeta {
   display: block;
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 2px;
 }
 .jobSoon {
   flex-shrink: 0;
   font-size: 11px;
   font-weight: 700;
-  color: #d97706;
-  background: var(--amber-050);
+  color: #fcd34d;
+  background: rgba(252, 211, 77, 0.15);
   border-radius: 999px;
   padding: 4px 10px;
 }
@@ -120,32 +151,32 @@
   gap: 10px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 .jobHistory {
   font-size: 12px;
-  color: var(--text-2);
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.4;
 }
 .jobHistory b {
-  color: var(--text);
+  color: #fff;
 }
-.jobHistory .none {
-  color: var(--muted);
+.jobHistory :global(.none) {
+  color: rgba(255, 255, 255, 0.45);
 }
 .startBtn {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--brand);
-  color: #fff;
+  background: #fff;
+  color: var(--brand);
   border: none;
   border-radius: 999px;
   padding: 9px 16px;
   font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 8px 18px rgba(108, 76, 230, 0.26);
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 .jdBadge {
   display: inline-flex;
@@ -153,23 +184,21 @@
   gap: 4px;
   font-size: 10.5px;
   font-weight: 600;
-  color: var(--brand);
-  background: var(--brand-050);
+  color: #c4b5fd;
+  background: rgba(108, 76, 230, 0.25);
   border-radius: 999px;
   padding: 3px 8px;
   margin-top: 6px;
 }
 .jdBadge.missing {
-  color: var(--muted);
-  background: var(--surface-2);
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* generic quick practice */
 .genericCard {
-  background: var(--card);
-  border-radius: var(--radius);
+  composes: glass;
   padding: 16px;
-  box-shadow: var(--shadow-sm);
 }
 .genericHead {
   display: flex;
@@ -181,19 +210,21 @@
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: var(--brand-050);
-  color: var(--brand);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .genericTitle {
   font-size: 14.5px;
   font-weight: 600;
+  color: #fff;
 }
 .genericSub {
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 2px;
   line-height: 1.45;
 }
@@ -203,7 +234,7 @@
   gap: 6px;
   background: none;
   border: none;
-  color: var(--brand);
+  color: #c4b5fd;
   font-weight: 600;
   font-size: 13px;
   padding: 0;
@@ -212,21 +243,42 @@
 .jdArea {
   margin-top: 12px;
 }
+.jdArea :global(.textarea) {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+.jdArea :global(.textarea::placeholder) {
+  color: rgba(255, 255, 255, 0.35);
+}
 .genericActions {
   display: flex;
   gap: 10px;
   margin-top: 14px;
 }
+.startPrimary {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #7d5cf0, #5b3ad6);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.45);
+}
 
 /* recent mocks */
 .recentRow {
+  composes: glass;
   display: flex;
   align-items: center;
   gap: 13px;
-  background: var(--card);
-  border-radius: var(--radius);
   padding: 13px 15px;
-  box-shadow: var(--shadow-sm);
 }
 .recentScore {
   flex-shrink: 0;
@@ -238,16 +290,16 @@
   justify-content: center;
   font-size: 15px;
   font-weight: 700;
-  background: var(--brand-050);
-  color: var(--brand);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 .recentScore.good {
-  background: var(--green-050);
-  color: #16a34a;
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
 }
 .recentScore.low {
-  background: var(--amber-050);
-  color: #d97706;
+  background: rgba(245, 165, 36, 0.2);
+  color: #fcd34d;
 }
 .recentBody {
   flex: 1;
@@ -257,6 +309,7 @@
   display: block;
   font-size: 13.5px;
   font-weight: 600;
+  color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -264,7 +317,7 @@
 .recentSub {
   display: block;
   font-size: 11.5px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 2px;
 }
 .sectionRow {
@@ -274,23 +327,28 @@
   margin-top: 26px;
   margin-bottom: 12px;
 }
-.sectionRow p {
-  margin-bottom: 0;
+.sectionRow .sectionLabel {
+  margin: 0;
 }
 .seeAll {
   font-size: 13px;
   font-weight: 600;
-  color: var(--brand);
+  color: #c4b5fd;
+}
+.emptyHint {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
 }
 
 /* empty upcoming state */
 .emptyJobs {
+  composes: glass;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--card);
-  border: 1px dashed var(--brand-200);
-  border-radius: var(--radius);
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.2);
   padding: 15px 16px;
 }
 .emptyJobsIcon {
@@ -298,8 +356,8 @@
   width: 44px;
   height: 44px;
   border-radius: 13px;
-  background: var(--brand-050);
-  color: var(--brand);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -307,10 +365,18 @@
 .emptyJobsTitle {
   font-size: 13.5px;
   font-weight: 600;
+  color: #fff;
 }
 .emptyJobsSub {
   font-size: 12px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 2px;
   line-height: 1.45;
+}
+.emptyJobs :global(.chev) {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.recentRow :global(.chev) {
+  color: rgba(255, 255, 255, 0.35);
 }

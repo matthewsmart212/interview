@@ -97,7 +97,6 @@ export default function MockHubPage() {
           description="Practise with your AI interviewer"
         />
 
-        {/* hero */}
         <div className={`${s.heroCard} anim-fade-up`}>
           <div className={s.heroKicker}>AI mock interview</div>
           <div className={s.heroTitle}>
@@ -127,10 +126,7 @@ export default function MockHubPage() {
           )}
         </div>
 
-        {/* practise for a specific interview */}
-        <p className="section-title" style={{ marginTop: 26 }}>
-          Practise for an interview
-        </p>
+        <p className={s.sectionLabel}>Practise for an interview</p>
         {upcoming.length > 0 ? (
           <div className="stack">
             {upcoming.map((iv) => (
@@ -152,10 +148,7 @@ export default function MockHubPage() {
           </Link>
         )}
 
-        {/* generic quick practice */}
-        <p className="section-title" style={{ marginTop: 26 }}>
-          Just practising?
-        </p>
+        <p className={s.sectionLabel}>Just practising?</p>
         <div className={s.genericCard}>
           <div className={s.genericHead}>
             <span className={s.genericIcon}>
@@ -190,8 +183,7 @@ export default function MockHubPage() {
           <div className={s.genericActions}>
             <Link
               href={jd.trim() ? "/interview?jd=pasted" : "/interview"}
-              className="btn btn-primary"
-              style={{ flex: 1 }}
+              className={s.startPrimary}
             >
               <Mic size={17} />
               {jd.trim() ? "Start tailored mock" : "Start generic mock"}
@@ -199,9 +191,8 @@ export default function MockHubPage() {
           </div>
         </div>
 
-        {/* recent mocks */}
         <div className={s.sectionRow}>
-          <p className="section-title">Recent mocks</p>
+          <p className={s.sectionLabel}>Recent mocks</p>
           {totalMocks > 0 && (
             <Link href="/history" className={s.seeAll}>
               See all
@@ -232,7 +223,7 @@ export default function MockHubPage() {
             ))}
           </div>
         ) : (
-          <p className="page-sub">
+          <p className={s.emptyHint}>
             Your completed mocks will appear here with scores and feedback.
           </p>
         )}

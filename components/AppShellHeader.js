@@ -11,8 +11,12 @@ function showAppHeader(pathname) {
   return true;
 }
 
+function isMockHub(pathname) {
+  return pathname === "/mock" || pathname.startsWith("/mock/");
+}
+
 export default function AppShellHeader() {
   const pathname = usePathname();
   if (!showAppHeader(pathname)) return null;
-  return <AppHeader />;
+  return <AppHeader dark={isMockHub(pathname)} />;
 }

@@ -111,14 +111,18 @@ img {
   background: var(--bg);
 }
 
-/* Interview routes: no light grey peeking above the immersive background */
+/* Interview + mock hub: immersive dark purple shell */
 html:has(.interview-route),
 body:has(.interview-route),
-.app-shell:has(.interview-route) {
+.app-shell:has(.interview-route),
+html:has(.mock-route),
+body:has(.mock-route),
+.app-shell:has(.mock-route) {
   background-color: var(--interview-room) !important;
 }
 
-.interview-route {
+.interview-route,
+.mock-route {
   min-height: 100dvh;
   min-height: 100svh;
   background: var(--interview-room);
@@ -194,6 +198,53 @@ body:has(.interview-route),
 }
 .app-header-side.right {
   justify-content: flex-end;
+}
+.app-header-dark {
+  background: var(--interview-bar-theme);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+.app-header-dark .icon-btn {
+  color: #fff;
+}
+.mock-route .page-header {
+  background: transparent;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+.mock-route .page-header-title {
+  color: #fff;
+}
+.mock-route .page-header-sub {
+  color: rgba(255, 255, 255, 0.6);
+}
+.mock-route .page-header-icon {
+  background: linear-gradient(140deg, #7d5cf0 0%, #5b3ad6 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 20px rgba(91, 58, 214, 0.35);
+}
+.mock-route .has-app-header {
+  padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
+}
+.mock-route .phone {
+  background: var(--interview-room);
+}
+.mock-route .bottom-nav {
+  background: rgba(38, 30, 62, 0.96);
+  border-top-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+}
+.mock-route .nav-item {
+  color: rgba(255, 255, 255, 0.45);
+}
+.mock-route .nav-item.active {
+  color: #c4b5fd;
+}
+.mock-route .nav-item-mock span:last-child {
+  color: #fff;
+}
+.mock-route .nav-mock-btn {
+  border-color: var(--interview-room);
 }
 .has-app-header {
   padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
