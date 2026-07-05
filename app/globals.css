@@ -14,10 +14,17 @@
 
   --page-header-sub: rgba(255, 255, 255, 0.6);
 
-  --bg: #4a3d78;
-  --card: rgba(255, 255, 255, 0.09);
-  --card-border: rgba(255, 255, 255, 0.12);
-  --surface-2: rgba(255, 255, 255, 0.07);
+  /* same dark navy as the mock feedback screens */
+  --bg: #171226;
+  --bg-gradient: radial-gradient(
+      circle at 90% 0%,
+      rgba(108, 76, 230, 0.14),
+      rgba(108, 76, 230, 0) 42%
+    ),
+    linear-gradient(180deg, #1b1631, #131022);
+  --card: rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --surface-2: rgba(255, 255, 255, 0.06);
 
   --text: #f5f3fc;
   --text-2: #d3cdea;
@@ -105,24 +112,25 @@ img {
 /* ------- App shell (full screen) ------- */
 .app-shell {
   min-height: 100dvh;
-  background: var(--bg);
+  background: var(--bg-gradient);
+  background-color: var(--bg);
 }
 
-/* Interview + mock hub: immersive dark purple shell */
+/* Interview flow: immersive room shell (stage image covers it) */
 html:has(.interview-route),
 body:has(.interview-route),
-.app-shell:has(.interview-route),
-html:has(.mock-route),
-body:has(.mock-route),
-.app-shell:has(.mock-route) {
-  background-color: var(--interview-room) !important;
+.app-shell:has(.interview-route) {
+  background: var(--interview-room) !important;
+}
+
+.interview-route {
+  min-height: 100dvh;
+  min-height: 100svh;
+  background: var(--interview-room);
 }
 
 .interview-route,
 .mock-route {
-  min-height: 100dvh;
-  min-height: 100svh;
-  background: var(--interview-room);
   color-scheme: dark;
 }
 
@@ -130,7 +138,7 @@ body:has(.mock-route),
   position: relative;
   width: 100%;
   min-height: 100dvh;
-  background: var(--bg);
+  background: transparent;
   display: flex;
   flex-direction: column;
 }
@@ -711,7 +719,7 @@ body:has(.mock-route),
   box-shadow:
     0 10px 22px rgba(30, 16, 84, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.32);
-  border: 4px solid var(--interview-room);
+  border: 4px solid #261e3e;
   transition: transform 0.15s ease;
 }
 .nav-item-mock:active .nav-mock-btn {
