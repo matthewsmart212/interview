@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ChevronRight } from "../Icons";
+import {
+  ChevronRight,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Trophy,
+} from "../Icons";
 import CircularProgress from "../CircularProgress";
 import s from "./interview-card.module.css";
 
@@ -9,20 +15,29 @@ function cardDate(date) {
 
 function topPills(iv) {
   if (iv.status === "past") {
-    return [{ label: iv.outcome ?? "Completed", cls: "done" }];
+    const label = iv.outcome ?? "Completed";
+    const isOffer = /offer/i.test(label);
+    return [
+      {
+        label,
+        tone: isOffer ? "celebrate" : "success",
+        icon: isOffer ? Trophy : CheckCircle,
+      },
+    ];
   }
 
   const pills = [
     {
       label: `In ${iv.daysAway} days`,
-      cls: iv.daysAway <= 7 ? "soon" : "upcoming",
+      tone: iv.daysAway <= 7 ? "urgent" : "timeline",
+      icon: Clock,
     },
   ];
 
   if (iv.readiness >= 70) {
-    pills.push({ label: "Ready", cls: "ready" });
+    pills.push({ label: "Ready", tone: "success", icon: CheckCircle });
   } else if (iv.readiness < 50) {
-    pills.push({ label: "Needs prep", cls: "prep" });
+    pills.push({ label: "Needs prep", tone: "warn", icon: AlertCircle });
   }
 
   return pills;
@@ -34,15 +49,19 @@ export default function InterviewCard({ interview: iv, featured = false }) {
 
   return (
     <Link href={`/interviews/${iv.id}`} className={cardCls}>
-      <div className={s.topPills}>
-        {pills.map((pill) => (
-          <span
-            key={pill.label}
-            className={`status-pill ${s.pill} ${s[pill.cls]}`}
-          >
-            {pill.label}
-          </span>
-        ))}
+      <div className={s.pillRail} aria-label="Interview status">
+        {pills.map((pill) => {
+          const Icon = pill.icon;
+          return (
+            <span
+              key={pill.label}
+              className={`${s.pill} ${s[pill.tone]}`}
+            >
+              <Icon size={11} stroke={2.2} className={s.pillIcon} />
+              {pill.label}
+            </span>
+          );
+        })}
       </div>
 
       <span className={s.logo}>{iv.initials}</span>
