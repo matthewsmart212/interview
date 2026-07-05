@@ -89,9 +89,7 @@ export default function CvHubPage() {
                 className={s.tRow}
                 key={iv.id}
               >
-                <span className={s.tLogo} style={{ background: iv.accent }}>
-                  {iv.initials}
-                </span>
+                <span className={s.tLogo}>{iv.initials}</span>
                 <span className={s.tBody}>
                   <span className={s.tTitle}>
                     {iv.role} · {iv.company}

@@ -71,7 +71,8 @@
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  color: #fff;
+  background: var(--brand-050);
+  color: var(--brand);
   font-size: 16px;
   font-weight: 700;
   display: flex;
@@ -113,7 +114,7 @@
   padding: 12px 14px;
   font-size: 12.5px;
   line-height: 1.55;
-  color: var(--brand-700);
+  color: #d6c9fb;
 }
 
 /* ---------- start (have a CV?) ---------- */

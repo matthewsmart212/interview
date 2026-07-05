@@ -53,8 +53,8 @@ function ScoreChart() {
     <svg viewBox={`0 0 ${W} ${H}`} className={styles.chartSvg}>
       <defs>
         <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6c4ce6" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#6c4ce6" stopOpacity="0" />
+          <stop offset="0%" stopColor="#b3a0fb" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#b3a0fb" stopOpacity="0" />
         </linearGradient>
       </defs>
       {grid.map((g) => {
@@ -66,7 +66,7 @@ function ScoreChart() {
             y1={y}
             x2={padL + plotW}
             y2={y}
-            stroke="#ececf0"
+            stroke="rgba(255,255,255,0.14)"
             strokeWidth="1"
             strokeDasharray="3 4"
           />
@@ -76,20 +76,20 @@ function ScoreChart() {
       <path
         d={line}
         fill="none"
-        stroke="#6c4ce6"
+        stroke="#b3a0fb"
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       {pts.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r="3" fill="#6c4ce6" />
+        <circle key={i} cx={p[0]} cy={p[1]} r="3" fill="#b3a0fb" />
       ))}
       <circle
         cx={last[0]}
         cy={last[1]}
         r="5.5"
         fill="#fff"
-        stroke="#6c4ce6"
+        stroke="#b3a0fb"
         strokeWidth="3"
       />
     </svg>

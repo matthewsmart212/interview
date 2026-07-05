@@ -4,16 +4,16 @@ import Link from "next/link";
 import { Menu, Settings } from "./Icons";
 import Logo from "./Logo";
 
-export default function AppHeader({ dark = false }) {
+export default function AppHeader() {
   return (
-    <header className={`app-header${dark ? " app-header-dark" : ""}`}>
+    <header className="app-header">
       <div className="app-header-side">
         <button type="button" className="icon-btn" aria-label="Open menu">
           <Menu size={24} />
         </button>
       </div>
       <div className="app-header-logo">
-        <Logo size="md" priority />
+        <Logo size="md" priority className="logo-on-dark" />
       </div>
       <div className="app-header-side right">
         <Link href="/profile" className="icon-btn" aria-label="Settings">

@@ -123,7 +123,7 @@
   background: #fff;
   border-radius: 18px;
   padding: 16px;
-  color: var(--text);
+  color: #1b1b23;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 /* mock interview question screen tweaks */
@@ -163,7 +163,7 @@
 .qcardHead {
   display: flex;
   justify-content: flex-end;
-  color: var(--muted);
+  color: #8e8e98;
 }
 .qtext {
   font-size: 15.5px;

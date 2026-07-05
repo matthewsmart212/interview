@@ -20,7 +20,11 @@ export default function WelcomePage() {
           <div className={styles.hero}>
             <div className={styles.heroText}>
               <h1 className={styles.title}>
-                <Logo size="hero" priority className={styles.logo} />
+                <Logo
+                  size="hero"
+                  priority
+                  className={`${styles.logo} logo-on-dark`}
+                />
               </h1>
               <p className={styles.sub}>
                 Your AI interview coach that prepares you to get the job.

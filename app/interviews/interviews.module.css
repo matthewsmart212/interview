@@ -31,9 +31,11 @@
   align-items: center;
   gap: 14px;
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   padding: 15px 16px;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .logo {
   flex-shrink: 0;
@@ -79,7 +81,7 @@
   margin-top: 8px;
 }
 .countdown.soon {
-  color: #d97706;
+  color: #fbbf24;
   background: var(--amber-050);
 }
 .countdown.done {
@@ -347,7 +349,7 @@
 }
 .mockScore.low {
   background: var(--amber-050);
-  color: #d97706;
+  color: #fbbf24;
 }
 .mockBody {
   flex: 1;
@@ -465,6 +467,6 @@
   padding: 12px 14px;
   font-size: 12.5px;
   line-height: 1.55;
-  color: var(--brand-700);
+  color: #d6c9fb;
   margin-top: 14px;
 }

@@ -5,9 +5,11 @@
   align-items: center;
   gap: 14px;
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   padding: 14px 16px;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .score {
   flex-shrink: 0;
@@ -28,7 +30,7 @@
 }
 .score.low {
   background: var(--amber-050);
-  color: #d97706;
+  color: #fbbf24;
 }
 .body {
   flex: 1;
@@ -96,6 +98,7 @@
 .fact {
   flex: 1;
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: 14px;
   box-shadow: var(--shadow-sm);
   padding: 12px 8px;

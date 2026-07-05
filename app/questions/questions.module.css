@@ -3,9 +3,11 @@
   gap: 12px;
   align-items: flex-start;
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .qbody {
   flex: 1;

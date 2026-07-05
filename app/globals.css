@@ -1,40 +1,36 @@
 :root {
-  --brand: #6c4ce6;
+  /* dark purple shell — the mock-interview look, app-wide */
+  --brand: #8b6cf5;
+  --brand-bright: #7d5cf0;
   --interview-room: #4a3d78;
   /* solid tint matching the frosted top bar over the room (for iOS status bar) */
   --interview-bar-theme: #302651;
   --interview-bar-tint: rgba(20, 14, 38, 0.45);
-  --brand-600: #6042d8;
-  --brand-700: #5637c9;
-  --brand-050: #f1edfe;
-  --brand-100: #e7e0fd;
-  --brand-200: #d6c9fb;
+  --brand-600: #7a58f0;
+  --brand-700: #6a48e0;
+  --brand-050: rgba(139, 108, 245, 0.2);
+  --brand-100: rgba(139, 108, 245, 0.3);
+  --brand-200: rgba(139, 108, 245, 0.48);
 
-  --page-header-bg: linear-gradient(
-    160deg,
-    #ffffff 0%,
-    #f6f3fe 38%,
-    #ebe4fc 100%
-  );
-  --page-header-border: rgba(108, 76, 230, 0.14);
-  --page-header-sub: rgba(70, 52, 140, 0.72);
+  --page-header-sub: rgba(255, 255, 255, 0.6);
 
-  --bg: #f2f2f5;
-  --card: #ffffff;
-  --surface-2: #f7f7f9;
+  --bg: #4a3d78;
+  --card: rgba(255, 255, 255, 0.09);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --surface-2: rgba(255, 255, 255, 0.07);
 
-  --text: #1b1b23;
-  --text-2: #55555f;
-  --muted: #8e8e98;
-  --border: #ececf0;
-  --divider: #d0d0d8;
+  --text: #f5f3fc;
+  --text-2: #d3cdea;
+  --muted: #a89fd2;
+  --border: rgba(255, 255, 255, 0.13);
+  --divider: rgba(255, 255, 255, 0.16);
 
-  --green: #22c55e;
-  --green-050: #e9faf0;
-  --amber: #f5a524;
-  --amber-050: #fef3e2;
-  --red: #ef4444;
-  --blue: #3b82f6;
+  --green: #4ade80;
+  --green-050: rgba(34, 197, 94, 0.18);
+  --amber: #fbbf24;
+  --amber-050: rgba(245, 165, 36, 0.18);
+  --red: #f87171;
+  --blue: #60a5fa;
 
   --dark-bg: #26252e;
   --dark-surface: #34333d;
@@ -47,9 +43,9 @@
   --radius-lg: 22px;
   --radius-xl: 28px;
 
-  --shadow-sm: 0 1px 2px rgba(20, 20, 40, 0.05);
-  --shadow: 0 8px 24px rgba(30, 20, 70, 0.08);
-  --shadow-lg: 0 18px 45px rgba(40, 25, 90, 0.16);
+  --shadow-sm: 0 2px 8px rgba(10, 6, 28, 0.16);
+  --shadow: 0 10px 26px rgba(10, 6, 28, 0.22);
+  --shadow-lg: 0 18px 45px rgba(10, 6, 28, 0.34);
 
   --nav-height: 74px;
   --app-header-bar: 52px;
@@ -80,6 +76,7 @@ body {
   min-height: -webkit-fill-available;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  color-scheme: dark;
 }
 
 a {
@@ -155,14 +152,14 @@ body:has(.mock-route),
 }
 
 .screen-pad {
-  padding: 18px 20px 28px;
+  padding: 18px 20px calc(48px + env(safe-area-inset-bottom));
 }
 
 .has-nav {
-  padding-bottom: calc(var(--nav-height) + 24px + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--nav-height) + 44px + env(safe-area-inset-bottom));
 }
 
-/* ------- App header (fixed, light shell) ------- */
+/* ------- App header (fixed, dark shell) ------- */
 .app-header {
   position: fixed;
   top: 0;
@@ -174,9 +171,12 @@ body:has(.mock-route),
   gap: 12px;
   padding: env(safe-area-inset-top) 18px 10px;
   height: calc(var(--app-header-bar) + env(safe-area-inset-top));
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
+  background: var(--interview-bar-theme);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
+}
+.app-header .icon-btn {
+  color: #fff;
 }
 .app-header-logo {
   flex: 1;
@@ -199,55 +199,14 @@ body:has(.mock-route),
 .app-header-side.right {
   justify-content: flex-end;
 }
-.app-header-dark {
-  background: var(--interview-bar-theme);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-}
-.app-header-dark .icon-btn {
-  color: #fff;
-}
-.mock-route .page-header {
-  background: transparent;
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-  box-shadow: none;
-}
-.mock-route .page-header-title {
-  color: #fff;
-}
-.mock-route .page-header-sub {
-  color: rgba(255, 255, 255, 0.6);
-}
-.mock-route .page-header-icon {
-  background: linear-gradient(140deg, #7d5cf0 0%, #5b3ad6 100%);
-  color: #fff;
-  border: none;
-  box-shadow: 0 10px 20px rgba(91, 58, 214, 0.35);
-}
-.mock-route .has-app-header {
-  padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
-}
-.mock-route .phone {
-  background: var(--interview-room);
-}
-.mock-route .bottom-nav {
-  background: rgba(38, 30, 62, 0.96);
-  border-top-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-}
-.mock-route .nav-item {
-  color: rgba(255, 255, 255, 0.45);
-}
-.mock-route .nav-item.active {
-  color: #c4b5fd;
-}
-.mock-route .nav-item-mock span:last-child {
-  color: #fff;
-}
-.mock-route .nav-mock-btn {
-  border-color: var(--interview-room);
-}
 .has-app-header {
   padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
+}
+
+/* white logo silhouette for dark surfaces */
+.logo-on-dark {
+  filter: brightness(0) invert(1);
+  opacity: 0.96;
 }
 
 /* ------- Page title row (below app header) ------- */
@@ -258,7 +217,7 @@ body:has(.mock-route),
   gap: 14px;
   margin: 0 -20px 18px;
   padding: 15px 20px 16px;
-  background: var(--card);
+  background: rgba(0, 0, 0, 0.12);
   border-bottom: 1px solid var(--divider);
 }
 .page-header-back {
@@ -301,7 +260,7 @@ body:has(.mock-route),
 }
 .page-header-sub {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--page-header-sub);
   margin: 3px 0 0;
   line-height: 1.4;
   text-align: left;
@@ -437,11 +396,13 @@ body:has(.mock-route),
   width: 100%;
 }
 
-/* ------- Cards ------- */
+/* ------- Cards (frosted glass on dark) ------- */
 .card {
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
   padding: 18px;
 }
 .card-flat {
@@ -506,13 +467,17 @@ body:has(.mock-route),
 .select {
   width: 100%;
   border: 1px solid var(--border);
-  background: var(--card);
+  background: rgba(0, 0, 0, 0.18);
   border-radius: 14px;
   padding: 14px 15px;
   font-size: 15px;
   font-family: inherit;
   color: var(--text);
   outline: none;
+}
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
 }
 .input:focus,
 .textarea:focus {
@@ -574,7 +539,7 @@ body:has(.mock-route),
 }
 .chip {
   flex-shrink: 0;
-  border: 1px solid var(--border);
+  border: 1px solid var(--card-border);
   background: var(--card);
   color: var(--text-2);
   border-radius: 999px;
@@ -618,9 +583,11 @@ body:has(.mock-route),
   align-items: center;
   gap: 14px;
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   padding: 15px 16px;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .action-row .ar-icon {
   width: 44px;
@@ -701,9 +668,9 @@ body:has(.mock-route),
   right: 0;
   bottom: 0;
   height: calc(var(--nav-height) + env(safe-area-inset-bottom));
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid var(--border);
+  background: rgba(38, 30, 62, 0.96);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: flex-start;
   justify-content: space-around;
@@ -716,14 +683,14 @@ body:has(.mock-route),
   align-items: center;
   gap: 3px;
   font-size: 10.5px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.48);
   font-weight: 500;
   border: none;
   background: none;
   flex: 1;
 }
 .nav-item.active {
-  color: var(--brand);
+  color: #c4b5fd;
 }
 
 /* center standout mock tab */
@@ -742,9 +709,9 @@ body:has(.mock-route),
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 10px 22px rgba(91, 58, 214, 0.4),
+    0 10px 22px rgba(30, 16, 84, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.32);
-  border: 4px solid var(--bg);
+  border: 4px solid var(--interview-room);
   transition: transform 0.15s ease;
 }
 .nav-item-mock:active .nav-mock-btn {
@@ -752,10 +719,10 @@ body:has(.mock-route),
 }
 .nav-item-mock span:last-child {
   font-weight: 600;
-  color: var(--brand);
+  color: #fff;
 }
 .nav-item-mock:not(.active) span:last-child {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ------- Avatar / placeholder ------- */
@@ -763,12 +730,12 @@ body:has(.mock-route),
   position: relative;
   background: repeating-linear-gradient(
     45deg,
-    #e7e4f5,
-    #e7e4f5 12px,
-    #ded9f2 12px,
-    #ded9f2 24px
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.08) 12px,
+    rgba(255, 255, 255, 0.14) 12px,
+    rgba(255, 255, 255, 0.14) 24px
   );
-  color: #6c4ce6;
+  color: #d6c9fb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -778,7 +745,7 @@ body:has(.mock-route),
   overflow: hidden;
 }
 .placeholder span {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(20, 14, 38, 0.55);
   padding: 4px 10px;
   border-radius: 999px;
   backdrop-filter: blur(2px);
@@ -830,13 +797,14 @@ body:has(.mock-route),
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-sm);
   border-radius: 999px;
   padding: 6px 11px;
   font-weight: 700;
   font-size: 13px;
-  color: #f97316;
+  color: #fdba74;
 }
 
 /* tag under a question */
@@ -949,9 +917,11 @@ body:has(.mock-route),
 }
 .stat {
   background: var(--card);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
 }
 .stat .s-num {
   font-size: 24px;

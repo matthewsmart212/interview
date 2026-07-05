@@ -89,7 +89,7 @@
 }
 .histScore.low {
   background: var(--amber-050);
-  color: #d97706;
+  color: #fbbf24;
 }
 .histBody {
   flex: 1;

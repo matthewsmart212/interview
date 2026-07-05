@@ -3,37 +3,23 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const INTERVIEW = "#302651";
-const LIGHT = "#f2f2f5";
-
-/** Immersive mock-interview flow + mock hub. */
-function isMockInterviewRoute(pathname) {
-  return (
-    pathname === "/interview" ||
-    pathname.startsWith("/interview/") ||
-    pathname === "/mock" ||
-    pathname.startsWith("/mock/")
-  );
-}
+const BAR = "#302651";
+const PAGE = "#4a3d78";
 
 export default function StatusBarTheme() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isInterview = isMockInterviewRoute(pathname);
-    const theme = isInterview ? INTERVIEW : LIGHT;
-    const pageBg = isInterview ? "#4a3d78" : LIGHT;
-
     let meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) {
       meta = document.createElement("meta");
       meta.setAttribute("name", "theme-color");
       document.head.appendChild(meta);
     }
-    meta.setAttribute("content", theme);
+    meta.setAttribute("content", BAR);
 
-    document.documentElement.style.backgroundColor = pageBg;
-    document.body.style.backgroundColor = pageBg;
+    document.documentElement.style.backgroundColor = PAGE;
+    document.body.style.backgroundColor = PAGE;
   }, [pathname]);
 
   return null;
