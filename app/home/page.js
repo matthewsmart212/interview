@@ -32,7 +32,9 @@ const QUICK_ACTIONS = [
 ];
 
 export default function HomePage() {
-  const next = INTERVIEWS.find((i) => i.status === "upcoming");
+  const next = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
+    (a, b) => a.daysAway - b.daysAway
+  )[0];
   const upcomingCount = INTERVIEWS.filter((i) => i.status === "upcoming").length;
   const lastMock = MOCK_HISTORY[0];
 
