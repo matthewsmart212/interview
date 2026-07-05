@@ -7,6 +7,10 @@ import { Plus, Calendar, ChevronRight } from "../../components/Icons";
 import { INTERVIEWS } from "../../lib/app-data";
 import s from "./interviews.module.css";
 
+function cardDate(date) {
+  return date.replace(/\s+\d{4}$/, "");
+}
+
 function countdown(iv) {
   if (iv.status === "past") return { text: iv.outcome ?? "Completed", cls: "done" };
   if (iv.daysAway <= 7) return { text: `in ${iv.daysAway} days`, cls: "soon" };
@@ -17,13 +21,11 @@ function InterviewCard({ iv }) {
   const cd = countdown(iv);
   return (
     <Link href={`/interviews/${iv.id}`} className={s.card}>
-      <span className={s.logo} style={{ background: iv.accent }}>
-        {iv.initials}
-      </span>
+      <span className={s.logo}>{iv.initials}</span>
       <span className={s.body}>
         <span className={s.role}>{iv.role}</span>
         <span className={s.meta}>
-          {iv.company} · {iv.type} · {iv.date}
+          {iv.company} · {iv.type} · {cardDate(iv.date)}
         </span>
         <span className={`${s.countdown} ${cd.cls ? s[cd.cls] : ""}`}>
           {cd.text}

@@ -59,11 +59,6 @@ export default function HomePage() {
               ? `Your ${next.company} interview is in ${next.daysAway} days.`
               : "Let's get you interview-ready."
           }
-          right={
-            <span className="streak">
-              <span aria-hidden>🔥</span> {USER.streak}
-            </span>
-          }
         />
 
         {next ? (
