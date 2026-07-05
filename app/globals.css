@@ -725,6 +725,9 @@ body:has(.interview-route),
 .nav-item > svg {
   transform: translateY(8px);
 }
+.nav-item > span:last-child {
+  transform: translateY(8px);
+}
 .nav-item.active {
   color: #c4b5fd;
 }
