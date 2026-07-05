@@ -128,12 +128,19 @@
   gap: 15px;
   width: 100%;
   text-align: left;
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 92, 255, 0.12),
+      rgba(124, 92, 255, 0) 48%
+    ),
+    var(--card);
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  border-radius: var(--radius-card);
   padding: 20px 18px;
   margin-bottom: 14px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm), var(--card-inner);
+  backdrop-filter: blur(14px);
 }
 .bigChoiceIcon {
   flex-shrink: 0;

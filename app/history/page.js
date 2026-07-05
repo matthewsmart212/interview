@@ -1,11 +1,14 @@
 import Link from "next/link";
-import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
-import BottomNav from "../../components/BottomNav";
+import {
+  AppShell,
+  EmptyStateCard,
+  PrimaryButton,
+  PageSection,
+} from "../../components/ui";
 import { ChevronRight, Mic } from "../../components/Icons";
 import { MOCK_HISTORY } from "../../lib/app-data";
 import s from "./history.module.css";
-import iv from "../interviews/interviews.module.css";
 
 function scoreCls(score) {
   if (score >= 80) return "good";
@@ -15,35 +18,29 @@ function scoreCls(score) {
 
 export default function HistoryPage() {
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          icon="mic"
-          title="Mock History"
-          description="Revisit feedback from practice sessions"
-          back
-          backHref="/progress"
-        />
-        {MOCK_HISTORY.length === 0 ? (
-          <div className={iv.empty}>
-            <span className={iv.emptyIcon}>
-              <Mic size={30} />
-            </span>
-            <div className={iv.emptyTitle}>No mock interviews yet</div>
-            <p className={iv.emptySub}>
-              Your completed practice sessions will appear here so you can
-              revisit them any time.
-            </p>
-            <Link href="/mock" className="btn btn-primary">
-              Start your first mock
-            </Link>
-          </div>
-        ) : (
-          <>
-            <p className="page-sub" style={{ marginBottom: 16 }}>
-              Every mock you&apos;ve completed — tap one to revisit the
-              feedback.
-            </p>
+    <AppShell navActive="progress">
+      <PageHeader
+        icon="mic"
+        title="Mock History"
+        description="Revisit feedback from practice sessions"
+        back
+        backHref="/progress"
+      />
+
+      {MOCK_HISTORY.length === 0 ? (
+        <EmptyStateCard
+          icon={Mic}
+          title="No mock interviews yet"
+          description="Your completed practice sessions will appear here so you can revisit them any time."
+        >
+          <PrimaryButton href="/mock">Start your first mock</PrimaryButton>
+        </EmptyStateCard>
+      ) : (
+        <>
+          <p className="page-sub" style={{ marginBottom: 16 }}>
+            Every mock you&apos;ve completed — tap one to revisit the feedback.
+          </p>
+          <PageSection>
             <div className="stack">
               {MOCK_HISTORY.map((mk) => (
                 <Link href={`/history/${mk.id}`} className={s.row} key={mk.id}>
@@ -64,14 +61,13 @@ export default function HistoryPage() {
                 </Link>
               ))}
             </div>
+          </PageSection>
 
-            <Link href="/mock" className="btn btn-primary" style={{ marginTop: 24 }}>
-              <Mic size={18} /> Start a new mock interview
-            </Link>
-          </>
-        )}
-      </div>
-      <BottomNav active="progress" />
-    </Phone>
+          <PrimaryButton href="/mock" style={{ marginTop: 24 }}>
+            <Mic size={18} /> Start a new mock interview
+          </PrimaryButton>
+        </>
+      )}
+    </AppShell>
   );
 }

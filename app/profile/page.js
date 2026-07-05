@@ -1,7 +1,6 @@
 import Link from "next/link";
-import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
-import BottomNav from "../../components/BottomNav";
+import { AppShell, PageSection } from "../../components/ui";
 import Avatar from "../../components/Avatar";
 import {
   Settings,
@@ -36,7 +35,7 @@ const SUPPORT = [
 
 function Menu({ items }) {
   return (
-    <div className={s.menu}>
+    <div className={`card ${s.menu}`}>
       {items.map(({ Icon, label, href }) => (
         <Link className={s.item} key={label} href={href}>
           <span className={s.mi}>
@@ -52,55 +51,53 @@ function Menu({ items }) {
 
 export default function ProfilePage() {
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          icon="user"
-          title="Profile"
-          description="Account, preferences and subscription"
-        />
-        <div className={s.header}>
-          <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
-          <div className="grow">
-            <div className={s.name}>Alex Johnson</div>
-            <div className={s.email}>alex.johnson@email.com</div>
-            <span className={`badge badge-brand ${s.role}`}>
-              Customer Service Advisor
-            </span>
-          </div>
-          <button className={s.editBtn}>
-            <Edit size={15} /> Edit
-          </button>
+    <AppShell>
+      <PageHeader
+        icon="user"
+        title="Profile"
+        description="Account, preferences and subscription"
+      />
+
+      <div className={`card ${s.header}`}>
+        <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
+        <div className="grow">
+          <div className={s.name}>Alex Johnson</div>
+          <div className={s.email}>alex.johnson@email.com</div>
+          <span className={`badge badge-brand ${s.role}`}>
+            Customer Service Advisor
+          </span>
         </div>
-
-        <div className={s.pro}>
-          <Sparkle size={24} />
-          <div className={s.pt}>
-            <b>Upgrade to Pro</b>
-            <span>Unlimited mock interviews & CV reviews</span>
-          </div>
-          <button className={s.go}>Upgrade</button>
-        </div>
-
-        <div className={s.groupLabel}>Account</div>
-        <Menu items={ACCOUNT} />
-
-        <div className={s.groupLabel}>Preferences</div>
-        <Menu items={PREFS} />
-
-        <div className={s.groupLabel}>Support</div>
-        <Menu items={SUPPORT} />
-
-        <div className={s.menu} style={{ marginTop: 22 }}>
-          <Link className={`${s.item} ${s.danger}`} href="/">
-            <span className={s.mi}>
-              <LogOut size={19} />
-            </span>
-            <span className={s.lbl}>Log out</span>
-          </Link>
-        </div>
+        <button type="button" className={s.editBtn}>
+          <Edit size={15} /> Edit
+        </button>
       </div>
-      <BottomNav />
-    </Phone>
+
+      <div className={s.pro}>
+        <Sparkle size={24} />
+        <div className={s.pt}>
+          <b>Upgrade to Pro</b>
+          <span>Unlimited mock interviews & CV reviews</span>
+        </div>
+        <button type="button" className={s.go}>
+          Upgrade
+        </button>
+      </div>
+
+      <PageSection title="Account">
+        <Menu items={ACCOUNT} />
+      </PageSection>
+
+      <PageSection title="Preferences">
+        <Menu items={PREFS} />
+      </PageSection>
+
+      <PageSection title="Support">
+        <Menu items={SUPPORT} />
+      </PageSection>
+
+      <button type="button" className={s.logout}>
+        <LogOut size={18} /> Log out
+      </button>
+    </AppShell>
   );
 }

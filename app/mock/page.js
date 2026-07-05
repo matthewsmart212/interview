@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
-import BottomNav from "../../components/BottomNav";
+import { AppShell, FeatureCard, PageSection } from "../../components/ui";
 import {
   Mic,
   Sparkle,
@@ -32,6 +31,9 @@ function JobPracticeCard({ iv }) {
       <div className={s.jobTop}>
         <span className={s.jobLogo}>{iv.initials}</span>
         <span className={s.jobBody}>
+          <span className={`status-pill ${iv.daysAway <= 7 ? "prep" : "upcoming"}`}>
+            {iv.daysAway <= 7 ? "Soon" : "Upcoming"}
+          </span>
           <span className={s.jobRole}>
             {iv.role} · {iv.company}
           </span>
@@ -48,9 +50,6 @@ function JobPracticeCard({ iv }) {
             )}
           </span>
         </span>
-        {iv.daysAway > 0 && iv.daysAway <= 7 && (
-          <span className={s.jobSoon}>Soon</span>
-        )}
       </div>
 
       <div className={s.jobFoot}>
@@ -89,44 +88,43 @@ export default function MockHubPage() {
   const recent = MOCK_HISTORY.slice(0, 3);
 
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          icon="mic"
-          title="Mock Interview"
-          description="Practise with your AI interviewer"
-        />
+    <AppShell navActive="mock">
+      <PageHeader
+        icon="mic"
+        title="Mock Interview"
+        description="Practise with your AI interviewer"
+      />
 
-        <div className={`${s.heroCard} anim-fade-up`}>
-          <div className={s.heroKicker}>AI mock interview</div>
-          <div className={s.heroTitle}>
-            {totalMocks > 0
-              ? "Every practice run makes the real one easier."
-              : "Your first mock takes about 10 minutes."}
-          </div>
-          <p className={s.heroSub}>
-            Answer out loud, get instant feedback on structure, relevance and
-            clarity — just like the real thing.
-          </p>
-          {totalMocks > 0 && (
-            <div className={s.heroStats}>
-              <div className={s.heroStat}>
-                <b>{totalMocks}</b>
-                <span>mocks done</span>
-              </div>
-              <div className={s.heroStat}>
-                <b>{avgScore}</b>
-                <span>avg score</span>
-              </div>
-              <div className={s.heroStat}>
-                <b>{bestScore}</b>
-                <span>best score</span>
-              </div>
+      <FeatureCard
+        variant="hero"
+        kicker="AI mock interview"
+        title={
+          totalMocks > 0
+            ? "Every practice run makes the real one easier."
+            : "Your first mock takes about 10 minutes."
+        }
+        description="Answer out loud, get instant feedback on structure, relevance and clarity — just like the real thing."
+        className="anim-fade-up"
+      >
+        {totalMocks > 0 && (
+          <div className={s.heroStats}>
+            <div className={s.heroStat}>
+              <b>{totalMocks}</b>
+              <span>mocks done</span>
             </div>
-          )}
-        </div>
+            <div className={s.heroStat}>
+              <b>{avgScore}</b>
+              <span>avg score</span>
+            </div>
+            <div className={s.heroStat}>
+              <b>{bestScore}</b>
+              <span>best score</span>
+            </div>
+          </div>
+        )}
+      </FeatureCard>
 
-        <p className={s.sectionLabel}>Practise for an interview</p>
+      <PageSection title="Practise for an interview">
         {upcoming.length > 0 ? (
           <div className="stack">
             {upcoming.map((iv) => (
@@ -147,8 +145,9 @@ export default function MockHubPage() {
             <Plus size={18} className="chev" />
           </Link>
         )}
+      </PageSection>
 
-        <p className={s.sectionLabel}>Just practising?</p>
+      <PageSection title="Just practising?">
         <div className={s.genericCard}>
           <div className={s.genericHead}>
             <span className={s.genericIcon}>
@@ -157,8 +156,8 @@ export default function MockHubPage() {
             <div style={{ flex: 1 }}>
               <div className={s.genericTitle}>Quick generic mock</div>
               <div className={s.genericSub}>
-                Not tied to a specific job — great all-round interview
-                questions to warm up with.
+                Not tied to a specific job — great all-round interview questions
+                to warm up with.
               </div>
             </div>
           </div>
@@ -190,15 +189,18 @@ export default function MockHubPage() {
             </Link>
           </div>
         </div>
+      </PageSection>
 
-        <div className={s.sectionRow}>
-          <p className={s.sectionLabel}>Recent mocks</p>
-          {totalMocks > 0 && (
-            <Link href="/history" className={s.seeAll}>
+      <PageSection
+        title="Recent mocks"
+        action={
+          totalMocks > 0 ? (
+            <Link href="/history" className="link-btn">
               See all
             </Link>
-          )}
-        </div>
+          ) : null
+        }
+      >
         {recent.length > 0 ? (
           <div className="stack">
             {recent.map((mk) => (
@@ -227,9 +229,7 @@ export default function MockHubPage() {
             Your completed mocks will appear here with scores and feedback.
           </p>
         )}
-      </div>
-
-      <BottomNav active="mock" />
-    </Phone>
+      </PageSection>
+    </AppShell>
   );
 }

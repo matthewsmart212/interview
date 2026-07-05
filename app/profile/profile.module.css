@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 18px;
+  margin-bottom: 4px;
 }
 .pic {
   width: 64px;
@@ -79,10 +81,7 @@
   margin: 22px 4px 10px;
 }
 .menu {
-  background: var(--card);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  padding: 0;
   overflow: hidden;
 }
 .item {

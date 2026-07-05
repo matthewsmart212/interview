@@ -5,10 +5,6 @@
   max-width: 100%;
 }
 
-.homeScroll {
-  padding-bottom: calc(var(--nav-height) + 72px + env(safe-area-inset-bottom));
-}
-
 .choiceDivider {
   border: none;
   height: 1px;
@@ -25,7 +21,7 @@
 }
 
 .quickSection {
-  margin-top: 28px;
+  margin-top: 32px;
   padding-bottom: 8px;
 }
 

@@ -1,0 +1,105 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 92, 255, 0.14),
+      rgba(124, 92, 255, 0) 52%
+    ),
+    var(--card);
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  box-shadow: var(--shadow-sm), var(--card-inner);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.card:active {
+  transform: scale(0.99);
+}
+
+.logo {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 92, 255, 0.2);
+  color: #ddd6fe;
+  font-size: 18px;
+  font-weight: 700;
+  border: 1px solid rgba(196, 181, 253, 0.14);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.body :global(.status-pill) {
+  margin-bottom: 6px;
+}
+
+.role {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.countdown {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--brand-050);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-top: 8px;
+}
+
+.countdown.soon {
+  color: #fbbf24;
+  background: var(--amber-050);
+}
+
+.countdown.done {
+  color: var(--green);
+  background: var(--green-050);
+}
+
+.side {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.readyMini {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.readyMini b {
+  color: var(--text);
+  font-weight: 700;
+}

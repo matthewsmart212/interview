@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
-import BottomNav from "../../components/BottomNav";
-import { Mic, Target, Trophy, Clock, ChevronRight, BarChart } from "../../components/Icons";
+import { AppShell, PageSection, ProgressCard } from "../../components/ui";
+import { Mic, Target, Trophy, Clock, ChevronRight } from "../../components/Icons";
 import { MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./progress.module.css";
 
@@ -98,14 +97,14 @@ function ScoreChart() {
 
 export default function ProgressPage() {
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          icon="barChart"
-          title="Your Progress"
-          description="Stats, skills and mock history"
-        />
-        <p className="section-title">Your Stats</p>
+    <AppShell navActive="progress">
+      <PageHeader
+        icon="barChart"
+        title="Your Progress"
+        description="Stats, skills and mock history"
+      />
+
+      <PageSection title="Your stats">
         <div className="stats-grid">
           {STATS.map(({ Icon, num, lab }) => (
             <div className="stat" key={lab}>
@@ -117,12 +116,10 @@ export default function ProgressPage() {
             </div>
           ))}
         </div>
+      </PageSection>
 
-        <div className={`card ${styles.chartCard}`} style={{ marginTop: 20 }}>
-          <div className={styles.chartHead}>
-            <span className="t">Score Over Time</span>
-            <span className={styles.endBadge}>79%</span>
-          </div>
+      <PageSection>
+        <ProgressCard title="Score over time" badge="79%">
           <div className={styles.chartWrap}>
             <ScoreChart />
             <div className={styles.xlabels}>
@@ -131,11 +128,10 @@ export default function ProgressPage() {
               ))}
             </div>
           </div>
-        </div>
+        </ProgressCard>
+      </PageSection>
 
-        <p className="section-title" style={{ marginTop: 24 }}>
-          Top Skills
-        </p>
+      <PageSection title="Top skills">
         <div className="card">
           {SKILLS.map((sk) => (
             <div className={styles.skillRow} key={sk.name}>
@@ -149,15 +145,16 @@ export default function ProgressPage() {
             </div>
           ))}
         </div>
+      </PageSection>
 
-        <div className={styles.histHead}>
-          <p className="section-title" style={{ marginBottom: 0 }}>
-            Recent Mock Interviews
-          </p>
+      <PageSection
+        title="Recent mock interviews"
+        action={
           <Link href="/history" className="link-btn">
             See all
           </Link>
-        </div>
+        }
+      >
         <div className="card">
           {MOCK_HISTORY.slice(0, 3).map((mk) => (
             <Link href={`/history/${mk.id}`} className={styles.histRow} key={mk.id}>
@@ -180,8 +177,7 @@ export default function ProgressPage() {
             </Link>
           ))}
         </div>
-      </div>
-      <BottomNav active="progress" />
-    </Phone>
+      </PageSection>
+    </AppShell>
   );
 }

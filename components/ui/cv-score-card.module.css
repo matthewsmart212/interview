@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 92, 255, 0.16),
+      rgba(124, 92, 255, 0) 48%
+    ),
+    var(--card);
+  border-color: rgba(167, 139, 250, 0.18);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(124, 92, 255, 0.2);
+  color: #ddd6fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(196, 181, 253, 0.14);
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileName {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.scorePill {
+  flex-shrink: 0;
+  text-align: center;
+  background: rgba(124, 92, 255, 0.22);
+  color: #ede9fe;
+  border: 1px solid rgba(196, 181, 253, 0.2);
+  border-radius: 14px;
+  padding: 8px 12px;
+}
+
+.scorePill b {
+  display: block;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.scorePill span {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  margin-top: 3px;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}

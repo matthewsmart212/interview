@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
-import BottomNav from "../../components/BottomNav";
+import { AppShell } from "../../components/ui";
 import { Bookmark } from "../../components/Icons";
 import s from "./questions.module.css";
 
@@ -29,48 +28,48 @@ export default function QuestionsPage() {
       : QUESTIONS.filter((x) => x.cat === filter);
 
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          icon="messageCircle"
-          title="Interview Questions"
-          description="Role-specific questions to practise"
-          back
-          backHref="/home"
-        />
-        <div className="chips" style={{ marginBottom: 16 }}>
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              className={`chip${filter === f ? " active" : ""}`}
-              onClick={() => setFilter(f)}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+    <AppShell>
+      <PageHeader
+        icon="messageCircle"
+        title="Interview Questions"
+        description="Role-specific questions to practise"
+        back
+        backHref="/home"
+      />
 
-        <div className="stack">
-          {list.map((item) => (
-            <div className={s.qcard} key={item.q}>
-              <div className={s.qbody}>
-                <div className={s.qtext}>{item.q}</div>
-                <span className="tag">{item.cat}</span>
-              </div>
-              <button
-                className={`${s.mark}${saved[item.q] ? " " + s.on : ""}`}
-                aria-label="Save question"
-                onClick={() =>
-                  setSaved((p) => ({ ...p, [item.q]: !p[item.q] }))
-                }
-              >
-                <Bookmark size={20} filled={!!saved[item.q]} />
-              </button>
-            </div>
-          ))}
-        </div>
+      <div className="chips" style={{ marginBottom: 16 }}>
+        {FILTERS.map((f) => (
+          <button
+            key={f}
+            type="button"
+            className={`chip${filter === f ? " active" : ""}`}
+            onClick={() => setFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
       </div>
-      <BottomNav />
-    </Phone>
+
+      <div className="stack">
+        {list.map((item) => (
+          <div className={s.qcard} key={item.q}>
+            <div className={s.qbody}>
+              <div className={s.qtext}>{item.q}</div>
+              <span className="tag">{item.cat}</span>
+            </div>
+            <button
+              type="button"
+              className={`${s.mark}${saved[item.q] ? " " + s.on : ""}`}
+              aria-label="Save question"
+              onClick={() =>
+                setSaved((p) => ({ ...p, [item.q]: !p[item.q] }))
+              }
+            >
+              <Bookmark size={20} filled={!!saved[item.q]} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </AppShell>
   );
 }
