@@ -12,7 +12,9 @@ import { INTERVIEWS } from "../../lib/app-data";
 import s from "./interviews.module.css";
 
 export default function InterviewsPage() {
-  const upcoming = INTERVIEWS.filter((i) => i.status === "upcoming");
+  const upcoming = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
+    (a, b) => a.daysAway - b.daysAway
+  );
   const past = INTERVIEWS.filter((i) => i.status === "past");
 
   return (
@@ -38,17 +40,17 @@ export default function InterviewsPage() {
         </EmptyStateCard>
       ) : (
         <>
-          <PageSection title="Upcoming">
-            <div className="stack">
-              {upcoming.map((iv) => (
-                <InterviewCard interview={iv} key={iv.id} />
+          <PageSection title="Upcoming interviews">
+            <div className={`stack ${s.interviewStack}`}>
+              {upcoming.map((iv, i) => (
+                <InterviewCard interview={iv} key={iv.id} featured={i === 0} />
               ))}
             </div>
           </PageSection>
 
           {past.length > 0 && (
             <PageSection title="Past interviews">
-              <div className="stack">
+              <div className={`stack ${s.interviewStack}`}>
                 {past.map((iv) => (
                   <InterviewCard interview={iv} key={iv.id} />
                 ))}

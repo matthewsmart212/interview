@@ -25,7 +25,12 @@
   box-shadow: var(--glow-purple-sm);
 }
 
-/* interview list card */
+.interviewStack {
+  padding-top: 6px;
+  gap: 14px;
+}
+
+/* interview list card (legacy — detail subpages) */
 .card {
   display: flex;
   align-items: center;
