@@ -198,8 +198,9 @@ body:has(.interview-route),
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 2px 0 20px;
-  padding: 0;
+  margin: 0 0 18px;
+  padding: 15px 0 16px;
+  border-bottom: 1px solid var(--border);
 }
 .page-header-back {
   flex-shrink: 0;
