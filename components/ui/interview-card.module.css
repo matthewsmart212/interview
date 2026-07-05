@@ -29,55 +29,68 @@
   background:
     radial-gradient(
       circle at 88% 0%,
-      rgba(196, 181, 253, 0.34),
-      rgba(196, 181, 253, 0) 52%
+      rgba(167, 139, 250, 0.32),
+      rgba(167, 139, 250, 0) 52%
     ),
-    linear-gradient(135deg, #6f52ee 0%, #5636cf 100%);
-  border-color: rgba(196, 181, 253, 0.32);
+    radial-gradient(
+      circle at 72% 92%,
+      rgba(124, 92, 255, 0.38),
+      rgba(124, 92, 255, 0) 54%
+    ),
+    linear-gradient(168deg, rgba(48, 36, 88, 0.97), rgba(28, 20, 54, 0.99));
+  border-color: rgba(196, 181, 253, 0.28);
   box-shadow:
-    0 14px 30px rgba(86, 54, 207, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  color: #fff;
+    0 14px 32px rgba(91, 58, 214, 0.22),
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.topPill {
+.topPills {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: calc(100% - 24px);
 }
 
-.featured .topPill.ready {
+.pill {
+  flex-shrink: 0;
+  border: 1px solid transparent;
+}
+
+.pill.upcoming {
+  color: #ede9fe;
+  background: #3b2878;
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
+.pill.ready {
   color: #bbf7d0;
-  background: rgba(34, 197, 94, 0.28);
+  background: #14532d;
+  border-color: rgba(74, 222, 128, 0.4);
 }
 
-.featured .topPill.soon {
+.pill.prep {
   color: #fde68a;
-  background: rgba(251, 191, 36, 0.28);
+  background: #422006;
+  border-color: rgba(251, 191, 36, 0.42);
 }
 
-.featured .topPill.prep {
+.pill.soon {
   color: #fde68a;
-  background: rgba(251, 191, 36, 0.24);
+  background: #422006;
+  border-color: rgba(251, 191, 36, 0.48);
 }
 
-.featured .topPill.upcoming,
-.featured .topPill.done {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.topPill.soon {
-  color: #fbbf24;
-  background: rgba(245, 165, 36, 0.18);
-}
-
-.topPill.done {
-  color: var(--green);
-  background: var(--green-050);
+.pill.done {
+  color: #bbf7d0;
+  background: #14532d;
+  border-color: rgba(74, 222, 128, 0.4);
 }
 
 .logo {
@@ -96,9 +109,9 @@
 }
 
 .featured .logo {
-  background: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(124, 92, 255, 0.32);
+  color: #ede9fe;
+  border-color: rgba(196, 181, 253, 0.28);
 }
 
 .body {
@@ -116,10 +129,6 @@
   text-overflow: ellipsis;
 }
 
-.featured .role {
-  color: #fff;
-}
-
 .meta {
   display: block;
   font-size: 11.5px;
@@ -131,7 +140,7 @@
 }
 
 .featured .meta {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(221, 214, 254, 0.72);
 }
 
 .side {
@@ -147,10 +156,6 @@
   line-height: 1;
 }
 
-.featured .ringPct {
-  color: #fff;
-}
-
 .chev {
   flex-shrink: 0;
   color: var(--muted);
@@ -158,6 +163,6 @@
 }
 
 .featured .chev {
-  color: #fff;
-  opacity: 0.72;
+  color: rgba(221, 214, 254, 0.72);
+  opacity: 1;
 }

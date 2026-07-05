@@ -7,27 +7,43 @@ function cardDate(date) {
   return date.replace(/\s+\d{4}$/, "");
 }
 
-function topPill(iv) {
+function topPills(iv) {
   if (iv.status === "past") {
-    return { label: iv.outcome ?? "Completed", cls: "done" };
+    return [{ label: iv.outcome ?? "Completed", cls: "done" }];
   }
-  if (iv.daysAway <= 7) {
-    return { label: `In ${iv.daysAway} days`, cls: "soon" };
+
+  const pills = [
+    {
+      label: `In ${iv.daysAway} days`,
+      cls: iv.daysAway <= 7 ? "soon" : "upcoming",
+    },
+  ];
+
+  if (iv.readiness >= 70) {
+    pills.push({ label: "Ready", cls: "ready" });
+  } else if (iv.readiness < 50) {
+    pills.push({ label: "Needs prep", cls: "prep" });
   }
-  if (iv.readiness >= 70) return { label: "Ready", cls: "ready" };
-  if (iv.readiness < 50) return { label: "Needs prep", cls: "prep" };
-  return { label: `In ${iv.daysAway} days`, cls: "upcoming" };
+
+  return pills;
 }
 
 export default function InterviewCard({ interview: iv, featured = false }) {
-  const pill = topPill(iv);
+  const pills = topPills(iv);
   const cardCls = [s.card, featured ? s.featured : ""].filter(Boolean).join(" ");
 
   return (
     <Link href={`/interviews/${iv.id}`} className={cardCls}>
-      <span className={`status-pill ${s.topPill} ${s[pill.cls]}`}>
-        {pill.label}
-      </span>
+      <div className={s.topPills}>
+        {pills.map((pill) => (
+          <span
+            key={pill.label}
+            className={`status-pill ${s.pill} ${s[pill.cls]}`}
+          >
+            {pill.label}
+          </span>
+        ))}
+      </div>
 
       <span className={s.logo}>{iv.initials}</span>
 
@@ -44,8 +60,8 @@ export default function InterviewCard({ interview: iv, featured = false }) {
             value={iv.readiness}
             size={42}
             stroke={4}
-            color={featured ? "#fff" : "var(--brand)"}
-            track={featured ? "rgba(255,255,255,0.22)" : "rgba(124, 92, 255, 0.18)"}
+            color="var(--brand)"
+            track="rgba(124, 92, 255, 0.22)"
           >
             <span className={s.ringPct}>{iv.readiness}%</span>
           </CircularProgress>
