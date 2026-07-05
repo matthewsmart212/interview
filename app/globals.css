@@ -180,24 +180,28 @@ body:has(.interview-route),
   justify-content: flex-end;
 }
 .has-app-header {
-  padding-top: calc(10px + var(--app-header-bar) + env(safe-area-inset-top));
+  padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
 }
 
-/* ------- Page title row (below app header) ------- */
+/* ------- Page title band (below app header) ------- */
 .page-header {
-  margin-bottom: 16px;
-}
-.page-header-side {
-  min-width: 40px;
   display: flex;
-  align-items: flex-start;
-  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 -20px 18px;
+  padding: 15px 20px;
+  background: var(--brand-050);
+  border-bottom: 1px solid var(--brand-100);
 }
-.page-header-side.right {
-  justify-content: flex-end;
-}
-.page-header-main {
+.page-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex: 1;
+  min-width: 0;
+}
+.page-header-text {
   min-width: 0;
 }
 .page-header-title {
@@ -206,18 +210,19 @@ body:has(.interview-route),
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin: 0;
+  text-align: left;
 }
 .page-header-sub {
   font-size: 14px;
   color: var(--text-2);
   margin: 4px 0 0;
   line-height: 1.45;
+  text-align: left;
 }
-.page-header {
+.page-header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
+  flex-shrink: 0;
 }
 
 .app-logo {

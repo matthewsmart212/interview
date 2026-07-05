@@ -26,7 +26,7 @@ export default function PageHeader({
 
   return (
     <div className="page-header">
-      <div className="page-header-side">
+      <div className="page-header-left">
         {left ??
           (showBack && (
             <button
@@ -38,12 +38,14 @@ export default function PageHeader({
               <ChevronLeft size={24} />
             </button>
           ))}
+        {(title || subtitle) && (
+          <div className="page-header-text">
+            {title ? <h1 className="page-header-title">{title}</h1> : null}
+            {subtitle ? <p className="page-header-sub">{subtitle}</p> : null}
+          </div>
+        )}
       </div>
-      <div className="page-header-main">
-        {title ? <h1 className="page-header-title">{title}</h1> : null}
-        {subtitle ? <p className="page-header-sub">{subtitle}</p> : null}
-      </div>
-      <div className="page-header-side right">{right}</div>
+      {right ? <div className="page-header-right">{right}</div> : null}
     </div>
   );
 }
