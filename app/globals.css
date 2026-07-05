@@ -10,6 +10,15 @@
   --brand-100: #e7e0fd;
   --brand-200: #d6c9fb;
 
+  --page-header-bg: linear-gradient(
+    160deg,
+    #ffffff 0%,
+    #f6f3fe 38%,
+    #ebe4fc 100%
+  );
+  --page-header-border: rgba(108, 76, 230, 0.14);
+  --page-header-sub: rgba(70, 52, 140, 0.72);
+
   --bg: #f2f2f5;
   --card: #ffffff;
   --surface-2: #f7f7f9;
@@ -191,8 +200,11 @@ body:has(.interview-route),
   gap: 12px;
   margin: 0 -20px 18px;
   padding: 15px 20px;
-  background: var(--brand-050);
-  border-bottom: 1px solid var(--brand-100);
+  background: var(--page-header-bg);
+  border-bottom: 1px solid var(--page-header-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 4px 14px rgba(86, 54, 207, 0.06);
 }
 .page-header-left {
   display: flex;
@@ -211,10 +223,11 @@ body:has(.interview-route),
   line-height: 1.2;
   margin: 0;
   text-align: left;
+  color: #2a2248;
 }
 .page-header-sub {
   font-size: 14px;
-  color: var(--text-2);
+  color: var(--page-header-sub);
   margin: 4px 0 0;
   line-height: 1.45;
   text-align: left;

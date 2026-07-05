@@ -1,14 +1,3 @@
-.greeting {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.greetSub {
-  color: var(--text-2);
-  font-size: 14px;
-  margin-top: 4px;
-}
-
 .upcoming {
   margin-top: 18px;
   border-radius: var(--radius-lg);

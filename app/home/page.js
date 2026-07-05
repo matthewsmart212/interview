@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
 import AppHeader from "../../components/AppHeader";
+import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
 import {
   FileText,
@@ -50,14 +51,19 @@ export default function HomePage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <h1 className={styles.greeting}>
-          Hi {USER.name} <span aria-hidden>👋</span>
-        </h1>
-        <p className={styles.greetSub}>
-          {next
-            ? `Your ${next.company} interview is in ${next.daysAway} days.`
-            : "Let's get you interview-ready."}
-        </p>
+        <PageHeader
+          title={`Hi ${USER.name} 👋`}
+          subtitle={
+            next
+              ? `Your ${next.company} interview is in ${next.daysAway} days.`
+              : "Let's get you interview-ready."
+          }
+          right={
+            <span className="streak">
+              <span aria-hidden>🔥</span> {USER.streak}
+            </span>
+          }
+        />
 
         {next ? (
           <Link href={`/interviews/${next.id}`} className={styles.upcoming}>
@@ -91,9 +97,6 @@ export default function HomePage() {
         )}
 
         <div className={styles.pillRow}>
-          <span className={styles.pill}>
-            <span aria-hidden>🔥</span> {USER.streak}-day streak
-          </span>
           <Link href="/interviews" className={styles.pill}>
             <Calendar size={16} />
             {upcomingCount} upcoming
