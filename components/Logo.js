@@ -7,9 +7,11 @@ const HEIGHT = {
   hero: 52,
 };
 
+const ASPECT = 2008 / 523;
+
 export default function Logo({ size = "md", className = "", priority = false }) {
   const h = HEIGHT[size] ?? HEIGHT.md;
-  const w = Math.round((1020 / 276) * h);
+  const w = Math.round(ASPECT * h);
 
   return (
     <Image

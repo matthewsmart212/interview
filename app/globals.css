@@ -211,12 +211,6 @@ body:has(.interview-route),
   padding-top: calc(var(--app-header-bar) + env(safe-area-inset-top));
 }
 
-/* white logo silhouette for dark surfaces */
-.logo-on-dark {
-  filter: brightness(0) invert(1);
-  opacity: 0.96;
-}
-
 /* ------- Page title row (below app header) ------- */
 .page-header {
   position: relative;

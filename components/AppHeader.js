@@ -13,7 +13,7 @@ export default function AppHeader() {
         </button>
       </div>
       <div className="app-header-logo">
-        <Logo size="md" priority className="logo-on-dark" />
+        <Logo size="md" priority />
       </div>
       <div className="app-header-side right">
         <Link href="/profile" className="icon-btn" aria-label="Settings">
