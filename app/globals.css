@@ -722,6 +722,9 @@ body:has(.interview-route),
   background: none;
   flex: 1;
 }
+.nav-item > svg {
+  transform: translateY(8px);
+}
 .nav-item.active {
   color: #c4b5fd;
 }
@@ -746,9 +749,10 @@ body:has(.interview-route),
     inset 0 1px 0 rgba(255, 255, 255, 0.32);
   border: 4px solid #261e3e;
   transition: transform 0.15s ease;
+  transform: translateY(8px);
 }
 .nav-item-mock:active .nav-mock-btn {
-  transform: scale(0.94);
+  transform: translateY(8px) scale(0.94);
 }
 .nav-item-mock span:last-child {
   font-weight: 600;
