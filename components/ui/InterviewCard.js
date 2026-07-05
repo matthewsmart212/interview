@@ -7,7 +7,7 @@ function cardDate(date) {
   return date.replace(/\s+\d{4}$/, "");
 }
 
-function topPills(iv) {
+function statusPills(iv) {
   if (iv.status === "past") {
     const label = iv.outcome ?? "Completed";
     const isOffer = /offer/i.test(label);
@@ -31,25 +31,24 @@ function topPills(iv) {
 }
 
 export default function InterviewCard({ interview: iv, featured = false }) {
-  const pills = topPills(iv);
+  const pills = statusPills(iv);
   const cardCls = [s.card, featured ? s.featured : ""].filter(Boolean).join(" ");
 
   return (
     <Link href={`/interviews/${iv.id}`} className={cardCls}>
-      <div className={s.topPills} aria-label="Interview status">
-        {pills.map((pill) => (
-          <span key={pill.label} className={`status-pill ${pill.cls}`}>
-            {pill.label}
-          </span>
-        ))}
-      </div>
-
       <span className={s.logo}>{iv.initials}</span>
 
       <span className={s.body}>
         <span className={s.role}>{iv.role}</span>
         <span className={s.meta}>
           {iv.company} · {iv.type} · {cardDate(iv.date)}
+        </span>
+        <span className={s.pills}>
+          {pills.map((pill) => (
+            <span key={pill.label} className={`status-pill ${pill.cls}`}>
+              {pill.label}
+            </span>
+          ))}
         </span>
       </span>
 
