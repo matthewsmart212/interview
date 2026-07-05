@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Phone from "../../components/Phone";
+import Logo from "../../components/Logo";
 import BottomNav from "../../components/BottomNav";
 import {
   Menu,
@@ -54,7 +55,9 @@ export default function HomePage() {
             <Menu size={24} />
           </button>
         </div>
-        <div className="tb-title" />
+        <div className="tb-title">
+          <Logo size="md" />
+        </div>
         <div className="tb-side right">
           <span className="streak">
             <span aria-hidden>🔥</span> {USER.streak}

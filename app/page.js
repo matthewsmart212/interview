@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Phone from "../components/Phone";
 import Avatar from "../components/Avatar";
-import { Sparkle, FileText, Mic, Volume, BarChart } from "../components/Icons";
+import Logo from "../components/Logo";
+import { FileText, Mic, Volume, BarChart } from "../components/Icons";
 import styles from "./welcome.module.css";
 
 const FEATURES = [
@@ -19,10 +20,7 @@ export default function WelcomePage() {
           <div className={styles.hero}>
             <div className={styles.heroText}>
               <h1 className={styles.title}>
-                Interview Coach AI
-                <span className={styles.spark}>
-                  <Sparkle size={22} />
-                </span>
+                <Logo size="hero" priority className={styles.logo} />
               </h1>
               <p className={styles.sub}>
                 Your AI interview coach that prepares you to get the job.

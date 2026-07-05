@@ -160,6 +160,27 @@ body:has(.interview-route),
   font-weight: 600;
   flex: 1;
   text-align: center;
+  min-width: 0;
+}
+.tb-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+}
+.tb-brand-title {
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-logo {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  flex-shrink: 0;
 }
 .topbar .tb-side {
   min-width: 40px;

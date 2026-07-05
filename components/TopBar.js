@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ChevronLeft } from "./Icons";
+import Logo from "./Logo";
 
 export default function TopBar({
   title,
@@ -34,7 +35,16 @@ export default function TopBar({
               </button>
             )}
       </div>
-      <div className="tb-title">{title}</div>
+      <div className="tb-title">
+        {overlay ? (
+          title
+        ) : (
+          <div className="tb-brand">
+            <Logo size={title ? "sm" : "md"} />
+            {title ? <span className="tb-brand-title">{title}</span> : null}
+          </div>
+        )}
+      </div>
       <div className="tb-side right">{right}</div>
     </div>
   );
