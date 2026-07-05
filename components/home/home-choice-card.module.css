@@ -1,0 +1,108 @@
+.card {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 14px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.interview {
+  background:
+    radial-gradient(
+      circle at 50% 115%,
+      rgba(124, 92, 255, 0.38),
+      rgba(124, 92, 255, 0) 55%
+    ),
+    linear-gradient(165deg, rgba(48, 38, 88, 0.92), rgba(28, 22, 52, 0.96));
+  border-color: rgba(157, 134, 247, 0.2);
+}
+
+.apply {
+  background:
+    radial-gradient(
+      circle at 50% 115%,
+      rgba(108, 76, 230, 0.26),
+      rgba(108, 76, 230, 0) 55%
+    ),
+    linear-gradient(165deg, rgba(38, 34, 64, 0.92), rgba(24, 20, 44, 0.96));
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.interview .eyebrow {
+  color: #c4b5fd;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 7px 0 0;
+  color: #fff;
+}
+
+.sub {
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 5px 0 0;
+}
+
+.avatar {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: 88%;
+  height: 52%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.interview .avatar {
+  filter: drop-shadow(0 10px 20px rgba(91, 58, 214, 0.32));
+}
+
+.cta {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  z-index: 3;
+  font-size: 11px;
+  font-weight: 700;
+  color: #c4b5fd;
+  letter-spacing: -0.01em;
+}
+
+.apply .cta {
+  color: rgba(255, 255, 255, 0.72);
+}

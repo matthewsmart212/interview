@@ -2,10 +2,33 @@ import Link from "next/link";
 import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
-import Avatar from "../../components/Avatar";
-import { FileText, Mic, Plus, Calendar } from "../../components/Icons";
+import HomeChoiceCard from "../../components/home/HomeChoiceCard";
+import StatPill from "../../components/home/StatPill";
+import QuickActionRow from "../../components/home/QuickActionRow";
+import { FileText, Mic, MessageCircle, Plus, Calendar } from "../../components/Icons";
 import { USER, INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./home.module.css";
+
+const QUICK_ACTIONS = [
+  {
+    href: "/mock",
+    icon: Mic,
+    title: "Mock interview",
+    subtitle: "Practice with your AI interviewer",
+  },
+  {
+    href: "/cv",
+    icon: FileText,
+    title: "My CV",
+    subtitle: "Improve, tailor and download",
+  },
+  {
+    href: "/questions",
+    icon: MessageCircle,
+    title: "Interview questions",
+    subtitle: "See role-specific questions",
+  },
+];
 
 export default function HomePage() {
   const next = INTERVIEWS.find((i) => i.status === "upcoming");
@@ -57,55 +80,54 @@ export default function HomePage() {
         )}
 
         <div className={styles.pillRow}>
-          <Link href="/interviews" className={styles.pill}>
-            <Calendar size={16} />
+          <StatPill href="/interviews" icon={Calendar}>
             {upcomingCount} upcoming
-          </Link>
-          <Link href="/cv" className={styles.pill}>
-            <FileText size={16} />
+          </StatPill>
+          <StatPill href="/cv" icon={FileText}>
             CV score {MASTER_CV.score}
-          </Link>
+          </StatPill>
           {lastMock && (
-            <Link href={`/history/${lastMock.id}`} className={styles.pill}>
-              <Mic size={16} />
+            <StatPill href={`/history/${lastMock.id}`} icon={Mic}>
               Last mock {lastMock.score}
-            </Link>
+            </StatPill>
           )}
         </div>
 
-        <div className={styles.pathGrid}>
-          <Link href="/mock" className={`${styles.pathCard} ${styles.pathInterview}`}>
-            <div className={styles.pathText}>
-              <span className={styles.pathEyebrow}>I have an interview</span>
-              <h2 className={styles.pathTitle}>Prepare for interview</h2>
-              <p className={styles.pathSub}>
-                {next
-                  ? `Mock practice & prep for ${next.company}`
-                  : "AI mock interviews & role prep"}
-              </p>
-            </div>
-            <Avatar
-              pose="presenting"
-              alt="AI coach ready to mock interview"
-              className={styles.pathAvatar}
-            />
-          </Link>
-
-          <Link href="/cv" className={`${styles.pathCard} ${styles.pathApply}`}>
-            <div className={styles.pathText}>
-              <span className={styles.pathEyebrow}>I&apos;m applying</span>
-              <h2 className={styles.pathTitle}>Prepare to apply</h2>
-              <p className={styles.pathSub}>
-                Improve & tailor your CV for roles
-              </p>
-            </div>
-            <Avatar
-              pose="welcoming"
-              alt="AI coach helping with your CV"
-              className={styles.pathAvatar}
-            />
-          </Link>
+        <div className={styles.choiceGrid}>
+          <HomeChoiceCard
+            href="/mock"
+            variant="interview"
+            eyebrow="I have an interview"
+            title="Prepare for interview"
+            subtitle={
+              next
+                ? `Mock practice & prep for ${next.company}`
+                : "AI mock interviews & role prep"
+            }
+            cta="Start practice →"
+            avatarPose="presenting"
+            avatarAlt="AI coach ready to mock interview"
+          />
+          <HomeChoiceCard
+            href="/cv"
+            variant="apply"
+            eyebrow="I'm applying"
+            title="Get ready to apply"
+            subtitle="Improve & tailor your CV for roles"
+            cta="Improve CV →"
+            avatarPose="welcoming"
+            avatarAlt="AI coach helping with your CV"
+          />
         </div>
+
+        <section className={styles.quickSection}>
+          <h2 className={styles.quickTitle}>Quick actions</h2>
+          <div className={styles.quickStack}>
+            {QUICK_ACTIONS.map((action) => (
+              <QuickActionRow key={action.href} {...action} />
+            ))}
+          </div>
+        </section>
       </div>
 
       <BottomNav active="home" />
