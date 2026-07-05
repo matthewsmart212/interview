@@ -104,7 +104,7 @@ export default function HomePage() {
                 ? `Mock practice & prep for ${next.company}`
                 : "AI mock interviews & role prep"
             }
-            cta="Start practice →"
+            cta="Start practice"
             avatarPose="presenting"
             avatarAlt="AI coach ready to mock interview"
           />
@@ -114,8 +114,8 @@ export default function HomePage() {
             eyebrow="I'm applying"
             title="Get ready to apply"
             subtitle="Improve & tailor your CV for roles"
-            cta="Improve CV →"
-            avatarPose="welcoming"
+            cta="Improve CV"
+            avatarPose="thinking"
             avatarAlt="AI coach helping with your CV"
           />
         </div>

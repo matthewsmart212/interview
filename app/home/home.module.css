@@ -66,13 +66,14 @@
 .choiceGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 18px;
+  margin-top: 28px;
 }
 
 /* compact quick actions below */
 .quickSection {
-  margin-top: 28px;
+  margin-top: 32px;
+  padding-bottom: 12px;
 }
 
 .quickTitle {
