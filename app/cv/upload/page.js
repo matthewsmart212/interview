@@ -29,7 +29,13 @@ export default function CvUploadPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-app-header">
-        <PageHeader title="Upload CV" back backHref="/cv/start" />
+        <PageHeader
+          icon="upload"
+          title="Upload CV"
+          description="We'll read and score your document"
+          back
+          backHref="/cv/start"
+        />
         {stage === "idle" && (
           <div className="anim-fade-up">
             <h1 className="page-h1">Upload your CV</h1>

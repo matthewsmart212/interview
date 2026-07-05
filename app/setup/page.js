@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Phone from "../../components/Phone";
 import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
-import { Calendar } from "../../components/Icons";
+import { Calendar, Sparkle } from "../../components/Icons";
 
 const SAMPLE_JD =
   "We're looking for a friendly and reliable Customer Service Advisor to join our team. You'll be talking to customers, solving problems and making sure every customer has a great experience...";
@@ -23,6 +23,9 @@ export default function SetupPage() {
       <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
+          icon="sparkle"
+          title="Get started"
+          description="Tell us what you're preparing for"
           back
           backHref="/"
           right={<span className="step-count">Step 1 of 4</span>}

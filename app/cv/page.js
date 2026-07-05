@@ -22,7 +22,11 @@ export default function CvHubPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="My CV" />
+        <PageHeader
+          icon="fileText"
+          title="My CV"
+          description="Improve, tailor and download your CV"
+        />
         {/* master CV card */}
         <div className={`card ${s.fileCard}`}>
           <span className={s.fileIcon}>

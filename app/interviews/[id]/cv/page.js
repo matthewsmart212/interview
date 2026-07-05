@@ -11,6 +11,7 @@ import {
   Sparkle,
   Download,
   Shield,
+  FileText,
 } from "../../../../components/Icons";
 import { getInterview, MASTER_CV } from "../../../../lib/app-data";
 import s from "../../interviews.module.css";
@@ -26,7 +27,13 @@ export default function TailoredCvPage() {
       <Phone>
         <AppHeader />
         <div className="screen screen-pad has-app-header">
-          <PageHeader title="Tailored CV" back backHref="/interviews" />
+          <PageHeader
+            icon="fileText"
+            title="Tailored CV"
+            description="View and download your tailored CV"
+            back
+            backHref="/interviews"
+          />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <Link href="/interviews" className="btn btn-primary" style={{ marginTop: 16 }}>
@@ -58,7 +65,9 @@ export default function TailoredCvPage() {
         <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
+            icon="fileText"
             title="Tailor My CV"
+            description="Create a version for this exact role"
             back
             backHref={`/interviews/${iv.id}`}
           />
@@ -129,7 +138,9 @@ export default function TailoredCvPage() {
       <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
+          icon="fileText"
           title="Tailored CV"
+          description="View and download your tailored version"
           back
           backHref={`/interviews/${iv.id}`}
         />

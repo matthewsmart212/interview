@@ -52,8 +52,9 @@ export default function HomePage() {
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
+          icon="home"
           title={`Hi ${USER.name} 👋`}
-          subtitle={
+          description={
             next
               ? `Your ${next.company} interview is in ${next.daysAway} days.`
               : "Let's get you interview-ready."

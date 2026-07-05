@@ -50,7 +50,9 @@ export default function InterviewsPage() {
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
+          icon="calendar"
           title="My Interviews"
+          description="Track your upcoming and past interviews"
           right={
             <Link href="/interviews/new" className={s.addBtn}>
               <Plus size={15} stroke={2.6} /> Add

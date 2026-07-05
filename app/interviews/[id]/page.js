@@ -35,7 +35,13 @@ export default function InterviewPrepPage() {
       <Phone>
         <AppHeader />
         <div className="screen screen-pad has-nav has-app-header">
-          <PageHeader title="Interview" back backHref="/interviews" />
+          <PageHeader
+            icon="calendar"
+            title="Interview"
+            description="Interview prep and checklist"
+            back
+            backHref="/interviews"
+          />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <p className={s.emptySub}>It may have been removed.</p>
@@ -90,7 +96,13 @@ export default function InterviewPrepPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="Interview Prep" back backHref="/interviews" />
+        <PageHeader
+          icon="calendar"
+          title="Interview Prep"
+          description="Your checklist for this role"
+          back
+          backHref="/interviews"
+        />
         <div className={`${s.hero} anim-fade-up`}>
           <div className={s.heroBody}>
             <div className={s.heroLabel}>

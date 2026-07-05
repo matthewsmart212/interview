@@ -18,7 +18,13 @@ export default function CvImprovePage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-app-header">
-        <PageHeader title="Improve My CV" back backHref="/cv" />
+        <PageHeader
+          icon="sparkle"
+          title="Improve My CV"
+          description="AI suggestions to lift your score"
+          back
+          backHref="/cv"
+        />
         <div className={`card ${styles.scoreCard}`}>
           <CircularProgress value={MASTER_CV.score} size={96} stroke={11}>
             <span className={styles.ringNum}>{MASTER_CV.score}%</span>

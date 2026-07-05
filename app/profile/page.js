@@ -56,7 +56,11 @@ export default function ProfilePage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="Profile" />
+        <PageHeader
+          icon="user"
+          title="Profile"
+          description="Account, preferences and subscription"
+        />
         <div className={s.header}>
           <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
           <div className="grow">

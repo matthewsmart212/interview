@@ -3,7 +3,7 @@ import Phone from "../../components/Phone";
 import AppHeader from "../../components/AppHeader";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
-import { Mic, Target, Trophy, Clock, ChevronRight } from "../../components/Icons";
+import { Mic, Target, Trophy, Clock, ChevronRight, BarChart } from "../../components/Icons";
 import { MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./progress.module.css";
 
@@ -102,7 +102,11 @@ export default function ProgressPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="Your Progress" />
+        <PageHeader
+          icon="barChart"
+          title="Your Progress"
+          description="Stats, skills and mock history"
+        />
         <p className="section-title">Your Stats</p>
         <div className="stats-grid">
           {STATS.map(({ Icon, num, lab }) => (

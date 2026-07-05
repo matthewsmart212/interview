@@ -33,7 +33,13 @@ export default function QuestionsPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="Interview Questions" back backHref="/home" />
+        <PageHeader
+          icon="messageCircle"
+          title="Interview Questions"
+          description="Role-specific questions to practise"
+          back
+          backHref="/home"
+        />
         <div className="chips" style={{ marginBottom: 16 }}>
           {FILTERS.map((f) => (
             <button

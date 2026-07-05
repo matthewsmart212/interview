@@ -2,7 +2,7 @@ import Link from "next/link";
 import Phone from "../../../components/Phone";
 import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
-import { Upload, Edit, ChevronRight } from "../../../components/Icons";
+import { Upload, Edit, ChevronRight, FileText } from "../../../components/Icons";
 import s from "../cvhub.module.css";
 
 export default function CvStartPage() {
@@ -10,7 +10,13 @@ export default function CvStartPage() {
     <Phone>
       <AppHeader />
       <div className={`screen screen-pad has-app-header ${s.startWrap}`}>
-        <PageHeader title="Your CV" back backHref="/cv" />
+        <PageHeader
+          icon="fileText"
+          title="Your CV"
+          description="Upload an existing CV or create one"
+          back
+          backHref="/cv"
+        />
         <h1 className="page-h1">Do you have a CV?</h1>
         <p className="page-sub">
           Your CV powers everything — tailored questions, match scores and

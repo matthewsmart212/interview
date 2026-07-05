@@ -19,7 +19,13 @@ export default function HistoryPage() {
     <Phone>
       <AppHeader />
       <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader title="Mock History" back backHref="/progress" />
+        <PageHeader
+          icon="mic"
+          title="Mock History"
+          description="Revisit feedback from practice sessions"
+          back
+          backHref="/progress"
+        />
         {MOCK_HISTORY.length === 0 ? (
           <div className={iv.empty}>
             <span className={iv.emptyIcon}>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Phone from "../../../components/Phone";
 import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
-import { Calendar, FileText, Sparkle, Check } from "../../../components/Icons";
+import { Calendar, FileText, Sparkle, Check, Plus } from "../../../components/Icons";
 import s from "../interviews.module.css";
 
 const SAMPLE_JD =
@@ -27,7 +27,9 @@ export default function NewInterviewPage() {
       <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
+          icon="plus"
           title="Add Interview"
+          description="Build your prep plan around it"
           back={step === 0}
           backHref={step === 0 ? "/interviews" : undefined}
           left={

@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import Phone from "../../../../components/Phone";
 import AppHeader from "../../../../components/AppHeader";
 import PageHeader from "../../../../components/PageHeader";
-import { Sparkle } from "../../../../components/Icons";
+import { Sparkle, FileText } from "../../../../components/Icons";
 import { getInterview } from "../../../../lib/app-data";
 import s from "../../interviews.module.css";
 
@@ -25,7 +25,13 @@ export default function JobDescriptionPage() {
       <Phone>
         <AppHeader />
         <div className="screen screen-pad has-app-header">
-          <PageHeader title="Job Description" back backHref="/interviews" />
+          <PageHeader
+            icon="fileText"
+            title="Job Description"
+            description="View and manage the job listing"
+            back
+            backHref="/interviews"
+          />
           <div className={s.empty}>
             <div className={s.emptyTitle}>Interview not found</div>
             <Link href="/interviews" className="btn btn-primary" style={{ marginTop: 16 }}>
@@ -44,7 +50,9 @@ export default function JobDescriptionPage() {
         <AppHeader />
         <div className="screen screen-pad has-app-header">
           <PageHeader
+            icon="fileText"
             title="Job Description"
+            description="What your questions and CV tips are based on"
             back
             backHref={`/interviews/${iv.id}`}
           />
@@ -88,7 +96,9 @@ export default function JobDescriptionPage() {
       <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
+          icon="fileText"
           title="Add Job Description"
+          description="Paste the employer's job listing"
           back
           backHref={`/interviews/${iv.id}`}
         />

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Phone from "../../../components/Phone";
 import AppHeader from "../../../components/AppHeader";
 import PageHeader from "../../../components/PageHeader";
-import { Plus, Check, Sparkle } from "../../../components/Icons";
+import { Plus, Check, Sparkle, Edit } from "../../../components/Icons";
 import s from "../cvhub.module.css";
 import i from "../../interviews/interviews.module.css";
 
@@ -40,7 +40,9 @@ export default function CvCreatePage() {
       <AppHeader />
       <div className="screen screen-pad has-app-header">
         <PageHeader
+          icon="edit"
           title="Create CV"
+          description="Answer a few questions to build your CV"
           back={step === 0}
           backHref={step === 0 ? "/cv/start" : undefined}
           left={
