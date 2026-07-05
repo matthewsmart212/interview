@@ -2,44 +2,10 @@ import Link from "next/link";
 import Phone from "../../components/Phone";
 import PageHeader from "../../components/PageHeader";
 import BottomNav from "../../components/BottomNav";
-import {
-  FileText,
-  Mic,
-  MessageCircle,
-  BarChart,
-  ChevronRight,
-  Plus,
-  Calendar,
-} from "../../components/Icons";
+import Avatar from "../../components/Avatar";
+import { FileText, Mic, Plus, Calendar } from "../../components/Icons";
 import { USER, INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./home.module.css";
-
-const ACTIONS = [
-  {
-    href: "/mock",
-    Icon: Mic,
-    title: "AI Mock Interview",
-    sub: "Practice with your AI interviewer",
-  },
-  {
-    href: "/cv",
-    Icon: FileText,
-    title: "My CV",
-    sub: "Improve, tailor and download",
-  },
-  {
-    href: "/questions",
-    Icon: MessageCircle,
-    title: "Interview Questions",
-    sub: "See role-specific questions",
-  },
-  {
-    href: "/progress",
-    Icon: BarChart,
-    title: "My Progress",
-    sub: "Stats, streaks & mock history",
-  },
-];
 
 export default function HomePage() {
   const next = INTERVIEWS.find((i) => i.status === "upcoming");
@@ -55,7 +21,7 @@ export default function HomePage() {
           description={
             next
               ? `Your ${next.company} interview is in ${next.daysAway} days.`
-              : "Let's get you interview-ready."
+              : "What would you like to prepare for?"
           }
         />
 
@@ -107,23 +73,38 @@ export default function HomePage() {
           )}
         </div>
 
-        <p className="section-title" style={{ marginTop: 24 }}>
-          What would you like to do?
-        </p>
+        <div className={styles.pathGrid}>
+          <Link href="/mock" className={`${styles.pathCard} ${styles.pathInterview}`}>
+            <div className={styles.pathText}>
+              <span className={styles.pathEyebrow}>I have an interview</span>
+              <h2 className={styles.pathTitle}>Prepare for interview</h2>
+              <p className={styles.pathSub}>
+                {next
+                  ? `Mock practice & prep for ${next.company}`
+                  : "AI mock interviews & role prep"}
+              </p>
+            </div>
+            <Avatar
+              pose="presenting"
+              alt="AI coach ready to mock interview"
+              className={styles.pathAvatar}
+            />
+          </Link>
 
-        <div className="stack">
-          {ACTIONS.map(({ href, Icon, title, sub }) => (
-            <Link key={href} href={href} className="action-row">
-              <span className="ar-icon">
-                <Icon size={22} />
-              </span>
-              <span className="ar-body">
-                <span className="ar-title">{title}</span>
-                <span className="ar-sub">{sub}</span>
-              </span>
-              <ChevronRight size={20} className="chev" />
-            </Link>
-          ))}
+          <Link href="/cv" className={`${styles.pathCard} ${styles.pathApply}`}>
+            <div className={styles.pathText}>
+              <span className={styles.pathEyebrow}>I&apos;m applying</span>
+              <h2 className={styles.pathTitle}>Prepare to apply</h2>
+              <p className={styles.pathSub}>
+                Improve & tailor your CV for roles
+              </p>
+            </div>
+            <Avatar
+              pose="welcoming"
+              alt="AI coach helping with your CV"
+              className={styles.pathAvatar}
+            />
+          </Link>
         </div>
       </div>
 

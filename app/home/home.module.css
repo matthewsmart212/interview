@@ -79,3 +79,100 @@
 .pill svg {
   color: var(--brand);
 }
+
+/* two primary paths — interview vs applying */
+.pathGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.pathCard {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: block;
+  padding: 14px 12px 0;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: transform 0.15s ease;
+}
+
+.pathCard:active {
+  transform: scale(0.98);
+}
+
+.pathInterview {
+  background:
+    radial-gradient(
+      circle at 50% 108%,
+      rgba(124, 92, 255, 0.42),
+      rgba(124, 92, 255, 0) 58%
+    ),
+    linear-gradient(165deg, rgba(42, 34, 78, 0.98), rgba(26, 20, 48, 0.98));
+  border-color: rgba(157, 134, 247, 0.22);
+}
+
+.pathApply {
+  background:
+    radial-gradient(
+      circle at 50% 108%,
+      rgba(108, 76, 230, 0.28),
+      rgba(108, 76, 230, 0) 58%
+    ),
+    linear-gradient(165deg, rgba(34, 30, 58, 0.98), rgba(22, 18, 40, 0.98));
+}
+
+.pathText {
+  position: relative;
+  z-index: 2;
+}
+
+.pathEyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.pathInterview .pathEyebrow {
+  color: #c4b5fd;
+}
+
+.pathTitle {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 6px 0 0;
+  color: #fff;
+}
+
+.pathSub {
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.62);
+  margin: 5px 0 0;
+}
+
+.pathAvatar {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  width: 92%;
+  height: 58%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pathInterview .pathAvatar {
+  filter: drop-shadow(0 8px 18px rgba(91, 58, 214, 0.35));
+}
