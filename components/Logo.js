@@ -8,8 +8,9 @@ const HEIGHT = {
 };
 
 const ASPECT = 2008 / 523;
-const ICON_END = 1099 / 2008;
-const TEXT_START = 1117 / 2008;
+/* PNG slice points: icon ends ~x799, wordmark "Getthejob" starts ~x800 */
+const TEXT_START = 800 / 2008;
+const ICON_END = TEXT_START;
 const TEXT_SCALE = 1.3;
 
 export default function Logo({ size = "md", className = "", priority = false }) {

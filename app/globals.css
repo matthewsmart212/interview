@@ -197,7 +197,7 @@ body:has(.interview-route),
 .app-header-logo .app-logo {
   width: auto;
   height: 28px;
-  max-width: 128px;
+  max-width: 132px;
 }
 .app-header-side {
   min-width: 40px;
