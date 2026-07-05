@@ -197,7 +197,7 @@ body:has(.interview-route),
 .app-header-logo .app-logo {
   width: auto;
   height: 28px;
-  max-width: 136px;
+  max-width: 132px;
 }
 .app-header-side {
   min-width: 40px;
@@ -274,30 +274,27 @@ body:has(.interview-route),
 }
 
 .app-logo {
-  position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
   line-height: 0;
   max-width: 100%;
-  overflow: hidden;
 }
 
-.app-logo-scaled {
-  position: absolute;
-  inset: 0;
+.app-logo-icon,
+.app-logo-text {
+  display: block;
+  height: var(--logo-h);
   overflow: hidden;
-  pointer-events: none;
+  flex-shrink: 0;
 }
 
 .app-logo-icon {
-  position: absolute;
-  left: 0;
-  top: 0;
   width: var(--logo-icon-w);
-  height: var(--logo-h);
-  overflow: hidden;
-  z-index: 1;
-  pointer-events: none;
+}
+
+.app-logo-text {
+  width: var(--logo-text-w);
 }
 
 .app-logo-img {
@@ -307,11 +304,11 @@ body:has(.interview-route),
   max-width: none;
 }
 
-.app-logo-img--scaled {
+.app-logo-img--text {
   width: calc(var(--logo-full-w) * var(--logo-text-scale, 1.3));
   height: calc(var(--logo-h) * var(--logo-text-scale, 1.3));
-  margin-left: calc(var(--logo-icon-w) * (1 - var(--logo-text-scale, 1.3)));
-  margin-top: calc(var(--logo-h) * (1 - var(--logo-text-scale, 1.3)) / 2);
+  margin-left: calc(var(--logo-text-start) * var(--logo-text-scale, 1.3) * -1);
+  margin-top: calc(var(--logo-h) * (var(--logo-text-scale, 1.3) - 1) / -2);
 }
 
 /* ------- Top bar (mock interview overlay only) ------- */
