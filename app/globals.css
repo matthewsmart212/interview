@@ -201,8 +201,8 @@ body:has(.interview-route),
   gap: 14px;
   margin: 0 -20px 18px;
   padding: 15px 20px 16px;
+  background: var(--card);
   border-bottom: 1px solid var(--divider);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 .page-header-back {
   flex-shrink: 0;
