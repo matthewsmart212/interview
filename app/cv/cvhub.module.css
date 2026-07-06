@@ -1,107 +1,48 @@
 /* ---------- CV hub ---------- */
 
-.fileCard {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-.fileIcon {
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 15px;
-  background: var(--brand-050);
-  color: var(--brand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.fileBody {
-  flex: 1;
-  min-width: 0;
-}
-.fileName {
-  display: block;
-  font-size: 14.5px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.fileMeta {
-  display: block;
-  font-size: 12.5px;
-  color: var(--muted);
-  margin-top: 3px;
-}
-.scorePill {
-  flex-shrink: 0;
-  text-align: center;
-  background: var(--brand-050);
-  color: var(--brand);
-  border-radius: 13px;
-  padding: 8px 12px;
-}
-.scorePill b {
-  display: block;
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1;
-}
-.scorePill span {
-  display: block;
-  font-size: 10px;
-  font-weight: 600;
-  margin-top: 3px;
-  letter-spacing: 0.03em;
+.actionStack {
+  margin-top: 14px;
+  gap: 10px;
 }
 
-/* tailored versions rows */
-.tRow {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 12px 2px;
+.actionStack :global(.action-row) {
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 92, 255, 0.1),
+      rgba(124, 92, 255, 0) 48%
+    ),
+    var(--card);
+  border-color: rgba(167, 139, 250, 0.14);
 }
-.tRow + .tRow {
-  border-top: 1px solid var(--border);
+
+.primaryAction:global(.action-row) {
+  background:
+    radial-gradient(
+      circle at 12% 4%,
+      rgba(129, 140, 248, 0.18),
+      rgba(129, 140, 248, 0) 46%
+    ),
+    radial-gradient(
+      circle at 78% 90%,
+      rgba(79, 70, 229, 0.2),
+      rgba(79, 70, 229, 0) 50%
+    ),
+    linear-gradient(168deg, rgba(28, 28, 58, 0.95), rgba(18, 16, 38, 0.98));
+  border-color: rgba(129, 140, 248, 0.2);
+  box-shadow:
+    0 10px 24px rgba(8, 4, 24, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-.tLogo {
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--brand-050);
-  color: var(--brand);
-  font-size: 16px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.primaryAction:global(.action-row .ar-icon) {
+  background: rgba(99, 102, 241, 0.22);
+  color: #c7d2fe;
+  border-color: rgba(129, 140, 248, 0.2);
 }
-.tBody {
-  flex: 1;
-  min-width: 0;
-}
-.tTitle {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.tSub {
-  display: block;
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
-}
-.tScore {
-  flex-shrink: 0;
-  font-size: 13.5px;
-  font-weight: 800;
-  color: var(--brand);
+
+.tailoredStack {
+  gap: 12px;
 }
 
 /* explainer note */
@@ -109,12 +50,37 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
-  background: var(--brand-050);
-  border-radius: 12px;
-  padding: 12px 14px;
+  margin-top: 18px;
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 92, 255, 0.12),
+      rgba(124, 92, 255, 0) 48%
+    ),
+    var(--card);
+  border: 1px solid rgba(167, 139, 250, 0.14);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
   font-size: 12.5px;
   line-height: 1.55;
-  color: #d6c9fb;
+  color: var(--text-2);
+  box-shadow: var(--shadow-sm), var(--card-inner);
+  backdrop-filter: blur(14px);
+}
+
+.noteIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--brand);
+}
+
+.footerNote {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 20px;
+  padding: 0 12px;
 }
 
 /* ---------- start (have a CV?) ---------- */
