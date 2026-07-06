@@ -4,7 +4,6 @@ import {
   AppShell,
   PageSection,
   CVScoreCard,
-  ActionRow,
   TailoredCVCard,
   EmptyStateCard,
   PrimaryButton,
@@ -31,25 +30,39 @@ export default function CvHubPage() {
         featured
       />
 
-      <div className={`stack ${s.actionStack}`}>
-        <ActionRow
-          href="/cv/improve"
-          icon={Sparkle}
-          title="Improve my CV"
-          subtitle="AI suggestions to lift your score"
-          className={s.primaryAction}
-        />
-        <ActionRow
-          href="/cv/upload"
-          icon={Upload}
-          title="Replace my CV"
-          subtitle="Upload a newer version"
-        />
-        <ActionRow
-          icon={Download}
-          title="Download my CV"
-          subtitle="PDF, ready to send"
-        />
+      <div className={s.actionGrid}>
+        <div className={s.actionCol}>
+          <Link href="/cv/improve" className={s.improveCard}>
+            <span className={s.improveIcon} aria-hidden>
+              <Sparkle size={26} />
+            </span>
+            <span className={s.improveTitle}>Improve my CV</span>
+            <span className={s.improveSub}>AI suggestions to lift your score</span>
+          </Link>
+        </div>
+
+        <div className={s.actionCol}>
+          <div className={s.actionSide}>
+            <Link href="/cv/upload" className={s.sideCard}>
+              <span className={s.sideIcon} aria-hidden>
+                <Upload size={18} />
+              </span>
+              <span className={s.sideBody}>
+                <span className={s.sideTitle}>Replace my CV</span>
+                <span className={s.sideSub}>Upload a newer version</span>
+              </span>
+            </Link>
+            <button type="button" className={s.sideCard}>
+              <span className={s.sideIcon} aria-hidden>
+                <Download size={18} />
+              </span>
+              <span className={s.sideBody}>
+                <span className={s.sideTitle}>Download my CV</span>
+                <span className={s.sideSub}>PDF, ready to send</span>
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <PageSection title="Tailored versions">
