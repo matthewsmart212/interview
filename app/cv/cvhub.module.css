@@ -28,8 +28,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 6px;
-  padding: 16px;
+  overflow: hidden;
+  padding: 0;
   border-radius: var(--radius-card);
   border: 1px solid rgba(129, 140, 248, 0.2);
   background:
@@ -54,17 +54,81 @@
   transform: scale(0.98);
 }
 
-.improveIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+.improveVisual {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.textScrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 6, 22, 0.08) 0%,
+    rgba(10, 6, 22, 0.2) 48%,
+    rgba(10, 6, 22, 0.72) 78%,
+    rgba(10, 6, 22, 0.92) 100%
+  );
+}
+
+.improveBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
   background: rgba(99, 102, 241, 0.22);
   color: #c7d2fe;
   border: 1px solid rgba(129, 140, 248, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: auto;
+}
+
+.avatarStage {
+  position: absolute;
+  inset: 0;
+  bottom: 28%;
+  overflow: hidden;
+}
+
+.avatar {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 88%;
+  height: 100%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center top;
+  z-index: 1;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 14px rgba(67, 56, 202, 0.22));
+  -webkit-mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 18%,
+    #000 40%
+  );
+  mask-image: linear-gradient(
+    to top,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 18%,
+    #000 40%
+  );
+}
+
+.improveCopy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 14px 14px;
 }
 
 .improveTitle {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
+import Avatar from "../../components/Avatar";
 import {
   AppShell,
   PageSection,
@@ -33,11 +34,23 @@ export default function CvHubPage() {
       <div className={s.actionGrid}>
         <div className={s.actionCol}>
           <Link href="/cv/improve" className={s.improveCard}>
-            <span className={s.improveIcon} aria-hidden>
-              <Sparkle size={26} />
-            </span>
-            <span className={s.improveTitle}>Improve my CV</span>
-            <span className={s.improveSub}>AI suggestions to lift your score</span>
+            <div className={s.improveVisual} aria-hidden>
+              <div className={s.textScrim} />
+              <span className={s.improveBadge}>
+                <Sparkle size={14} />
+              </span>
+              <div className={s.avatarStage}>
+                <Avatar
+                  pose="thinking"
+                  alt="AI coach helping improve your CV"
+                  className={s.avatar}
+                />
+              </div>
+            </div>
+            <div className={s.improveCopy}>
+              <span className={s.improveTitle}>Improve my CV</span>
+              <span className={s.improveSub}>AI suggestions to lift your score</span>
+            </div>
           </Link>
         </div>
 
