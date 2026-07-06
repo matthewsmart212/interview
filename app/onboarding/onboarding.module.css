@@ -1,0 +1,481 @@
+/* Premium onboarding — aligned with home choice cards & interview wizards */
+
+.heroBlock {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 4px 0 8px;
+  min-height: 168px;
+}
+
+.heroCopy {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 8px;
+}
+
+.heroAvatar {
+  width: 138px;
+  height: 186px;
+  flex-shrink: 0;
+  border-radius: 22px;
+  filter: drop-shadow(0 10px 24px rgba(91, 58, 214, 0.28));
+}
+
+.heroEyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(196, 181, 253, 0.85);
+  margin-bottom: 10px;
+}
+
+.heroDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+}
+
+.goalGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.goalCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  min-height: 148px;
+  padding: 16px 14px 14px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 92, 255, 0.14),
+      rgba(124, 92, 255, 0) 55%
+    ),
+    var(--card);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.goalCard:active {
+  transform: scale(0.98);
+}
+
+.goalCard.active {
+  border-color: var(--brand);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 92, 255, 0.28),
+      rgba(124, 92, 255, 0) 58%
+    ),
+    rgba(139, 108, 245, 0.12);
+  box-shadow:
+    var(--glow-purple-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.goalIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.goalCard.active .goalIcon {
+  background: var(--brand);
+  color: #fff;
+}
+
+.goalTitle {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.goalSub {
+  display: block;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.goalCheck {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.goalCard.active .goalCheck {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dropzone {
+  border: 2px dashed var(--brand-200);
+  background: var(--brand-050);
+  border-radius: var(--radius-lg);
+  padding: 38px 22px;
+  text-align: center;
+  margin-top: 22px;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+.parseWrap {
+  text-align: center;
+  padding: 48px 12px 24px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  margin: 0 auto 22px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dropIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.dropTitle {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dropSub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.formats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.formats span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.uploadDone {
+  text-align: center;
+  padding-top: 12px;
+}
+
+.parsedList {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  text-align: left;
+}
+
+.parsedList li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-2);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.parsedList li:last-child {
+  border-bottom: none;
+}
+
+.parsedCheck {
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.skillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.skillChip {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-2);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.skillChip.on {
+  background: var(--brand-050);
+  border-color: var(--brand);
+  color: #ede9fe;
+}
+
+.prefCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.prefIcon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prefBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.prefTitle {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.prefSub {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+.toggle {
+  flex-shrink: 0;
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  border: none;
+  background: var(--dark-surface-2);
+  padding: 3px;
+  transition: background 0.2s ease;
+}
+
+.toggle.on {
+  background: var(--brand);
+}
+
+.toggleKnob {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.toggle.on .toggleKnob {
+  transform: translateX(20px);
+}
+
+.summaryCard {
+  margin-top: 22px;
+  padding: 18px 16px;
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(124, 92, 255, 0.16),
+      rgba(124, 92, 255, 0) 50%
+    ),
+    var(--card);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  text-align: left;
+}
+
+.summaryTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summaryRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summaryIcon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--brand-050);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.summaryLabel {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.summaryValue {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.doneHero {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.doneAvatar {
+  width: 120px;
+  height: 164px;
+  margin: 0 auto 16px;
+  border-radius: 22px;
+  filter: drop-shadow(0 12px 28px rgba(91, 58, 214, 0.32));
+}
+
+.doneIcon {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--green-050);
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.footerActions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skipCv {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+.skipCv:hover {
+  color: var(--text-2);
+}
+
+.progressLabel {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}

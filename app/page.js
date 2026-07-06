@@ -47,7 +47,7 @@ export default function WelcomePage() {
           <div className="grow" />
 
           <div className={styles.actions}>
-            <Link href="/setup" className="btn btn-primary">
+            <Link href="/onboarding" className="btn btn-primary">
               Get Started
             </Link>
             <Link href="/home" className={styles.signin}>

@@ -1,5 +1,5 @@
 import Phone from "../../components/Phone";
-import PageHeader from "../../components/PageHeader";
+import PersonalizedPageHeader from "../../components/home/PersonalizedPageHeader";
 import BottomNav from "../../components/BottomNav";
 import HomeChoiceCard from "../../components/home/HomeChoiceCard";
 import NextInterviewCard from "../../components/home/NextInterviewCard";
@@ -7,7 +7,7 @@ import StatPillRow, { StatPill } from "../../components/home/StatPillRow";
 import QuickActionRow from "../../components/home/QuickActionRow";
 import { AppShell, PageSection } from "../../components/ui";
 import { FileText, Mic, MessageCircle, Calendar } from "../../components/Icons";
-import { USER, INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
+import { INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
 import styles from "./home.module.css";
 
 const QUICK_ACTIONS = [
@@ -40,13 +40,12 @@ export default function HomePage() {
 
   return (
     <AppShell navActive="home" className={styles.home}>
-      <PageHeader
+      <PersonalizedPageHeader
         icon="home"
-        title={`Hi ${USER.name} 👋`}
         description={
           next
             ? `Your ${next.company} interview is in ${next.daysAway} days.`
-            : "What would you like to prepare for?"
+            : undefined
         }
       />
 
