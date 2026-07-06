@@ -1,4 +1,4 @@
-import { FileText } from "../Icons";
+import { FileText, ChevronRight } from "../Icons";
 import CircularProgress from "../CircularProgress";
 import s from "./cv-score-card.module.css";
 
@@ -44,6 +44,7 @@ export default function CVScoreCard({
         >
           <span className={s.ringPct}>{score}</span>
         </CircularProgress>
+        <ChevronRight size={17} className={s.chev} aria-hidden />
       </span>
     </div>
   );
