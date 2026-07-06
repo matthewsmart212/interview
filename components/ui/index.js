@@ -9,6 +9,7 @@ export { default as ActionRow } from "./ActionRow";
 export { default as FeatureCard } from "./FeatureCard";
 export { default as InterviewCard } from "./InterviewCard";
 export { default as CVScoreCard } from "./CVScoreCard";
+export { default as CvHistoryDropdown } from "./CvHistoryDropdown";
 export { default as TailoredCVCard } from "./TailoredCVCard";
 export { default as ProgressCard } from "./ProgressCard";
 export { default as StatPill } from "../home/StatPill";

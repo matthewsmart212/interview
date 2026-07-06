@@ -53,6 +53,7 @@
   --radius-card-lg: 28px;
 
   --pad-x: 24px;
+  --page-header-gap: 16px;
 
   --gradient-primary: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
   --gradient-hero: linear-gradient(135deg, #6f52ee 0%, #5636cf 100%);
@@ -238,7 +239,7 @@ body:has(.interview-route),
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: 0 calc(-1 * var(--pad-x)) 18px;
+  margin: 0 calc(-1 * var(--pad-x)) var(--page-header-gap);
   padding: 15px var(--pad-x) 16px;
   background: rgba(0, 0, 0, 0.12);
   border-bottom: 1px solid var(--divider);

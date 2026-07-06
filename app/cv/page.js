@@ -8,9 +8,10 @@ import {
   TailoredCVCard,
   EmptyStateCard,
   PrimaryButton,
+  CvHistoryDropdown,
 } from "../../components/ui";
 import { Sparkle, Download, Upload, Shield, Plus } from "../../components/Icons";
-import { MASTER_CV, INTERVIEWS } from "../../lib/app-data";
+import { MASTER_CV, INTERVIEWS, CV_HISTORY } from "../../lib/app-data";
 import s from "./cvhub.module.css";
 
 export default function CvHubPage() {
@@ -111,6 +112,8 @@ export default function CvHubPage() {
           Upload or create a new CV
         </Link>
       </p>
+
+      <CvHistoryDropdown items={CV_HISTORY} />
     </AppShell>
   );
 }

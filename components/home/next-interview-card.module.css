@@ -1,14 +1,9 @@
-.wrap {
-  margin-top: 16px;
-}
-
 .emptyCard {
   composes: tapMin from "./home-shared.module.css";
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 16px;
   padding: 15px 16px;
   border-radius: var(--radius-lg);
   background:

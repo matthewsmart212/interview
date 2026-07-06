@@ -5,11 +5,7 @@ import s from "./next-interview-card.module.css";
 
 export default function NextInterviewCard({ interview }) {
   if (interview) {
-    return (
-      <div className={s.wrap}>
-        <InterviewCard interview={interview} featured />
-      </div>
-    );
+    return <InterviewCard interview={interview} featured />;
   }
 
   return (

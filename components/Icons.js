@@ -27,6 +27,11 @@ export const ChevronRight = (p) => (
     <path d="M9 18l6-6-6-6" />
   </Svg>
 );
+export const ChevronDown = (p) => (
+  <Svg {...p}>
+    <path d="M6 9l6 6 6-6" />
+  </Svg>
+);
 export const Menu = (p) => (
   <Svg {...p}>
     <path d="M4 7h16M4 12h16M4 17h16" />
