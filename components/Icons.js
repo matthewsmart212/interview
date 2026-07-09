@@ -133,6 +133,13 @@ export const Clock = (p) => (
     <path d="M12 7v5l3 2" />
   </Svg>
 );
+export const Lightbulb = (p) => (
+  <Svg {...p}>
+    <path d="M9 18h6" />
+    <path d="M10 22h4" />
+    <path d="M12 2a6 6 0 0 0-3 11v1h6v-1a6 6 0 0 0-3-11z" />
+  </Svg>
+);
 export const Target = (p) => (
   <Svg {...p}>
     <circle cx="12" cy="12" r="9" />
