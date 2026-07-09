@@ -99,11 +99,11 @@ export default function MockHubPage() {
           onClick={() => setShowJd((open) => !open)}
         >
           <span className={s.jdLinkIcon} aria-hidden>
-            <FileText size={16} />
-            <Plus size={10} stroke={2.8} className={s.jdPlus} />
+            <FileText size={14} />
+            <Plus size={8} stroke={2.8} className={s.jdPlus} />
           </span>
           <span className={s.jdLinkText}>Create from job description</span>
-          <ChevronRight size={18} className={s.jdChev} aria-hidden />
+          <ChevronRight size={15} className={s.jdChev} aria-hidden />
         </button>
 
         {showJd ? (
