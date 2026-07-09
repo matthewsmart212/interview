@@ -135,9 +135,13 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
   );
 }
 
-function CvPicker({ options, selectedId, onSelect }) {
+function CvPicker({ options, selectedId, onSelect, compact = false }) {
   return (
-    <div className={s.pickerList} role="listbox" aria-label="CV options">
+    <div
+      className={`${s.pickerList} ${compact ? s.pickerListCompact : ""}`}
+      role="listbox"
+      aria-label="CV options"
+    >
       {options.map((opt) => {
         const selected = selectedId === opt.id;
         return (
@@ -146,7 +150,7 @@ function CvPicker({ options, selectedId, onSelect }) {
             type="button"
             role="option"
             aria-selected={selected}
-            className={`${s.pickerRow} ${selected ? s.pickerRowSelected : ""}`}
+            className={`${s.pickerRow} ${compact ? s.pickerRowCompact : ""} ${selected ? s.pickerRowSelected : ""}`}
             onClick={() => onSelect(opt.id)}
           >
             <span className={`${s.pickerLogo} ${s.pickerLogoCv}`}>
@@ -328,12 +332,12 @@ export default function MockHubPage() {
   function renderHome() {
     return (
       <>
-        <h2 className={s.actionTitle}>Ready to start a mock interview?</h2>
-        <p className={s.actionSub}>
+        <h2 className={s.actionTitle}>Ready for a mock interview?</h2>
+        <p className={`${s.actionSub} ${s.actionSubTight}`}>
           Pick what to practise with — we&apos;ll shape questions and feedback around it.
         </p>
 
-        <div className={s.optionGrid}>
+        <div className={`${s.optionGrid} ${s.optionGridHome}`}>
           <OptionCard
             icon={Mic}
             title="Generic practice"
@@ -355,8 +359,8 @@ export default function MockHubPage() {
         </div>
 
         <p className={s.homeHint}>
-          <User size={12} aria-hidden />
-          Next you&apos;ll choose which CV grounds your answers
+          <User size={11} aria-hidden />
+          Next: choose which CV grounds your answers
         </p>
       </>
     );
@@ -584,7 +588,7 @@ export default function MockHubPage() {
           <ChevronLeft size={14} /> Interview setup
         </button>
         <h2 className={s.actionTitle}>Choose your CV</h2>
-        <p className={s.actionSub}>
+        <p className={`${s.actionSub} ${s.actionSubTight}`}>
           Your coach uses this to judge relevance and suggest stronger examples.
         </p>
 
@@ -592,35 +596,24 @@ export default function MockHubPage() {
           options={cvOptions}
           selectedId={selectedCvId}
           onSelect={setSelectedCvId}
+          compact
         />
 
-        <p className={s.flowLinks}>
+        <p className={s.flowLinkInline}>
           <Link href="/cv/upload" className={s.flowLink}>
             Upload another CV
           </Link>
         </p>
 
-        <div className={s.summaryPanel}>
-          <p className={s.summaryLabel}>Your mock session</p>
-          <div className={s.summaryRows}>
-            <div className={s.summaryRow}>
-              <span className={s.summaryKey}>Focus</span>
-              <span className={s.summaryVal}>{contextLabel()}</span>
-            </div>
-            <div className={s.summaryRow}>
-              <span className={s.summaryKey}>CV</span>
-              <span className={s.summaryVal}>{cvSummary}</span>
-            </div>
-            <div className={s.summaryRow}>
-              <span className={s.summaryKey}>Length</span>
-              <span className={s.summaryVal}>~10 min · 5 questions</span>
-            </div>
-          </div>
+        <div className={s.summaryCompact}>
+          <span className={s.summaryChip}>{contextLabel()}</span>
+          <span className={s.summaryChip}>{cvSummary}</span>
+          <span className={`${s.summaryChip} ${s.summaryChipMuted}`}>5 questions · ~10 min</span>
         </div>
 
         <button
           type="button"
-          className={`btn btn-primary btn-pill ${s.startBtn}`}
+          className={`btn btn-primary btn-pill ${s.startBtn} ${s.startBtnTight}`}
           onClick={startMock}
         >
           <Mic size={16} />
