@@ -18,17 +18,14 @@ import {
 import { INTERVIEWS, MOCK_HISTORY } from "../../lib/app-data";
 import s from "./mock.module.css";
 
-function UtilityCard({ href, icon: Icon, title, subtitle }) {
+function UtilityCard({ href, icon: Icon, title }) {
   return (
     <Link href={href} className={s.utilityCard}>
       <span className={s.utilityIcon} aria-hidden>
-        <Icon size={16} />
+        <Icon size={14} />
       </span>
-      <span className={s.utilityBody}>
-        <span className={s.utilityTitle}>{title}</span>
-        {subtitle ? <span className={s.utilitySub}>{subtitle}</span> : null}
-      </span>
-      <ChevronRight size={14} className={s.utilityChev} aria-hidden />
+      <span className={s.utilityTitle}>{title}</span>
+      <ChevronRight size={12} className={s.utilityChev} aria-hidden />
     </Link>
   );
 }
@@ -98,12 +95,14 @@ export default function MockHubPage() {
           className={s.jdLink}
           onClick={() => setShowJd((open) => !open)}
         >
-          <span className={s.jdLinkIcon} aria-hidden>
-            <FileText size={14} />
-            <Plus size={8} stroke={2.8} className={s.jdPlus} />
+          <span className={s.jdLinkInner}>
+            <span className={s.jdLinkIcon} aria-hidden>
+              <FileText size={13} />
+              <Plus size={7} stroke={2.8} className={s.jdPlus} />
+            </span>
+            <span className={s.jdLinkText}>Create from job description</span>
+            <ChevronRight size={14} className={s.jdChev} aria-hidden />
           </span>
-          <span className={s.jdLinkText}>Create from job description</span>
-          <ChevronRight size={15} className={s.jdChev} aria-hidden />
         </button>
 
         {showJd ? (
@@ -120,30 +119,13 @@ export default function MockHubPage() {
       </section>
 
       <div className={s.utilityRow}>
-        <UtilityCard
-          href="/history"
-          icon={Clock}
-          title="Previous mocks"
-          subtitle={
-            MOCK_HISTORY.length > 0
-              ? `${MOCK_HISTORY.length} completed`
-              : "None yet"
-          }
-        />
+        <UtilityCard href="/history" icon={Clock} title="Previous mocks" />
         <UtilityCard
           href={latestMock ? `/history/${latestMock.id}` : "/history"}
           icon={MessageCircle}
           title="Recent feedback"
-          subtitle={
-            latestMock ? `Score ${latestMock.score}` : "View history"
-          }
         />
-        <UtilityCard
-          href="/questions"
-          icon={Lightbulb}
-          title="Practice tips"
-          subtitle="Role questions"
-        />
+        <UtilityCard href="/questions" icon={Lightbulb} title="Practice tips" />
       </div>
     </AppShell>
   );
