@@ -12,7 +12,7 @@
   --brand-100: rgba(139, 108, 245, 0.3);
   --brand-200: rgba(139, 108, 245, 0.48);
 
-  --page-header-sub: rgba(255, 255, 255, 0.6);
+  --page-header-sub: rgba(255, 255, 255, 0.72);
 
   /* same dark navy as the mock feedback screens */
   --bg: #171226;
@@ -27,8 +27,8 @@
   --surface-2: rgba(255, 255, 255, 0.06);
 
   --text: #f5f3fc;
-  --text-2: #d3cdea;
-  --muted: #a89fd2;
+  --text-2: #ddd6f0;
+  --muted: #b8aedc;
   --border: rgba(255, 255, 255, 0.13);
   --divider: rgba(255, 255, 255, 0.16);
 
@@ -869,7 +869,7 @@ body:has(.interview-route),
   align-items: center;
   gap: 3px;
   font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.58);
   font-weight: 500;
   border: none;
   background: none;
@@ -915,7 +915,7 @@ body:has(.interview-route),
   color: #fff;
 }
 .nav-item-mock:not(.active) span:last-child {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 /* ------- Avatar / placeholder ------- */

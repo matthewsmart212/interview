@@ -4,7 +4,7 @@
  */
 
 export type MockContextMode = "generic" | "interview" | "jd";
-export type MockCvType = "master" | "upload" | "tailored";
+export type MockCvType = "master" | "upload" | "tailored" | "none";
 
 export interface MockSetupConfig {
   version: 1;

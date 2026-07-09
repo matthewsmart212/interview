@@ -3,7 +3,6 @@
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../components/PageHeader";
 import Avatar from "../../components/Avatar";
 import { AppShell } from "../../components/ui";
 import {
@@ -19,7 +18,6 @@ import {
   Upload,
   Check,
   Target,
-  Sparkle,
   User,
 } from "../../components/Icons";
 import {
@@ -36,47 +34,51 @@ import {
 import { clearSession, clearResult } from "../../lib/interview-session";
 import s from "./mock.module.css";
 
-const HOW_IT_WORKS = [
-  "Your AI coach asks 5 realistic questions out loud",
-  "You answer by voice — just like the real thing",
-  "Review each transcript before moving on",
-  "Get scored feedback and tips to improve",
+const GENERIC_POINTS = [
+  "5 voice questions with scored feedback",
+  "Review each answer before moving on",
 ];
+
+const JD_MIN_CHARS = 80;
+
+function StepProgress({ step }) {
+  return (
+    <div
+      className={s.stepProgress}
+      role="progressbar"
+      aria-valuenow={step}
+      aria-valuemin={1}
+      aria-valuemax={2}
+      aria-label={`Setup step ${step} of 2`}
+    >
+      <span className={`${s.stepItem} ${step === 1 ? s.stepItemActive : s.stepItemDone}`}>
+        <span className={s.stepNum}>1</span>
+        Focus
+      </span>
+      <span className={s.stepLine} aria-hidden />
+      <span className={`${s.stepItem} ${step === 2 ? s.stepItemActive : ""}`}>
+        <span className={s.stepNum}>2</span>
+        CV
+      </span>
+    </div>
+  );
+}
 
 function UtilityCard({ href, icon: Icon, title }) {
   return (
     <Link href={href} className={s.utilityCard}>
       <span className={s.utilityIcon} aria-hidden>
-        <Icon size={14} />
+        <Icon size={13} />
       </span>
       <span className={s.utilityTitle}>{title}</span>
-      <ChevronRight size={12} className={s.utilityChev} aria-hidden />
+      <ChevronRight size={11} className={s.utilityChev} aria-hidden />
     </Link>
   );
 }
 
-function HowItWorksList() {
+function OptionCard({ icon: Icon, title, sub, onClick }) {
   return (
-    <ul className={s.howList}>
-      {HOW_IT_WORKS.map((line) => (
-        <li key={line}>
-          <span className={s.howCheck} aria-hidden>
-            <Check size={11} stroke={3} />
-          </span>
-          {line}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function OptionCard({ icon: Icon, title, sub, onClick, active }) {
-  return (
-    <button
-      type="button"
-      className={`${s.optionCard} ${active ? s.optionCardActive : ""}`}
-      onClick={onClick}
-    >
+    <button type="button" className={s.optionCard} onClick={onClick}>
       <span className={s.optionIcon} aria-hidden>
         <Icon size={15} />
       </span>
@@ -148,7 +150,7 @@ function CvPicker({ options, selectedId, onSelect }) {
             onClick={() => onSelect(opt.id)}
           >
             <span className={`${s.pickerLogo} ${s.pickerLogoCv}`}>
-              {opt.icon === "sparkle" ? <Sparkle size={14} /> : <FileText size={14} />}
+              <FileText size={14} />
             </span>
             <span className={s.pickerBody}>
               <span className={s.pickerRole}>{opt.label}</span>
@@ -179,6 +181,7 @@ export default function MockHubPage() {
   const [jdText, setJdText] = useState("");
   const [jdFileName, setJdFileName] = useState(null);
   const [jdTab, setJdTab] = useState("paste");
+  const [jdProcessing, setJdProcessing] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [selectedCvId, setSelectedCvId] = useState("master");
 
@@ -200,7 +203,6 @@ export default function MockHubPage() {
         meta: `Master CV · score ${MASTER_CV.score}`,
         badge: "Default",
         badgeCls: "ready",
-        icon: "file",
       },
       ...CV_HISTORY.filter((c) => !c.current).map((c) => ({
         id: c.id,
@@ -209,7 +211,6 @@ export default function MockHubPage() {
         meta: `Uploaded ${c.uploadedAt} · score ${c.score}`,
         badge: null,
         badgeCls: "",
-        icon: "file",
       })),
       ...INTERVIEWS.filter((iv) => iv.tailoredCv.exists).map((iv) => ({
         id: `tailored-${iv.id}`,
@@ -218,8 +219,15 @@ export default function MockHubPage() {
         meta: `Score ${iv.tailoredCv.score} · ${iv.role}`,
         badge: "Tailored",
         badgeCls: "upcoming",
-        icon: "sparkle",
       })),
+      {
+        id: "none",
+        type: "none",
+        label: "No CV — quick practice",
+        meta: "Generic feedback without CV matching",
+        badge: null,
+        badgeCls: "",
+      },
     ];
     return opts;
   }, []);
@@ -253,10 +261,21 @@ export default function MockHubPage() {
     return "";
   }
 
+  function jdPasteReady() {
+    return jdText.trim().length >= JD_MIN_CHARS;
+  }
+
+  function jdUploadReady() {
+    return Boolean(jdFileName && jdText.trim() && !jdProcessing);
+  }
+
   function canContinueStep1() {
     if (contextMode === "generic") return true;
     if (contextMode === "interview") return Boolean(selectedInterviewId);
-    if (contextMode === "jd") return Boolean(jdText.trim() || jdFileName);
+    if (contextMode === "jd") {
+      if (jdProcessing) return false;
+      return jdTab === "paste" ? jdPasteReady() : jdUploadReady();
+    }
     return false;
   }
 
@@ -267,10 +286,16 @@ export default function MockHubPage() {
 
   function handleJdFile(file) {
     if (!file) return;
-    setJdFileName(file.name);
-    setJdText(
-      `Role requirements extracted from ${file.name}.\n\nWe're looking for a friendly, reliable team member who communicates clearly and stays calm under pressure. You'll work closely with customers, resolve issues thoughtfully, and support your team during busy periods.`
-    );
+    setJdProcessing(true);
+    setJdFileName(null);
+    setJdText("");
+    window.setTimeout(() => {
+      setJdFileName(file.name);
+      setJdText(
+        `Role requirements extracted from ${file.name}.\n\nWe're looking for a friendly, reliable team member who communicates clearly and stays calm under pressure. You'll work closely with customers, resolve issues thoughtfully, and support your team during busy periods.`
+      );
+      setJdProcessing(false);
+    }, 1400);
   }
 
   function onDrop(e) {
@@ -314,21 +339,18 @@ export default function MockHubPage() {
             title="Generic practice"
             sub="Balanced questions for any role"
             onClick={() => openContext("generic")}
-            active={false}
           />
           <OptionCard
             icon={Calendar}
             title="Upcoming interview"
             sub="Match a role you're preparing for"
             onClick={() => openContext("interview")}
-            active={false}
           />
           <OptionCard
             icon={FileText}
             title="Job description"
             sub="Paste or upload a JD to tailor questions"
             onClick={() => openContext("jd")}
-            active={false}
           />
         </div>
 
@@ -348,8 +370,7 @@ export default function MockHubPage() {
         </button>
         <h2 className={s.actionTitle}>Generic practice mock</h2>
         <p className={s.actionSub}>
-          A well-rounded set of behavioural and situational questions — great when
-          you want quick reps without tying to one employer.
+          Balanced behavioural and situational questions — great for quick reps.
         </p>
 
         <div className={s.infoPanel}>
@@ -359,14 +380,22 @@ export default function MockHubPage() {
           <div>
             <p className={s.infoLead}>What to expect</p>
             <p className={s.infoCopy}>
-              Questions cover teamwork, pressure, customer situations and motivation.
-              Feedback focuses on structure, clarity and impact — the skills that
-              transfer to any interview.
+              Teamwork, pressure, customer situations and motivation. Feedback
+              focuses on structure, clarity and impact.
             </p>
           </div>
         </div>
 
-        <HowItWorksList />
+        <ul className={s.howList}>
+          {GENERIC_POINTS.map((line) => (
+            <li key={line}>
+              <span className={s.howCheck} aria-hidden>
+                <Check size={11} stroke={3} />
+              </span>
+              {line}
+            </li>
+          ))}
+        </ul>
 
         <button
           type="button"
@@ -388,7 +417,7 @@ export default function MockHubPage() {
         </button>
         <h2 className={s.actionTitle}>Practise for a real interview</h2>
         <p className={s.actionSub}>
-          Questions will mirror the role, company and job description you&apos;ve saved.
+          Questions mirror the role, company and job description you&apos;ve saved.
         </p>
 
         <InterviewPicker
@@ -396,6 +425,15 @@ export default function MockHubPage() {
           selectedId={selectedInterviewId}
           onSelect={setSelectedInterviewId}
         />
+
+        {upcoming.length > 0 ? (
+          <p className={s.flowLinks}>
+            Can&apos;t see your interview?{" "}
+            <Link href="/interviews/new" className={s.flowLink}>
+              Add a new interview
+            </Link>
+          </p>
+        ) : null}
 
         {selectedInterview?.hasJD ? (
           <div className={s.jdPreview}>
@@ -421,7 +459,8 @@ export default function MockHubPage() {
   }
 
   function renderJd() {
-    const hasJd = Boolean(jdText.trim() || jdFileName);
+    const pasteHint =
+      jdTab === "paste" && jdText.trim().length > 0 && !jdPasteReady();
 
     return (
       <>
@@ -430,8 +469,7 @@ export default function MockHubPage() {
         </button>
         <h2 className={s.actionTitle}>Create from job description</h2>
         <p className={s.actionSub}>
-          We&apos;ll read the role requirements and generate interview questions that
-          match the language and priorities in the posting.
+          We&apos;ll read the role and generate questions that match its priorities.
         </p>
 
         <div className={s.jdTabs} role="tablist">
@@ -459,14 +497,17 @@ export default function MockHubPage() {
           <div className={s.jdArea}>
             <textarea
               className="textarea"
-              rows={5}
+              rows={4}
               value={jdText}
               onChange={(e) => {
                 setJdText(e.target.value);
                 if (!e.target.value.trim()) setJdFileName(null);
               }}
-              placeholder="Paste the full job description here — responsibilities, requirements, and what they're looking for..."
+              placeholder="Paste the job description — responsibilities, requirements, and what they're looking for…"
             />
+            {pasteHint ? (
+              <p className={s.jdHint}>Add a little more detail to continue</p>
+            ) : null}
           </div>
         ) : (
           <div className={s.jdUploadWrap}>
@@ -479,36 +520,42 @@ export default function MockHubPage() {
             />
             <button
               type="button"
-              className={`${s.dropzone} ${dragOver ? s.dropzoneOver : ""} ${jdFileName ? s.dropzoneDone : ""}`}
-              onClick={() => fileRef.current?.click()}
+              className={`${s.dropzone} ${dragOver ? s.dropzoneOver : ""} ${jdFileName ? s.dropzoneDone : ""} ${jdProcessing ? s.dropzoneBusy : ""}`}
+              onClick={() => !jdProcessing && fileRef.current?.click()}
               onDragOver={(e) => {
                 e.preventDefault();
                 setDragOver(true);
               }}
               onDragLeave={() => setDragOver(false)}
               onDrop={onDrop}
+              disabled={jdProcessing}
             >
               <span className={s.dropIcon} aria-hidden>
-                {jdFileName ? <Check size={22} stroke={2.5} /> : <Upload size={22} />}
+                {jdProcessing ? (
+                  <span className={s.dropSpinner} />
+                ) : jdFileName ? (
+                  <Check size={22} stroke={2.5} />
+                ) : (
+                  <Upload size={22} />
+                )}
               </span>
               <span className={s.dropTitle}>
-                {jdFileName ? jdFileName : "Drop your job description here"}
+                {jdProcessing
+                  ? "Reading your file…"
+                  : jdFileName
+                    ? jdFileName
+                    : "Choose a job description file"}
               </span>
               <span className={s.dropSub}>
-                {jdFileName
-                  ? "Tap to replace the file"
-                  : "or tap to browse · PDF, DOCX, TXT"}
+                {jdProcessing
+                  ? "Extracting role requirements"
+                  : jdFileName
+                    ? "Tap to choose a different file"
+                    : "Upload from Files · PDF, DOCX or TXT"}
               </span>
             </button>
           </div>
         )}
-
-        {hasJd ? (
-          <div className={`${s.parseNote} anim-fade-up`}>
-            <Sparkle size={13} aria-hidden />
-            We&apos;ll pull out key skills and craft questions around them
-          </div>
-        ) : null}
 
         <button
           type="button"
@@ -524,6 +571,9 @@ export default function MockHubPage() {
   }
 
   function renderConfirm() {
+    const cvSummary =
+      selectedCvId === "none" ? "No CV — quick practice" : selectedCv?.label;
+
     return (
       <>
         <button
@@ -535,8 +585,7 @@ export default function MockHubPage() {
         </button>
         <h2 className={s.actionTitle}>Choose your CV</h2>
         <p className={s.actionSub}>
-          Your coach uses this to judge relevance and suggest stronger examples from
-          your real experience.
+          Your coach uses this to judge relevance and suggest stronger examples.
         </p>
 
         <CvPicker
@@ -544,6 +593,12 @@ export default function MockHubPage() {
           selectedId={selectedCvId}
           onSelect={setSelectedCvId}
         />
+
+        <p className={s.flowLinks}>
+          <Link href="/cv/upload" className={s.flowLink}>
+            Upload another CV
+          </Link>
+        </p>
 
         <div className={s.summaryPanel}>
           <p className={s.summaryLabel}>Your mock session</p>
@@ -554,7 +609,7 @@ export default function MockHubPage() {
             </div>
             <div className={s.summaryRow}>
               <span className={s.summaryKey}>CV</span>
-              <span className={s.summaryVal}>{selectedCv?.label}</span>
+              <span className={s.summaryVal}>{cvSummary}</span>
             </div>
             <div className={s.summaryRow}>
               <span className={s.summaryKey}>Length</span>
@@ -562,8 +617,6 @@ export default function MockHubPage() {
             </div>
           </div>
         </div>
-
-        <HowItWorksList />
 
         <button
           type="button"
@@ -590,12 +643,6 @@ export default function MockHubPage() {
 
   return (
     <AppShell navActive="mock" className={s.shell}>
-      <PageHeader
-        icon="mic"
-        title="Mock Interview"
-        description="Practise with your AI interviewer"
-      />
-
       <section className={s.hero} aria-hidden>
         <div className={s.heroBg} />
         <div className={s.heroGlow} />
@@ -607,9 +654,7 @@ export default function MockHubPage() {
       </section>
 
       <section className={s.actionCard}>
-        <span className={`status-pill upcoming ${s.stepPill}`}>
-          Step {step} of 2
-        </span>
+        <StepProgress step={step} />
         <div key={view} className={`${s.cardBody} anim-fade-up`}>
           {body}
         </div>
@@ -620,7 +665,7 @@ export default function MockHubPage() {
         <UtilityCard
           href={latestMock ? `/history/${latestMock.id}` : "/history"}
           icon={MessageCircle}
-          title="Recent feedback"
+          title="Feedback"
         />
         <UtilityCard href="/questions" icon={Lightbulb} title="Practice tips" />
       </div>

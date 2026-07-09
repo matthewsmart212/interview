@@ -1,16 +1,26 @@
 "use client";
 
 import Waveform from "../Waveform";
+import { Mic, Refresh } from "../Icons";
 import m from "../../app/interview/interview.module.css";
 
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+
 /**
- * Listening phase: dark glass card with live dot, waveform, and (when
- * available) a live transcript preview. `micError` explains fallback modes.
+ * Listening phase: live recording with timer, waveform and optional controls.
  */
 export default function ListeningScreen({
   questionId,
   liveText,
   micError,
+  recordSeconds,
+  paused,
+  onPause,
+  onRestart,
   onFinish,
 }) {
   return (
@@ -20,11 +30,29 @@ export default function ListeningScreen({
           key={`listen-${questionId}`}
           className={`${m.qcard} ${m.darkCard} anim-fade-up`}
         >
-          <div className={m.listening}>
-            <span className={m.recDot} aria-hidden />
-            Listening...
+          <div className={m.listeningRow}>
+            <span className={`${m.micRing} ${paused ? m.micRingPaused : ""}`} aria-hidden>
+              <Mic size={16} />
+            </span>
+            <div>
+              <div className={m.listening}>
+                {paused ? (
+                  "Recording paused"
+                ) : (
+                  <>
+                    <span className={m.recDot} aria-hidden />
+                    Recording
+                  </>
+                )}
+              </div>
+              <div className={m.speak}>
+                {paused ? "Tap resume to continue" : "Speak clearly — tap when finished"}
+              </div>
+            </div>
+            <span className={m.recordTimer} aria-live="polite">
+              {formatTime(recordSeconds)}
+            </span>
           </div>
-          <div className={m.speak}>Speak clearly</div>
 
           {liveText ? (
             <p className={m.liveLine} aria-live="polite">
@@ -43,15 +71,29 @@ export default function ListeningScreen({
           ) : null}
 
           <div className={m.qfooter}>
-            <Waveform bars={28} className={m.qwave} height={30} animated={!micError} />
+            <Waveform
+              bars={28}
+              className={m.qwave}
+              height={30}
+              animated={!paused && !micError}
+            />
           </div>
         </div>
       </div>
 
       <div className={m.bottomBar}>
-        <button onClick={onFinish} className={m.answerBtn}>
-          Finish Answer
+        <button type="button" onClick={onFinish} className={m.answerBtn} disabled={paused}>
+          Tap when finished
         </button>
+        <div className={m.secondaryRow}>
+          <button type="button" className={m.ghostBtn} onClick={onPause}>
+            {paused ? "Resume" : "Pause"}
+          </button>
+          <button type="button" className={m.textBtn} onClick={onRestart}>
+            <Refresh size={14} />
+            Restart answer
+          </button>
+        </div>
       </div>
     </>
   );

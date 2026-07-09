@@ -9,6 +9,7 @@ import Avatar from "../../components/Avatar";
 import ProgressSteps from "../../components/interview/ProgressSteps";
 import InterviewQuestionScreen from "../../components/interview/InterviewQuestionScreen";
 import ListeningScreen from "../../components/interview/ListeningScreen";
+import ProcessingScreen from "../../components/interview/ProcessingScreen";
 import TranscriptReviewScreen from "../../components/interview/TranscriptReviewScreen";
 import useSpeechRecognition from "../../lib/useSpeechRecognition";
 import { QUESTIONS, TOTAL_QUESTIONS } from "../../lib/interview-data";
@@ -25,8 +26,17 @@ import m from "./interview.module.css";
 const TITLES = {
   question: "AI Mock Interview",
   listening: "Your Turn",
+  processing: "Your Turn",
   reviewTranscript: "Review Your Answer",
 };
+
+/** Simulated coach read-aloud — capped so the UI stays snappy. */
+function coachSpeakMs(durationLabel) {
+  const match = durationLabel?.match(/(\d+):(\d+)/);
+  if (!match) return 3200;
+  const seconds = Number(match[1]) * 60 + Number(match[2]);
+  return Math.min(Math.max(seconds * 45, 2400), 4500);
+}
 
 function InterviewFlow() {
   const router = useRouter();
@@ -37,8 +47,12 @@ function InterviewFlow() {
 
   const [index, setIndex] = useState(retryIndex ?? 0);
   const [phase, setPhase] = useState("question");
+  const [coachPhase, setCoachPhase] = useState("speaking");
+  const [recordSeconds, setRecordSeconds] = useState(0);
+  const [recordingPaused, setRecordingPaused] = useState(false);
   const [transcript, setTranscript] = useState("");
   const sessionRef = useRef(null);
+  const coachTimerRef = useRef(null);
   const speech = useSpeechRecognition();
 
   /* ---- restore / initialise the session on mount ---- */
@@ -88,6 +102,40 @@ function InterviewFlow() {
   const isRetry = retryIndex !== null;
   const isLast = index === TOTAL_QUESTIONS - 1;
 
+  const clearCoachTimer = () => {
+    if (coachTimerRef.current) {
+      clearTimeout(coachTimerRef.current);
+      coachTimerRef.current = null;
+    }
+  };
+
+  const beginCoachSpeak = () => {
+    clearCoachTimer();
+    setCoachPhase("speaking");
+    coachTimerRef.current = setTimeout(() => {
+      setCoachPhase("ready");
+      coachTimerRef.current = null;
+    }, coachSpeakMs(q.duration));
+  };
+
+  /* Coach reads each new question aloud (simulated) before the user can answer. */
+  useEffect(() => {
+    if (phase !== "question") {
+      clearCoachTimer();
+      return undefined;
+    }
+    beginCoachSpeak();
+    return () => clearCoachTimer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, index, q.id]);
+
+  /* Recording timer while the user is answering. */
+  useEffect(() => {
+    if (phase !== "listening" || recordingPaused) return undefined;
+    const tick = setInterval(() => setRecordSeconds((s) => s + 1), 1000);
+    return () => clearInterval(tick);
+  }, [phase, index, recordingPaused]);
+
   // Recognition engines often deliver the final chunk just after stop() —
   // adopt it on the review screen if we captured nothing at tap time.
   useEffect(() => {
@@ -106,25 +154,60 @@ function InterviewFlow() {
   /* ---- phase transitions ---- */
 
   const startAnswer = () => {
+    if (coachPhase !== "ready") return;
     setTranscript("");
+    setRecordSeconds(0);
+    setRecordingPaused(false);
     speech.start(); // no-ops safely when unsupported
     setPhase("listening");
     persist({ currentIndex: index, phase: "listening", draft: null });
   };
 
+  const replayQuestion = () => {
+    if (coachPhase === "speaking") return;
+    beginCoachSpeak();
+  };
+
+  const toggleRecordingPause = () => {
+    if (recordingPaused) {
+      setRecordingPaused(false);
+      speech.start();
+      return;
+    }
+    setRecordingPaused(true);
+    speech.stop();
+  };
+
+  const restartRecording = () => {
+    setTranscript("");
+    setRecordSeconds(0);
+    setRecordingPaused(false);
+    speech.reset();
+    speech.start();
+    persist({ phase: "listening", draft: null });
+  };
+
   const finishAnswer = () => {
+    if (recordingPaused) return;
     speech.stop();
     const heard = `${speech.finalTranscript} ${speech.interimTranscript}`.trim();
     setTranscript(heard);
-    setPhase("reviewTranscript");
-    persist({
-      phase: "reviewTranscript",
-      draft: { questionId: q.id, transcript: heard },
-    });
+    setPhase("processing");
+    persist({ phase: "processing", draft: { questionId: q.id, transcript: heard } });
+
+    window.setTimeout(() => {
+      setPhase("reviewTranscript");
+      persist({
+        phase: "reviewTranscript",
+        draft: { questionId: q.id, transcript: heard },
+      });
+    }, 1300);
   };
 
   const retryAnswer = () => {
     setTranscript("");
+    setRecordSeconds(0);
+    setRecordingPaused(false);
     speech.reset();
     speech.start();
     setPhase("listening");
@@ -154,6 +237,8 @@ function InterviewFlow() {
       const nextIndex = index + 1;
       setIndex(nextIndex);
       setTranscript("");
+      setRecordSeconds(0);
+      setRecordingPaused(false);
       speech.reset();
       setPhase("question");
       persist({ currentIndex: nextIndex, phase: "question", draft: null });
@@ -163,6 +248,7 @@ function InterviewFlow() {
   /* ---- render ---- */
 
   const listening = phase === "listening";
+  const processing = phase === "processing";
   const reviewing = phase === "reviewTranscript";
 
   const liveText = listening
@@ -177,7 +263,7 @@ function InterviewFlow() {
         }`}
       >
         <div className={m.stageBg} />
-        {!reviewing && (
+        {!reviewing && !processing && (
           <Avatar
             pose={listening ? "welcoming" : "presenting"}
             fallbackPose="idle"
@@ -198,18 +284,23 @@ function InterviewFlow() {
           }
         />
 
-        {!reviewing && (
+        {!reviewing && !processing && (
           <div className={m.topArea}>
             <ProgressSteps
               index={index}
               total={TOTAL_QUESTIONS}
-              fillCurrent={listening}
+              fillCurrent={listening || processing}
             />
           </div>
         )}
 
         {phase === "question" && (
-          <InterviewQuestionScreen question={q} onAnswer={startAnswer} />
+          <InterviewQuestionScreen
+            question={q}
+            coachPhase={coachPhase}
+            onAnswer={startAnswer}
+            onReplay={replayQuestion}
+          />
         )}
 
         {listening && (
@@ -217,9 +308,15 @@ function InterviewFlow() {
             questionId={q.id}
             liveText={liveText}
             micError={speech.error === "no-speech" ? null : speech.error}
+            recordSeconds={recordSeconds}
+            paused={recordingPaused}
+            onPause={toggleRecordingPause}
+            onRestart={restartRecording}
             onFinish={finishAnswer}
           />
         )}
+
+        {processing && <ProcessingScreen />}
 
         {reviewing && (
           <TranscriptReviewScreen
