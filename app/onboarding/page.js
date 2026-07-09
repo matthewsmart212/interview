@@ -21,6 +21,7 @@ import {
   loadProfile,
   saveProfile,
   completeOnboarding,
+  skipOnboardingForDev,
   getStepsForGoal,
   getPostOnboardingCta,
   getFirstName,
@@ -196,6 +197,11 @@ export default function OnboardingPage() {
   const finishOnboarding = () => {
     const done = completeOnboarding(profile);
     setProfile(done);
+  };
+
+  const handleSkipAll = () => {
+    skipOnboardingForDev();
+    router.replace("/home");
   };
 
   if (!hydrated) return null;
@@ -1025,6 +1031,15 @@ export default function OnboardingPage() {
             )}
           </div>
         </div>
+      )}
+      {currentStep !== "done" && (
+        <button
+          type="button"
+          className={s.devSkip}
+          onClick={handleSkipAll}
+        >
+          Skip onboarding (dev)
+        </button>
       )}
     </AppShell>
   );

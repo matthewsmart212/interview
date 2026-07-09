@@ -125,6 +125,32 @@ export function completeOnboarding(profile: OnboardingProfile): OnboardingProfil
   return next;
 }
 
+/** Dev shortcut — mark onboarding done with sensible defaults and enter the app. */
+export function skipOnboardingForDev(): OnboardingProfile {
+  const profile: OnboardingProfile = {
+    ...defaultProfile(),
+    name: "Alex",
+    goal: "both",
+    completedAt: Date.now(),
+    cv: { source: "skip" },
+    interview: {
+      role: "Customer Service Advisor",
+      company: "Tesco",
+      type: "In-person",
+      date: "24 May 2026",
+      hasJd: false,
+      jd: "",
+    },
+    apply: {
+      targetRole: "Customer service roles",
+      hasJd: false,
+      jd: "",
+    },
+  };
+  saveProfile(profile);
+  return profile;
+}
+
 export type OnboardingStepId =
   | "welcome"
   | "goal"

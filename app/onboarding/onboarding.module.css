@@ -471,6 +471,29 @@
   color: var(--text-2);
 }
 
+.devSkip {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 50;
+  border: 1px dashed rgba(167, 139, 250, 0.35);
+  background: rgba(23, 18, 38, 0.92);
+  color: rgba(196, 181, 253, 0.9);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(8, 4, 24, 0.35);
+}
+
+.devSkip:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
 .progressLabel {
   text-align: center;
   font-size: 11px;
