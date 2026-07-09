@@ -23,6 +23,18 @@
     linear-gradient(180deg, #2a2248 0%, #1a1430 100%);
   filter: blur(2px);
   transform: scale(1.06);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.35) 28px,
+    #000 50px
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(0, 0, 0, 0.35) 28px,
+    #000 50px
+  );
 }
 
 .heroGlow {
@@ -36,7 +48,8 @@
     ),
     linear-gradient(
       180deg,
-      rgba(23, 18, 38, 0.08) 0%,
+      var(--bg) 0,
+      rgba(23, 18, 38, 0.72) 50px,
       rgba(23, 18, 38, 0.42) 72%,
       rgba(23, 18, 38, 0.92) 100%
     );
@@ -45,7 +58,7 @@
 .heroAvatar {
   position: absolute;
   left: 50%;
-  bottom: -8px;
+  bottom: -58px;
   width: min(72%, 280px);
   height: 92%;
   transform: translateX(-50%) scale(1.25);
