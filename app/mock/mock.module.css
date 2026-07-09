@@ -130,64 +130,54 @@
   color: rgba(211, 205, 234, 0.82);
 }
 
-.actionButtons {
+.cardBody {
+  margin-top: 2px;
+}
+
+/* ---------- step 1 option cards ---------- */
+
+.optionGrid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
   margin-top: 10px;
 }
 
-.btnPrimary,
-.btnSecondary {
-  width: 100%;
-  justify-content: center;
-  gap: 7px;
-  padding: 11px 16px;
-  font-size: 13.5px;
-}
-
-.btnSecondary {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(167, 139, 250, 0.32);
-  color: #ede9fe;
-}
-
-.actionDivider {
-  height: 1px;
-  margin: 10px 0 0;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-}
-
-.jdLink {
+.optionCard {
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 9px;
   width: 100%;
-  margin-top: 6px;
-  padding: 2px 0;
-  border: none;
-  background: none;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  background: rgba(255, 255, 255, 0.03);
   color: inherit;
   font-family: inherit;
+  text-align: left;
   cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.12s ease;
 }
 
-.jdLinkInner {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  max-width: 100%;
+.optionCard:active {
+  transform: scale(0.99);
 }
 
-.jdLinkIcon {
-  position: relative;
+.optionCardActive,
+.optionCard:hover {
+  border-color: rgba(196, 181, 253, 0.38);
+  background: rgba(124, 92, 255, 0.1);
+}
+
+.optionIcon {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
-  background: rgba(124, 92, 255, 0.2);
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(124, 92, 255, 0.22);
   color: #ddd6fe;
   border: 1px solid rgba(196, 181, 253, 0.14);
   display: flex;
@@ -195,30 +185,331 @@
   justify-content: center;
 }
 
-.jdPlus {
-  position: absolute;
-  right: 2px;
-  bottom: 2px;
-  background: rgba(48, 36, 88, 0.95);
-  border-radius: 50%;
-  padding: 1px;
+.optionBody {
+  flex: 1;
+  min-width: 0;
 }
 
-.jdLinkText {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-2);
-  white-space: nowrap;
+.optionTitle {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
 }
 
-.jdChev {
+.optionSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: rgba(211, 205, 234, 0.72);
+}
+
+.optionChev {
   flex-shrink: 0;
   color: var(--muted);
-  opacity: 0.55;
+  opacity: 0.45;
+}
+
+.homeHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 9px 0 0;
+  font-size: 10px;
+  color: rgba(211, 205, 234, 0.55);
+}
+
+/* ---------- back + continue ---------- */
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin: 0 0 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(211, 205, 234, 0.65);
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  color: #ede9fe;
+}
+
+.continueBtn,
+.startBtn {
+  width: 100%;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 11px 16px;
+  font-size: 13px;
+}
+
+.startBtn {
+  margin-top: 8px;
+}
+
+/* ---------- info + how it works ---------- */
+
+.infoPanel {
+  display: flex;
+  gap: 9px;
+  margin-top: 10px;
+  padding: 9px 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.infoIcon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: rgba(124, 92, 255, 0.2);
+  color: #ddd6fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoLead {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ede9fe;
+}
+
+.infoCopy {
+  margin: 3px 0 0;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: rgba(211, 205, 234, 0.75);
+}
+
+.howList {
+  margin: 9px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.howList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: rgba(211, 205, 234, 0.78);
+}
+
+.howCheck {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- pickers ---------- */
+
+.pickerList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 9px;
+  max-height: 168px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.pickerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 9px;
+  border-radius: 11px;
+  border: 1px solid rgba(167, 139, 250, 0.14);
+  background: rgba(255, 255, 255, 0.02);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.pickerRowSelected {
+  border-color: rgba(167, 139, 250, 0.45);
+  background: rgba(124, 92, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(196, 181, 253, 0.12);
+}
+
+.pickerLogo {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pickerLogoCv {
+  background: rgba(124, 92, 255, 0.25);
+  color: #ddd6fe;
+  border: 1px solid rgba(196, 181, 253, 0.14);
+}
+
+.pickerBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.pickerRole {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pickerMeta {
+  display: block;
+  margin-top: 1px;
+  font-size: 10px;
+  color: rgba(211, 205, 234, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pickerBadge {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  font-size: 8px;
+}
+
+.pickerRadio {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(167, 139, 250, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.pickerRadioOn {
+  border-color: var(--brand);
+  background: var(--brand);
+}
+
+.emptyPicker {
+  margin-top: 10px;
+  padding: 14px 10px;
+  border-radius: 11px;
+  border: 1px dashed rgba(167, 139, 250, 0.25);
+  text-align: center;
+}
+
+.emptyPicker p {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(211, 205, 234, 0.7);
+}
+
+.emptyBtn {
+  margin-top: 10px;
+  width: 100%;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 9px 14px;
+}
+
+.jdPreview {
+  margin-top: 8px;
+  padding: 8px 9px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.12);
+}
+
+.jdPreviewLabel {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(211, 205, 234, 0.55);
+}
+
+.jdPreviewText {
+  margin: 4px 0 0;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: rgba(211, 205, 234, 0.78);
+}
+
+/* ---------- JD tabs + upload ---------- */
+
+.jdTabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 9px;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.jdTab {
+  flex: 1;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(211, 205, 234, 0.6);
+  cursor: pointer;
+}
+
+.jdTabActive {
+  background: rgba(124, 92, 255, 0.28);
+  color: #ede9fe;
+  box-shadow: inset 0 0 0 1px rgba(196, 181, 253, 0.18);
 }
 
 .jdArea {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .jdArea :global(.textarea) {
@@ -229,6 +520,135 @@
 
 .jdArea :global(.textarea::placeholder) {
   color: rgba(255, 255, 255, 0.35);
+}
+
+.jdUploadWrap {
+  margin-top: 8px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.dropzone {
+  display: block;
+  width: 100%;
+  padding: 22px 14px;
+  border-radius: 12px;
+  border: 2px dashed rgba(167, 139, 250, 0.35);
+  background: rgba(124, 92, 255, 0.08);
+  text-align: center;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.dropzoneOver {
+  border-color: rgba(196, 181, 253, 0.65);
+  background: rgba(124, 92, 255, 0.16);
+}
+
+.dropzoneDone {
+  border-style: solid;
+  border-color: rgba(52, 211, 153, 0.35);
+  background: rgba(52, 211, 153, 0.08);
+}
+
+.dropIcon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ddd6fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzoneDone .dropIcon {
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+}
+
+.dropTitle {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.dropSub {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: rgba(211, 205, 234, 0.62);
+}
+
+.parseNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+/* ---------- step 2 summary ---------- */
+
+.summaryPanel {
+  margin-top: 9px;
+  padding: 9px 10px;
+  border-radius: 11px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 92, 255, 0.12),
+      rgba(124, 92, 255, 0) 55%
+    ),
+    rgba(0, 0, 0, 0.2);
+}
+
+.summaryLabel {
+  margin: 0 0 6px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(211, 205, 234, 0.55);
+}
+
+.summaryRows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.summaryKey {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: rgba(211, 205, 234, 0.55);
+}
+
+.summaryVal {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #ede9fe;
+  text-align: right;
+  line-height: 1.35;
 }
 
 .utilityRow {
