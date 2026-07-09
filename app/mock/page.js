@@ -78,7 +78,7 @@ export default function MockHubPage() {
             href={jd.trim() ? "/interview?jd=pasted" : "/interview"}
             className={`btn btn-primary btn-pill ${s.btnPrimary}`}
           >
-            <Mic size={17} />
+            <Mic size={16} />
             {jd.trim() ? "Start tailored mock" : "Start generic mock"}
           </Link>
 
@@ -86,7 +86,7 @@ export default function MockHubPage() {
             href={upcomingHref}
             className={`btn btn-secondary btn-pill ${s.btnSecondary}`}
           >
-            <Calendar size={17} />
+            <Calendar size={16} />
             Use an upcoming interview
           </Link>
         </div>
