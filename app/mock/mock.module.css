@@ -19,7 +19,7 @@
   position: absolute;
   inset: 0;
   background:
-    url("/backgrounds/room.png") center 35% / cover no-repeat,
+    url("/backgrounds/room.png") center 42% / cover no-repeat,
     linear-gradient(180deg, #2a2248 0%, #1a1430 100%);
   filter: blur(2px);
   transform: scale(1.06);
@@ -42,23 +42,25 @@
   inset: 0;
   background:
     radial-gradient(
-      circle at 50% 72%,
-      rgba(124, 92, 255, 0.34),
-      rgba(124, 92, 255, 0) 58%
+      circle at 50% 78%,
+      rgba(124, 92, 255, 0.26),
+      rgba(124, 92, 255, 0) 62%
     ),
     linear-gradient(
       180deg,
       var(--bg) 0,
-      rgba(23, 18, 38, 0.72) 50px,
-      rgba(23, 18, 38, 0.42) 72%,
-      rgba(23, 18, 38, 0.92) 100%
+      rgba(23, 18, 38, 0.55) 50px,
+      rgba(23, 18, 38, 0.12) 58%,
+      rgba(23, 18, 38, 0.28) 82%,
+      rgba(23, 18, 38, 0.9) 96%,
+      var(--bg) 100%
     );
 }
 
 .heroAvatar {
   position: absolute;
   left: 50%;
-  bottom: -58px;
+  bottom: -38px;
   width: min(72%, 280px);
   height: 92%;
   transform: translateX(-50%) scale(1.25);
