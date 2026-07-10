@@ -13,7 +13,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Clock,
-  MessageCircle,
   Lightbulb,
   Upload,
   Check,
@@ -22,7 +21,6 @@ import {
 } from "../../components/Icons";
 import {
   INTERVIEWS,
-  MOCK_HISTORY,
   MASTER_CV,
   CV_HISTORY,
 } from "../../lib/app-data";
@@ -196,8 +194,6 @@ export default function MockHubPage() {
       ),
     []
   );
-  const latestMock = MOCK_HISTORY[0];
-
   const cvOptions = useMemo(() => {
     const opts = [
       {
@@ -332,7 +328,7 @@ export default function MockHubPage() {
   function renderHome() {
     return (
       <>
-        <h2 className={s.actionTitle}>Ready for a mock interview?</h2>
+        <h2 className={`${s.actionTitle} ${s.actionTitleHome}`}>Mock interview</h2>
         <p className={`${s.actionSub} ${s.actionSubTight}`}>
           Pick what to practise with — we&apos;ll shape questions and feedback around it.
         </p>
@@ -655,11 +651,6 @@ export default function MockHubPage() {
 
       <div className={s.utilityRow}>
         <UtilityCard href="/history" icon={Clock} title="Previous mocks" />
-        <UtilityCard
-          href={latestMock ? `/history/${latestMock.id}` : "/history"}
-          icon={MessageCircle}
-          title="Feedback"
-        />
         <UtilityCard href="/questions" icon={Lightbulb} title="Practice tips" />
       </div>
     </AppShell>
