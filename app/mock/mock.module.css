@@ -93,7 +93,7 @@
   position: relative;
   z-index: 2;
   margin-top: -38px;
-  padding: 10px 12px 0;
+  padding: 18px 18px 0;
   border-radius: 32px;
   border: 1px solid rgba(196, 181, 253, 0.18);
   background:
@@ -120,18 +120,18 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  margin: 0 auto 7px;
+  margin: 2px auto 14px;
   padding: 0 4px;
 }
 
 .compactStepWrap {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .compactStepConnector {
-  width: 28px;
+  width: 32px;
   height: 2px;
   border-radius: 1px;
   background: rgba(167, 139, 250, 0.22);
@@ -142,9 +142,9 @@
 }
 
 .compactStepLabel {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   color: rgba(220, 214, 244, 0.45);
   white-space: nowrap;
 }
@@ -159,12 +159,12 @@
 
 .wizardHeading {
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
 
 .wizardTitle {
   margin: 0;
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.15;
@@ -172,9 +172,9 @@
 }
 
 .wizardSub {
-  margin: 4px 0 0;
-  font-size: 11px;
-  line-height: 1.35;
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
   color: rgba(220, 214, 244, 0.78);
 }
 
@@ -183,8 +183,8 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  margin: 0 0 8px;
-  font-size: 10px;
+  margin: 0 0 14px;
+  font-size: 10.5px;
   font-weight: 600;
   color: #c4b5fd;
 }
@@ -202,8 +202,8 @@
 .pinnedCta {
   position: sticky;
   bottom: 0;
-  margin: 8px -2px 0;
-  padding: 8px 0 10px;
+  margin: 16px -4px 0;
+  padding: 12px 4px 16px;
   background: linear-gradient(
     180deg,
     rgba(24, 18, 46, 0) 0%,
@@ -216,8 +216,8 @@
 .pinnedCtaBtn {
   width: 100%;
   justify-content: center;
-  gap: 7px;
-  padding: 12px 18px;
+  gap: 8px;
+  padding: 14px 18px;
   font-size: 15px;
 }
 
@@ -226,9 +226,9 @@
 }
 
 .ctaReassurance {
-  margin: 6px 0 0;
+  margin: 9px 0 0;
   text-align: center;
-  font-size: 10px;
+  font-size: 10.5px;
   color: rgba(220, 214, 244, 0.48);
 }
 
@@ -270,13 +270,13 @@
 .optionGrid {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-top: 10px;
+  gap: 9px;
+  margin-top: 12px;
 }
 
 .optionGridHome {
-  gap: 8px;
-  margin-top: 18px;
+  gap: 11px;
+  margin-top: 6px;
 }
 
 .optionCard {
@@ -349,8 +349,9 @@
 }
 
 .optionGridHome .optionCard {
-  padding: 12px 14px;
-  gap: 10px;
+  padding: 14px 15px;
+  gap: 12px;
+  border-radius: 14px;
 }
 
 .optionGridHome .optionTitle {
@@ -360,7 +361,7 @@
 
 .optionGridHome .optionSub {
   font-size: 12.5px;
-  margin-top: 3px;
+  margin-top: 4px;
   line-height: 1.4;
 }
 
@@ -369,7 +370,7 @@
   border-color: rgba(196, 181, 253, 0.45);
   border-width: 1.5px;
   box-shadow: var(--glow-purple-sm), 0 0 20px rgba(124, 92, 255, 0.2);
-  padding: 13px 14px;
+  padding: 15px 15px;
 }
 
 .optionCardPrimary:active {
@@ -442,12 +443,12 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  margin: 0 0 6px;
-  padding: 0;
+  margin: 0 0 12px;
+  padding: 4px 8px 4px 0;
   border: none;
   background: none;
   font-family: inherit;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: rgba(220, 214, 244, 0.78);
   cursor: pointer;
@@ -549,11 +550,11 @@
 .pickerList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 9px;
-  max-height: 140px;
+  gap: 9px;
+  margin-top: 4px;
+  max-height: 210px;
   overflow-y: auto;
-  padding-right: 2px;
+  padding-right: 3px;
 }
 
 .pickerListCompact {
@@ -612,10 +613,10 @@
 .interviewCard {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 10px 11px;
-  border-radius: 12px;
+  padding: 13px 13px;
+  border-radius: 14px;
   border: 1.5px solid rgba(167, 139, 250, 0.14);
   background: rgba(255, 255, 255, 0.03);
   color: inherit;
@@ -792,9 +793,10 @@
 /* ---------- step 2 — selected CV + glass summary ---------- */
 
 .confidenceCopy {
-  margin: 0 0 8px;
-  font-size: 11px;
-  line-height: 1.45;
+  margin: 0 0 14px;
+  padding: 0 6px;
+  font-size: 11.5px;
+  line-height: 1.5;
   text-align: center;
   color: rgba(220, 214, 244, 0.72);
 }
@@ -802,10 +804,10 @@
 .selectedCvCard {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
   width: 100%;
-  padding: 10px 11px;
-  border-radius: 16px;
+  padding: 14px 14px;
+  border-radius: 18px;
   border: 1px solid rgba(167, 139, 250, 0.22);
   background:
     radial-gradient(circle at 0% 0%, rgba(124, 92, 255, 0.14), transparent 55%),
@@ -856,8 +858,8 @@
 
 .selectedCvName {
   display: block;
-  margin-top: 2px;
-  font-size: 13px;
+  margin-top: 3px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #fff;
   line-height: 1.25;
@@ -865,17 +867,17 @@
 
 .selectedCvSub {
   display: block;
-  margin-top: 2px;
-  font-size: 10.5px;
+  margin-top: 3px;
+  font-size: 11px;
   color: rgba(220, 214, 244, 0.68);
 }
 
 .selectedCvScore {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  margin-top: 4px;
-  font-size: 9.5px;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 10px;
   font-weight: 600;
   color: #c4b5fd;
 }
@@ -886,28 +888,37 @@
 }
 
 .changeCvBtn {
-  display: block;
-  width: 100%;
-  margin: 6px 0 10px;
-  padding: 0;
-  border: none;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 10px auto 16px;
+  padding: 7px 16px;
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  border-radius: 999px;
+  background: rgba(124, 92, 255, 0.08);
   font-family: inherit;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #c4b5fd;
   cursor: pointer;
   text-align: center;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .changeCvBtn:hover {
-  color: #ddd6fe;
+  color: #ede9fe;
+  background: rgba(124, 92, 255, 0.16);
+  border-color: rgba(196, 181, 253, 0.4);
 }
 
 .glassSummary {
   margin-top: 2px;
-  padding: 12px 14px;
-  border-radius: 18px;
+  padding: 16px 16px;
+  border-radius: 20px;
   border: 1px solid rgba(167, 139, 250, 0.14);
   background:
     radial-gradient(circle at 100% 0%, rgba(124, 92, 255, 0.1), transparent 50%),
@@ -915,20 +926,20 @@
   backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 15px;
 }
 
 .glassSummaryRow {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 13px;
 }
 
 .glassSummaryIcon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
   background: rgba(124, 92, 255, 0.16);
   border: 1px solid rgba(196, 181, 253, 0.12);
   color: #c4b5fd;
@@ -938,7 +949,7 @@
 }
 
 .glassSummaryText {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: #ede9fe;
   line-height: 1.3;
@@ -962,9 +973,9 @@
   right: 0;
   bottom: 0;
   z-index: 61;
-  max-height: 72vh;
-  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
-  border-radius: 24px 24px 0 0;
+  max-height: 76vh;
+  padding: 12px 18px calc(22px + env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
   border: 1px solid rgba(196, 181, 253, 0.2);
   border-bottom: none;
   background:
@@ -975,16 +986,16 @@
 }
 
 .sheetHandle {
-  width: 36px;
+  width: 38px;
   height: 4px;
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
   border-radius: 2px;
   background: rgba(220, 214, 244, 0.28);
 }
 
 .sheetTitle {
-  margin: 0 0 10px;
-  font-size: 15px;
+  margin: 0 0 16px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   text-align: center;
@@ -993,17 +1004,17 @@
 .sheetList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: 9px;
+  margin-bottom: 16px;
 }
 
 .sheetCvRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 10px 11px;
-  border-radius: 12px;
+  padding: 13px 13px;
+  border-radius: 14px;
   border: 1px solid rgba(167, 139, 250, 0.14);
   background: rgba(255, 255, 255, 0.03);
   color: inherit;
@@ -1075,29 +1086,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
   width: 100%;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 14px;
   border: 2px dashed rgba(196, 181, 253, 0.32);
   background: rgba(124, 92, 255, 0.06);
   color: #c4b5fd;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .reviewPanel {
-  padding: 4px 2px 2px;
+  padding: 6px 4px 4px;
   text-align: left;
 }
 
 .coachSpeech {
-  margin: 0 0 12px;
-  font-size: 12.5px;
+  margin: 0 auto 18px;
+  max-width: 300px;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.55;
   text-align: center;
   color: rgba(237, 233, 254, 0.92);
 }
@@ -1107,7 +1119,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .reviewBarFill {
@@ -1119,15 +1131,16 @@
 .reviewSteps {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-height: 0;
+  gap: 14px;
+  min-height: 156px;
+  padding: 0 2px;
 }
 
 .reviewStepRow {
   display: flex;
   align-items: center;
-  gap: 11px;
-  font-size: 13px;
+  gap: 12px;
+  font-size: 13.5px;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 
@@ -1482,21 +1495,21 @@
 .jdTabs {
   display: flex;
   gap: 6px;
-  margin-top: 9px;
-  padding: 3px;
-  border-radius: 10px;
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 12px;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .jdTab {
   flex: 1;
-  padding: 6px 8px;
+  padding: 8px 8px;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   background: transparent;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   color: rgba(220, 214, 244, 0.72);
   cursor: pointer;
@@ -1509,7 +1522,7 @@
 }
 
 .jdArea {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .jdArea :global(.textarea) {
@@ -1523,7 +1536,7 @@
 }
 
 .jdUploadWrap {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .fileInput {
@@ -1686,17 +1699,17 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 12px;
+  margin-top: 16px;
+  margin-bottom: 14px;
 }
 
 .utilityLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 6px;
-  font-size: 11.5px;
+  gap: 5px;
+  padding: 10px 6px;
+  font-size: 12px;
   font-weight: 600;
   color: rgba(220, 214, 244, 0.65);
   text-decoration: none;
