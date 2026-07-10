@@ -5,14 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "../../components/Avatar";
-import { AppShell } from "../../components/ui";
+import PageHeader from "../../components/PageHeader";
+import { AppShell, PageSection } from "../../components/ui";
 import {
   Mic,
   Calendar,
   FileText,
   Plus,
   ChevronRight,
-  ChevronLeft,
   Clock,
   Lightbulb,
   Upload,
@@ -45,32 +45,7 @@ const PREP_CHECKLIST = [
   "Warming voice engine…",
   "Ready.",
 ];
-const REVIEW_STEP_MS = 360;
-
-const slideTransition = {
-  type: "spring",
-  stiffness: 420,
-  damping: 34,
-  mass: 0.85,
-};
-
-const slideVariants = {
-  enter: (dir) => ({
-    x: dir > 0 ? 48 : -48,
-    opacity: 0,
-    scale: 0.98,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (dir) => ({
-    x: dir > 0 ? -48 : 48,
-    opacity: 0,
-    scale: 0.98,
-  }),
-};
+const REVIEW_STEP_MS = 380;
 
 function haptic() {
   try {
@@ -91,70 +66,32 @@ function cvSubtitle(opt) {
   return opt.badge || opt.meta;
 }
 
-function CompactStepper({ step }) {
-  const items = [
-    { n: 1, label: "Interview" },
-    { n: 2, label: "CV" },
-  ];
-
+function StepDots({ step, total = 2 }) {
   return (
-    <div
-      className={s.compactStepper}
-      role="progressbar"
-      aria-valuenow={step}
-      aria-valuemin={1}
-      aria-valuemax={2}
-    >
-      {items.map((item, i) => {
-        const done = step > item.n;
-        const active = step === item.n;
-        return (
-          <span key={item.n} className={s.compactStepWrap}>
-            {i > 0 ? (
-              <span
-                className={`${s.compactStepConnector} ${done ? s.compactStepConnectorDone : ""}`}
-                aria-hidden
-              />
-            ) : null}
-            <span
-              className={`${s.compactStepLabel} ${done ? s.compactStepDone : ""} ${active ? s.compactStepActive : ""}`}
-            >
-              {item.label} {done ? "✓" : active ? "◉" : "○"}
-            </span>
-          </span>
-        );
-      })}
+    <div className={s.stepDots} aria-hidden>
+      {Array.from({ length: total }, (_, i) => (
+        <i key={i} className={i < step ? s.stepDotOn : ""} />
+      ))}
     </div>
   );
 }
 
-function UtilityLink({ href, title }) {
+function BigChoice({ icon: Icon, title, sub, onClick, primary = false }) {
   return (
-    <Link href={href} className={s.utilityLink}>
-      {title}
-      <ChevronRight size={11} aria-hidden />
-    </Link>
-  );
-}
-
-function OptionCard({ icon: Icon, title, sub, onClick, primary = false, secondary = false }) {
-  return (
-    <motion.button
+    <button
       type="button"
-      className={`${s.optionCard} ${primary ? s.optionCardPrimary : ""} ${secondary ? s.optionCardSecondary : ""}`}
+      className={`${s.bigChoice} ${primary ? s.bigChoicePrimary : ""}`}
       onClick={onClick}
-      whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.15 }}
     >
-      <span className={s.optionIcon} aria-hidden>
-        <Icon size={15} />
+      <span className={s.bigChoiceIcon} aria-hidden>
+        <Icon size={24} />
       </span>
-      <span className={s.optionBody}>
-        <span className={s.optionTitle}>{title}</span>
-        <span className={s.optionSub}>{sub}</span>
+      <span className={s.bigChoiceBody}>
+        <span className={s.bigChoiceTitle}>{title}</span>
+        <span className={s.bigChoiceSub}>{sub}</span>
       </span>
-      <ChevronRight size={14} className={s.optionChev} aria-hidden />
-    </motion.button>
+      <ChevronRight size={18} className={s.bigChoiceChev} aria-hidden />
+    </button>
   );
 }
 
@@ -162,9 +99,6 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
   if (interviews.length === 0) {
     return (
       <div className={s.emptyState}>
-        <div className={s.emptyAvatar} aria-hidden>
-          <Avatar pose="thinking" alt="" className={s.emptyAvatarImg} />
-        </div>
         <p className={s.emptyTitle}>No interviews yet</p>
         <p className={s.emptySub}>Add one and we&apos;ll tailor your mock to it.</p>
         <Link href="/interviews/new" className={`btn btn-primary btn-pill ${s.emptyCta}`}>
@@ -184,16 +118,13 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
           iv.readiness >= 70 ? "ready" : iv.readiness < 50 ? "prep" : "upcoming";
 
         return (
-          <motion.button
+          <button
             key={iv.id}
             type="button"
             role="option"
             aria-selected={selected}
             className={`${s.interviewCard} ${selected ? s.interviewCardSelected : ""}`}
             onClick={() => onSelect(iv.id)}
-            animate={{ scale: selected ? 1.02 : 1 }}
-            transition={slideTransition}
-            whileTap={{ scale: 0.99 }}
           >
             <span className={s.interviewLogo} style={{ background: iv.accent }}>
               {iv.initials}
@@ -208,17 +139,12 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
               </span>
             </span>
             <span className={s.interviewSide}>
-              <span className={`status-pill ${diffCls} ${s.interviewBadge}`}>{difficulty}</span>
-              <motion.span
-                className={`${s.pickerCheck} ${selected ? s.pickerCheckOn : ""}`}
-                initial={false}
-                animate={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.6 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Check size={12} stroke={3} />
-              </motion.span>
+              <span className={`status-pill ${diffCls}`}>{difficulty}</span>
+              <span className={`${s.pickerCheck} ${selected ? s.pickerCheckOn : ""}`}>
+                {selected ? <Check size={12} stroke={3} /> : null}
+              </span>
             </span>
-          </motion.button>
+          </button>
         );
       })}
     </div>
@@ -226,32 +152,23 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
 }
 
 function SelectedCvCard({ cv, onOpenSheet }) {
-  const displayName = friendlyCvName(cv);
-  const subtitle = cvSubtitle(cv);
-
   return (
-    <motion.button
-      type="button"
-      className={s.selectedCvCard}
-      onClick={onOpenSheet}
-      whileTap={{ scale: 0.98, y: -2 }}
-      transition={{ duration: 0.15 }}
-    >
+    <button type="button" className={s.selectedCvCard} onClick={onOpenSheet}>
       <span className={s.selectedCvThumb} aria-hidden>
-        <FileText size={20} />
+        <FileText size={22} />
       </span>
       <span className={s.selectedCvBody}>
         <span className={s.selectedCvEyebrow}>CV</span>
-        <span className={s.selectedCvName}>{displayName}</span>
-        <span className={s.selectedCvSub}>{subtitle}</span>
+        <span className={s.selectedCvName}>{friendlyCvName(cv)}</span>
+        <span className={s.selectedCvSub}>{cvSubtitle(cv)}</span>
         {cv.score != null ? (
           <span className={s.selectedCvScore}>
-            <Sparkle size={10} /> AI Match {cv.score}%
+            <Sparkle size={11} /> AI Match {cv.score}%
           </span>
         ) : null}
       </span>
-      <ChevronRight size={14} className={s.selectedCvChev} aria-hidden />
-    </motion.button>
+      <ChevronRight size={16} className={s.selectedCvChev} aria-hidden />
+    </button>
   );
 }
 
@@ -289,11 +206,11 @@ function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload 
           >
             <div className={s.sheetHandle} aria-hidden />
             <h3 className={s.sheetTitle}>Choose a CV</h3>
-            <div className={s.sheetList} role="listbox" aria-label="CV options">
+            <div className={s.sheetList} role="listbox">
               {options.map((opt) => {
                 const selected = selectedId === opt.id;
                 return (
-                  <motion.button
+                  <button
                     key={opt.id}
                     type="button"
                     role="option"
@@ -303,7 +220,6 @@ function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload 
                       onSelect(opt.id);
                       onClose();
                     }}
-                    whileTap={{ scale: 0.99 }}
                   >
                     <span className={s.sheetCvThumb} aria-hidden>
                       <FileText size={16} />
@@ -322,19 +238,14 @@ function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload 
                         <Check size={12} stroke={3} />
                       </span>
                     ) : null}
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
-            <motion.button
-              type="button"
-              className={s.sheetUploadBtn}
-              onClick={onUpload}
-              whileTap={{ scale: 0.98 }}
-            >
+            <button type="button" className={s.sheetUploadBtn} onClick={onUpload}>
               <Upload size={16} />
               Upload another CV
-            </motion.button>
+            </button>
           </motion.div>
         </>
       ) : null}
@@ -342,46 +253,34 @@ function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload 
   );
 }
 
-function GlassSummaryCard({ items }) {
+function SummaryCard({ items }) {
   return (
-    <div className={s.glassSummary}>
+    <div className={s.summaryCard}>
       {items.map((item) => (
-        <div key={item.text} className={s.glassSummaryRow}>
-          <span className={s.glassSummaryIcon} aria-hidden>
-            <item.icon size={14} />
+        <div key={item.text} className={s.summaryRow}>
+          <span className={s.summaryIcon} aria-hidden>
+            <item.icon size={15} />
           </span>
-          <span className={s.glassSummaryText}>{item.text}</span>
+          <span className={s.summaryText}>{item.text}</span>
         </div>
       ))}
     </div>
   );
 }
 
-function ReadyReview({ lines, done, coachMessage }) {
+function ReadyChecklist({ lines, done, coachMessage }) {
   const progress = (done / lines.length) * 100;
   const allDone = done >= lines.length;
 
   return (
-    <motion.div
-      className={s.reviewPanel}
-      initial={{ opacity: 0, y: 6, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.22 }}
-    >
-      <motion.p
-        className={s.coachSpeech}
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, delay: 0.1 }}
-      >
-        {coachMessage}
-      </motion.p>
+    <div className={s.readyPanel}>
+      <p className={s.coachSpeech}>{coachMessage}</p>
       <div className={s.reviewBar} aria-hidden>
         <motion.div
           className={s.reviewBarFill}
           initial={{ width: "0%" }}
           animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.55, ease: [0.3, 0.6, 0.2, 1] }}
+          transition={{ duration: 0.5, ease: [0.3, 0.6, 0.2, 1] }}
         />
       </div>
       <div className={s.reviewSteps}>
@@ -397,20 +296,15 @@ function ReadyReview({ lines, done, coachMessage }) {
             <motion.div
               key={label}
               className={`${s.reviewStepRow} ${s[`reviewStep_${state}`]}`}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.32, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.28 }}
             >
               <span className={s.reviewStepIcon} aria-hidden>
                 {state === "done" ? (
-                  <motion.span
-                    className={s.reviewStepCheck}
-                    initial={{ scale: 0.4, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 22 }}
-                  >
+                  <span className={s.reviewStepCheck}>
                     <Check size={12} stroke={3.5} />
-                  </motion.span>
+                  </span>
                 ) : state === "active" ? (
                   <span className={s.reviewStepSpinner} />
                 ) : (
@@ -422,7 +316,7 @@ function ReadyReview({ lines, done, coachMessage }) {
           );
         })}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -460,17 +354,16 @@ function PreparingOverlay({ step, onDone }) {
           const done = i < step;
           const active = i === step;
           return (
-            <motion.li
+            <li
               key={label}
               className={`${s.prepItem} ${done ? s.prepItemDone : ""} ${active ? s.prepItemActive : ""}`}
-              animate={{ opacity: done || active ? 1 : 0.45 }}
             >
               <span className={s.prepIcon}>
                 {done ? <Check size={12} stroke={3} /> : active ? <span className={s.prepSpinner} /> : null}
               </span>
               {label}
               {done ? " ✓" : ""}
-            </motion.li>
+            </li>
           );
         })}
       </ul>
@@ -483,9 +376,8 @@ export default function MockHubPage() {
   const fileRef = useRef(null);
   const cvUploadRef = useRef(null);
 
-  const [wizardStep, setWizardStep] = useState(1);
-  const [direction, setDirection] = useState(1);
-  const [focusPane, setFocusPane] = useState("home");
+  // home | interview | jd | ready | checking
+  const [screen, setScreen] = useState("home");
   const [contextMode, setContextMode] = useState(null);
   const [selectedInterviewId, setSelectedInterviewId] = useState(null);
   const [jdText, setJdText] = useState("");
@@ -495,7 +387,6 @@ export default function MockHubPage() {
   const [dragOver, setDragOver] = useState(false);
   const [selectedCvId, setSelectedCvId] = useState("master");
   const [cvSheetOpen, setCvSheetOpen] = useState(false);
-  const [showReview, setShowReview] = useState(false);
   const [reviewDone, setReviewDone] = useState(0);
   const [phase, setPhase] = useState("wizard");
   const [prepStep, setPrepStep] = useState(0);
@@ -557,17 +448,6 @@ export default function MockHubPage() {
   const selectedInterview = upcoming.find((i) => i.id === selectedInterviewId);
   const selectedCv = cvOptions.find((c) => c.id === selectedCvId) ?? cvOptions[0];
 
-  function canContinueStep1() {
-    if (contextMode === "generic") return true;
-    if (contextMode === "interview") return Boolean(selectedInterviewId);
-    if (contextMode === "jd") {
-      if (jdProcessing) return false;
-      if (jdTab === "paste") return jdText.trim().length >= JD_MIN_CHARS;
-      return Boolean(jdFileName && jdText.trim());
-    }
-    return false;
-  }
-
   const contextLabel = useCallback(() => {
     if (contextMode === "generic") return "Generic Practice";
     if (contextMode === "interview" && selectedInterview) {
@@ -587,7 +467,7 @@ export default function MockHubPage() {
     []
   );
 
-  const glassSummaryItems = useMemo(
+  const summaryItems = useMemo(
     () => [
       { icon: Target, text: contextLabel() },
       { icon: FileText, text: friendlyCvName(selectedCv) },
@@ -601,73 +481,60 @@ export default function MockHubPage() {
   const reviewComplete = reviewDone >= PREP_CHECKLIST.length;
 
   useEffect(() => {
-    if (!showReview) {
+    if (screen !== "checking") {
       setReviewDone(0);
       return undefined;
     }
     if (reviewComplete) return undefined;
     const t = window.setTimeout(() => setReviewDone((d) => d + 1), REVIEW_STEP_MS);
     return () => window.clearTimeout(t);
-  }, [showReview, reviewDone, reviewComplete]);
+  }, [screen, reviewDone, reviewComplete]);
 
-  const goToStep = useCallback((step, pane) => {
-    setDirection(step >= wizardStep ? 1 : -1);
-    setWizardStep(step);
-    if (pane) setFocusPane(pane);
-    setShowReview(false);
-  }, [wizardStep]);
-
-  const ctaLabel = useMemo(() => {
-    if (wizardStep === 1) {
-      if (focusPane === "interview" && selectedInterviewId) return "Continue";
-      if (focusPane === "jd" && canContinueStep1()) return "Continue";
-      return null;
-    }
-    if (showReview) return "Start Interview";
-    return "Begin Mock Interview";
-  }, [
-    wizardStep,
-    focusPane,
-    selectedInterviewId,
-    showReview,
-    jdText,
-    jdFileName,
-    jdProcessing,
-    jdTab,
-  ]);
+  function canContinueJd() {
+    if (jdProcessing) return false;
+    if (jdTab === "paste") return jdText.trim().length >= JD_MIN_CHARS;
+    return Boolean(jdFileName && jdText.trim());
+  }
 
   function selectGeneric() {
     haptic();
     setContextMode("generic");
-    goToStep(2, "home");
+    setScreen("ready");
   }
 
-  function openInterviewPane() {
+  function openInterview() {
     haptic();
     setContextMode("interview");
-    setFocusPane("interview");
-    setWizardStep(1);
     if (!selectedInterviewId && upcoming[0]) setSelectedInterviewId(upcoming[0].id);
+    setScreen("interview");
   }
 
-  function openJdPane() {
+  function openJd() {
     haptic();
     setContextMode("jd");
-    setFocusPane("jd");
-    setWizardStep(1);
+    setScreen("jd");
   }
 
   function handleInterviewSelect(id) {
     haptic();
     setSelectedInterviewId(id);
-    setContextMode("interview");
-    window.setTimeout(() => goToStep(2, "interview"), 280);
+  }
+
+  function continueFromInterview() {
+    if (!selectedInterviewId) return;
+    haptic();
+    setScreen("ready");
+  }
+
+  function continueFromJd() {
+    if (!canContinueJd()) return;
+    haptic();
+    setScreen("ready");
   }
 
   function handleCvSelect(id) {
     haptic();
     setSelectedCvId(id);
-    setShowReview(false);
   }
 
   function handleJdFile(file) {
@@ -684,22 +551,29 @@ export default function MockHubPage() {
     }, 1200);
   }
 
-  function handleCta() {
+  function goBack() {
     haptic();
-    if (wizardStep === 1) {
-      if (canContinueStep1()) goToStep(2);
+    if (screen === "checking") {
+      setScreen("ready");
       return;
     }
-    if (!showReview) {
-      setDirection(1);
-      setReviewDone(0);
-      setShowReview(true);
+    if (screen === "ready") {
+      if (contextMode === "interview") setScreen("interview");
+      else if (contextMode === "jd") setScreen("jd");
+      else setScreen("home");
       return;
     }
-    beginPreparing();
+    setScreen("home");
+  }
+
+  function beginChecking() {
+    haptic();
+    setReviewDone(0);
+    setScreen("checking");
   }
 
   function beginPreparing() {
+    haptic();
     const config = buildConfig();
     clearMockSetup();
     clearSession();
@@ -730,197 +604,265 @@ export default function MockHubPage() {
     setPrepStep(nextStep);
   }
 
-  const stepSubtitle = useMemo(() => {
-    if (showReview) return "Your coach is getting ready.";
-    if (wizardStep === 2) return "Almost there — confirm your setup.";
-    if (focusPane === "interview") return "Questions tailored to your saved interview.";
-    if (focusPane === "jd") return "Paste or upload a job description.";
-    return "Practice exactly how you'd like today.";
-  }, [wizardStep, focusPane, showReview]);
+  const headerMeta = useMemo(() => {
+    const showSteps = contextMode === "interview" || contextMode === "jd";
 
-  const avatarPose = useMemo(() => {
-    if (phase === "preparing") return "welcoming";
-    if (wizardStep === 2) return "thinking";
-    if (showReview) return "thumbsup";
-    if (focusPane === "interview" || focusPane === "jd") return "presenting";
-    return "welcoming";
-  }, [phase, wizardStep, showReview, focusPane]);
-
-  const slideKey = showReview
-    ? "review"
-    : wizardStep === 2
-      ? "step-2"
-      : `step-1-${focusPane}`;
-
-  function renderReview() {
-    return (
-      <ReadyReview
-        lines={PREP_CHECKLIST}
-        done={reviewDone}
-        coachMessage={coachMessage}
-      />
-    );
-  }
-
-  const showPinnedCta =
-    phase === "wizard" &&
-    (showReview ||
-      wizardStep === 2 ||
-      (wizardStep === 1 && focusPane !== "home" && ctaLabel));
-
-  function renderStep1() {
-    if (focusPane === "interview") {
-      return (
-        <>
-          <button type="button" className={s.backBtn} onClick={() => setFocusPane("home")}>
-            <ChevronLeft size={14} /> Back
-          </button>
-          <InterviewPicker
-            interviews={upcoming}
-            selectedId={selectedInterviewId}
-            onSelect={handleInterviewSelect}
-          />
-          {upcoming.length > 0 ? (
-            <p className={s.flowLinks}>
-              <Link href="/interviews/new" className={s.flowLink}>
-                Add a new interview
-              </Link>
-            </p>
-          ) : null}
-        </>
-      );
+    if (screen === "home") {
+      return {
+        title: "Mock interview",
+        description: "Practice with your AI coach",
+        back: false,
+        step: null,
+      };
     }
+    if (screen === "interview") {
+      return {
+        title: "Mock interview",
+        description: "Choose an upcoming interview",
+        back: true,
+        step: 1,
+      };
+    }
+    if (screen === "jd") {
+      return {
+        title: "Mock interview",
+        description: "Add a job description",
+        back: true,
+        step: 1,
+      };
+    }
+    if (screen === "ready") {
+      return {
+        title: "Mock interview",
+        description: "Confirm your setup",
+        back: true,
+        step: showSteps ? 2 : null,
+      };
+    }
+    return {
+      title: "Mock interview",
+      description: "Your coach is getting ready",
+      back: true,
+      step: showSteps ? 2 : null,
+    };
+  }, [screen, contextMode]);
 
-    if (focusPane === "jd") {
-      const pasteHint = jdTab === "paste" && jdText.trim().length > 0 && jdText.trim().length < JD_MIN_CHARS;
-      return (
-        <>
-          <button type="button" className={s.backBtn} onClick={() => setFocusPane("home")}>
-            <ChevronLeft size={14} /> Back
-          </button>
-          <div className={s.jdTabs} role="tablist">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={jdTab === "paste"}
-              className={`${s.jdTab} ${jdTab === "paste" ? s.jdTabActive : ""}`}
-              onClick={() => setJdTab("paste")}
-            >
-              Paste text
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={jdTab === "upload"}
-              className={`${s.jdTab} ${jdTab === "upload" ? s.jdTabActive : ""}`}
-              onClick={() => setJdTab("upload")}
-            >
-              Upload file
-            </button>
+  function renderHome() {
+    return (
+      <div className="anim-fade-up">
+        <div className={s.coachIntro}>
+          <div className={s.coachIntroAvatar} aria-hidden>
+            <Avatar pose="welcoming" alt="" className={s.coachIntroImg} />
           </div>
-          {jdTab === "paste" ? (
-            <div className={s.jdArea}>
-              <textarea
-                className="textarea"
-                rows={4}
-                value={jdText}
-                onChange={(e) => setJdText(e.target.value)}
-                placeholder="Paste the job description…"
-              />
-              {pasteHint ? <p className={s.jdHint}>A little more detail needed</p> : null}
-            </div>
-          ) : (
-            <div className={s.jdUploadWrap}>
-              <input
-                ref={fileRef}
-                type="file"
-                accept=".pdf,.doc,.docx,.txt"
-                className={s.fileInput}
-                onChange={(e) => handleJdFile(e.target.files?.[0])}
-              />
-              <button
-                type="button"
-                className={`${s.dropzone} ${dragOver ? s.dropzoneOver : ""} ${jdFileName ? s.dropzoneDone : ""} ${jdProcessing ? s.dropzoneBusy : ""}`}
-                onClick={() => !jdProcessing && fileRef.current?.click()}
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
-                onDragLeave={() => setDragOver(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setDragOver(false);
-                  handleJdFile(e.dataTransfer?.files?.[0]);
-                }}
-                disabled={jdProcessing}
-              >
-                <span className={s.dropIcon} aria-hidden>
-                  {jdProcessing ? <span className={s.dropSpinner} /> : jdFileName ? <Check size={20} /> : <Upload size={20} />}
-                </span>
-                <span className={s.dropTitle}>
-                  {jdProcessing ? "Reading file…" : jdFileName || "Choose a job description file"}
-                </span>
-                <span className={s.dropSub}>PDF, DOCX or TXT</span>
-              </button>
-            </div>
-          )}
-        </>
-      );
-    }
+          <div>
+            <p className={s.coachIntroTitle}>Ready when you are</p>
+            <p className={s.coachIntroSub}>
+              A 10-minute practice with tailored questions and instant feedback.
+            </p>
+          </div>
+        </div>
 
-    return (
-      <>
-        <p className={s.setupTime}>
-          <Sparkle size={12} aria-hidden />
-          Takes about 30 seconds to set up
+        <h1 className="page-h1">How do you want to practice?</h1>
+        <p className="page-sub">
+          Pick a focus and we&apos;ll set up your AI interviewer.
         </p>
-        <div className={`${s.optionGrid} ${s.optionGridHome}`}>
-          <OptionCard
+
+        <div className={s.choiceStack}>
+          <BigChoice
             icon={Mic}
             title="Generic practice"
-            sub="Great for any interview."
+            sub="Great for any interview — start in seconds."
             onClick={selectGeneric}
             primary
           />
-          <OptionCard
+          <BigChoice
             icon={Calendar}
             title="Upcoming interview"
-            sub="Tailored to a saved role."
-            onClick={openInterviewPane}
-            secondary
+            sub="Tailored to a role you've already saved."
+            onClick={openInterview}
           />
-          <OptionCard
+          <BigChoice
             icon={FileText}
             title="Job description"
-            sub="Questions from the posting."
-            onClick={openJdPane}
-            secondary
+            sub="Paste a posting and get role-specific questions."
+            onClick={openJd}
           />
         </div>
-      </>
+
+        <PageSection title="More" className={s.moreSection}>
+          <div className="stack">
+            <Link href="/history" className="action-row">
+              <span className="ar-icon">
+                <Clock size={20} />
+              </span>
+              <span className="ar-body">
+                <span className="ar-title">Previous mocks</span>
+                <span className="ar-sub">Review scores and feedback</span>
+              </span>
+              <ChevronRight size={18} className="chev" />
+            </Link>
+            <Link href="/questions" className="action-row">
+              <span className="ar-icon">
+                <Lightbulb size={20} />
+              </span>
+              <span className="ar-body">
+                <span className="ar-title">Practice tips</span>
+                <span className="ar-sub">Common questions and advice</span>
+              </span>
+              <ChevronRight size={18} className="chev" />
+            </Link>
+          </div>
+        </PageSection>
+      </div>
     );
   }
 
-  function renderStep2() {
+  function renderInterview() {
     return (
-      <>
+      <div className="anim-fade-up">
+        <StepDots step={1} />
+        <h1 className="page-h1">Which interview?</h1>
+        <p className="page-sub">
+          We&apos;ll tailor questions to this role and company.
+        </p>
+        <InterviewPicker
+          interviews={upcoming}
+          selectedId={selectedInterviewId}
+          onSelect={handleInterviewSelect}
+        />
+        {upcoming.length > 0 ? (
+          <p className={s.flowLinks}>
+            <Link href="/interviews/new" className="link-btn">
+              Add a new interview
+            </Link>
+          </p>
+        ) : null}
+        {upcoming.length > 0 ? (
+          <button
+            type="button"
+            className={`btn btn-primary ${s.primaryCta}`}
+            disabled={!selectedInterviewId}
+            onClick={continueFromInterview}
+          >
+            Continue <ChevronRight size={16} />
+          </button>
+        ) : null}
+      </div>
+    );
+  }
+
+  function renderJd() {
+    const pasteHint =
+      jdTab === "paste" &&
+      jdText.trim().length > 0 &&
+      jdText.trim().length < JD_MIN_CHARS;
+
+    return (
+      <div className="anim-fade-up">
+        <StepDots step={1} />
+        <h1 className="page-h1">Add the job description</h1>
+        <p className="page-sub">
+          Paste the posting or upload a file — we&apos;ll build questions from it.
+        </p>
+
+        <div className={s.jdTabs} role="tablist">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={jdTab === "paste"}
+            className={`${s.jdTab} ${jdTab === "paste" ? s.jdTabActive : ""}`}
+            onClick={() => setJdTab("paste")}
+          >
+            Paste text
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={jdTab === "upload"}
+            className={`${s.jdTab} ${jdTab === "upload" ? s.jdTabActive : ""}`}
+            onClick={() => setJdTab("upload")}
+          >
+            Upload file
+          </button>
+        </div>
+
+        {jdTab === "paste" ? (
+          <div className={s.jdArea}>
+            <textarea
+              className="textarea"
+              rows={5}
+              value={jdText}
+              onChange={(e) => setJdText(e.target.value)}
+              placeholder="Paste the job description…"
+            />
+            {pasteHint ? <p className={s.jdHint}>A little more detail needed</p> : null}
+          </div>
+        ) : (
+          <div className={s.jdUploadWrap}>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".pdf,.doc,.docx,.txt"
+              className={s.fileInput}
+              onChange={(e) => handleJdFile(e.target.files?.[0])}
+            />
+            <button
+              type="button"
+              className={`${s.dropzone} ${dragOver ? s.dropzoneOver : ""} ${jdFileName ? s.dropzoneDone : ""} ${jdProcessing ? s.dropzoneBusy : ""}`}
+              onClick={() => !jdProcessing && fileRef.current?.click()}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
+              onDragLeave={() => setDragOver(false)}
+              onDrop={(e) => {
+                e.preventDefault();
+                setDragOver(false);
+                handleJdFile(e.dataTransfer?.files?.[0]);
+              }}
+              disabled={jdProcessing}
+            >
+              <span className={s.dropIcon} aria-hidden>
+                {jdProcessing ? (
+                  <span className={s.dropSpinner} />
+                ) : jdFileName ? (
+                  <Check size={22} />
+                ) : (
+                  <Upload size={22} />
+                )}
+              </span>
+              <span className={s.dropTitle}>
+                {jdProcessing
+                  ? "Reading file…"
+                  : jdFileName || "Choose a job description file"}
+              </span>
+              <span className={s.dropSub}>PDF, DOCX or TXT</span>
+            </button>
+          </div>
+        )}
+
         <button
           type="button"
-          className={s.backBtn}
-          onClick={() => {
-            setDirection(-1);
-            setWizardStep(1);
-            setFocusPane(
-              contextMode === "interview"
-                ? "interview"
-                : contextMode === "jd"
-                  ? "jd"
-                  : "home"
-            );
-          }}
+          className={`btn btn-primary ${s.primaryCta}`}
+          disabled={!canContinueJd()}
+          onClick={continueFromJd}
         >
-          <ChevronLeft size={14} /> Back
+          Continue <ChevronRight size={16} />
         </button>
-        <p className={s.confidenceCopy}>
-          Your AI interviewer will use this CV to tailor questions and provide personalised feedback.
+      </div>
+    );
+  }
+
+  function renderReady() {
+    const showSteps = contextMode === "interview" || contextMode === "jd";
+    return (
+      <div className="anim-fade-up">
+        {showSteps ? <StepDots step={2} /> : null}
+        <h1 className="page-h1">You&apos;re almost in</h1>
+        <p className="page-sub">
+          Your AI interviewer will use this CV to tailor questions and give personalised feedback.
         </p>
+
         <SelectedCvCard cv={selectedCv} onOpenSheet={() => setCvSheetOpen(true)} />
         <button
           type="button"
@@ -929,7 +871,18 @@ export default function MockHubPage() {
         >
           Change CV
         </button>
-        <GlassSummaryCard items={glassSummaryItems} />
+
+        <SummaryCard items={summaryItems} />
+
+        <button
+          type="button"
+          className={`btn btn-primary ${s.primaryCta}`}
+          onClick={beginChecking}
+        >
+          <Play size={15} /> Begin Mock Interview
+        </button>
+        <p className={s.reassurance}>You can leave at any time.</p>
+
         <input
           ref={cvUploadRef}
           type="file"
@@ -947,124 +900,66 @@ export default function MockHubPage() {
             cvUploadRef.current?.click();
           }}
         />
-      </>
+      </div>
+    );
+  }
+
+  function renderChecking() {
+    const showSteps = contextMode === "interview" || contextMode === "jd";
+    return (
+      <div className="anim-fade-up">
+        {showSteps ? <StepDots step={2} /> : null}
+        <h1 className="page-h1">Preparing your interview</h1>
+        <p className="page-sub">Your coach is getting everything ready.</p>
+
+        <ReadyChecklist
+          lines={PREP_CHECKLIST}
+          done={reviewDone}
+          coachMessage={coachMessage}
+        />
+
+        <button
+          type="button"
+          className={`btn btn-primary ${s.primaryCta} ${reviewComplete ? s.ctaReady : ""}`}
+          disabled={!reviewComplete}
+          onClick={beginPreparing}
+        >
+          {reviewComplete ? (
+            <>
+              <Play size={15} /> Start Interview
+            </>
+          ) : (
+            "Checking setup…"
+          )}
+        </button>
+        <p className={s.reassurance}>You can leave at any time.</p>
+      </div>
     );
   }
 
   return (
     <AppShell navActive="mock" className={s.shell}>
-      <section className={s.hero}>
-        <div className={s.heroBg} />
-        <div className={s.heroGlow} />
-        <motion.div
-          className={s.heroAvatarWrap}
-          key={avatarPose}
-          initial={{ opacity: 0.92, scale: 0.99 }}
-          animate={{
-            opacity: 1,
-            scale: [1, 1.018, 1],
-          }}
-          transition={{
-            opacity: { duration: 0.35 },
-            scale: { duration: 4.2, repeat: Infinity, ease: "easeInOut" },
-          }}
-        >
-          <Avatar pose={avatarPose} alt="AI interview coach" className={s.heroAvatar} />
-        </motion.div>
-      </section>
-
-      <section className={s.actionCard}>
-        {phase === "wizard" ? (
-          <>
-            {showReview ? (
-              <div className={s.slideViewport}>
-                <AnimatePresence mode="wait" custom={direction}>
-                  <motion.div
-                    key="review"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={slideTransition}
-                    className={s.slidePane}
-                  >
-                    {renderReview()}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            ) : (
-              <>
-                {!showReview ? <CompactStepper step={wizardStep} /> : null}
-                <div className={s.wizardHeading}>
-                  <h2 className={s.wizardTitle}>
-                    {showReview ? "Preparing your interview" : "Mock interview"}
-                  </h2>
-                  <p className={s.wizardSub}>{stepSubtitle}</p>
-                </div>
-                <div className={s.slideViewport}>
-                  <AnimatePresence mode="wait" custom={direction}>
-                    <motion.div
-                      key={slideKey}
-                      custom={direction}
-                      variants={slideVariants}
-                      initial="enter"
-                      animate="center"
-                      exit="exit"
-                      transition={slideTransition}
-                      className={s.slidePane}
-                    >
-                      {wizardStep === 1 ? renderStep1() : renderStep2()}
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </>
-            )}
-            {showPinnedCta ? (
-              <motion.div
-                className={s.pinnedCta}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.button
-                  type="button"
-                  className={`btn btn-primary btn-pill ${s.pinnedCtaBtn} ${showReview && reviewComplete ? s.pinnedCtaReady : ""}`}
-                  onClick={handleCta}
-                  disabled={
-                    (wizardStep === 1 && !canContinueStep1()) ||
-                    (showReview && !reviewComplete)
-                  }
-                  whileTap={{ scale: 0.98 }}
-                  animate={
-                    showReview && reviewComplete
-                      ? { scale: [1, 1.02, 1] }
-                      : { scale: 1 }
-                  }
-                  transition={
-                    showReview && reviewComplete
-                      ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
-                      : { duration: 0.2 }
-                  }
-                >
-                  {showReview && reviewComplete ? <Play size={15} /> : null}
-                  {showReview && !reviewComplete ? "Checking setup…" : ctaLabel}
-                  {!showReview ? <ChevronRight size={15} /> : null}
-                </motion.button>
-                {wizardStep === 2 || showReview ? (
-                  <p className={s.ctaReassurance}>You can leave at any time.</p>
-                ) : null}
-              </motion.div>
-            ) : null}
-          </>
-        ) : null}
-      </section>
-
       {phase === "wizard" ? (
-        <div className={s.utilityRow}>
-          <UtilityLink href="/history" title="Previous mocks" />
-          <UtilityLink href="/questions" title="Practice tips" />
-        </div>
+        <>
+          <PageHeader
+            icon="mic"
+            title={headerMeta.title}
+            description={headerMeta.description}
+            back={headerMeta.back}
+            onBack={headerMeta.back ? goBack : undefined}
+            right={
+              headerMeta.step ? (
+                <span className="step-count">Step {headerMeta.step} of 2</span>
+              ) : null
+            }
+          />
+
+          {screen === "home" ? renderHome() : null}
+          {screen === "interview" ? renderInterview() : null}
+          {screen === "jd" ? renderJd() : null}
+          {screen === "ready" ? renderReady() : null}
+          {screen === "checking" ? renderChecking() : null}
+        </>
       ) : null}
 
       <AnimatePresence>
