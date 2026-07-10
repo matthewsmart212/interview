@@ -17,7 +17,6 @@ import {
   Upload,
   Check,
   Target,
-  User,
 } from "../../components/Icons";
 import {
   INTERVIEWS,
@@ -358,11 +357,6 @@ export default function MockHubPage() {
             onClick={() => openContext("jd")}
           />
         </div>
-
-        <p className={s.homeHint}>
-          <User size={11} aria-hidden />
-          Next: choose which CV grounds your answers
-        </p>
       </>
     );
   }
