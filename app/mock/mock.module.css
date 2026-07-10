@@ -278,8 +278,46 @@
 }
 
 .optionGridHome .optionCard {
-  padding: 7px 10px;
+  padding: 8px 11px;
   gap: 8px;
+}
+
+.optionGridHome .optionTitle {
+  font-size: 16.5px;
+}
+
+.optionGridHome .optionSub {
+  font-size: 14.5px;
+}
+
+.optionCardPrimary {
+  background: var(--gradient-primary);
+  border-color: rgba(196, 181, 253, 0.38);
+  box-shadow: var(--glow-purple-sm);
+}
+
+.optionCardPrimary:active {
+  transform: scale(0.99);
+  opacity: 0.96;
+}
+
+.optionCardPrimary .optionTitle {
+  color: #fff;
+}
+
+.optionCardPrimary .optionSub {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.optionCardPrimary .optionIcon {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #fff;
+}
+
+.optionCardPrimary .optionChev {
+  color: rgba(255, 255, 255, 0.75);
+  opacity: 1;
 }
 
 .optionGridHome .optionIcon {
@@ -326,7 +364,7 @@
   gap: 7px;
   margin-top: 10px;
   padding: 11px 16px;
-  font-size: 13px;
+  font-size: 17px;
 }
 
 .startBtn {
@@ -890,7 +928,7 @@
 .utilityTitle {
   flex: 1;
   min-width: 0;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1;
   color: var(--text);

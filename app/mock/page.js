@@ -74,9 +74,13 @@ function UtilityCard({ href, icon: Icon, title }) {
   );
 }
 
-function OptionCard({ icon: Icon, title, sub, onClick }) {
+function OptionCard({ icon: Icon, title, sub, onClick, primary = false }) {
   return (
-    <button type="button" className={s.optionCard} onClick={onClick}>
+    <button
+      type="button"
+      className={`${s.optionCard} ${primary ? s.optionCardPrimary : ""}`}
+      onClick={onClick}
+    >
       <span className={s.optionIcon} aria-hidden>
         <Icon size={15} />
       </span>
@@ -339,6 +343,7 @@ export default function MockHubPage() {
             title="Generic practice"
             sub="Balanced questions for any role"
             onClick={() => openContext("generic")}
+            primary
           />
           <OptionCard
             icon={Calendar}
