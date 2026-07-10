@@ -18,7 +18,6 @@ import {
   Upload,
   Check,
   Sparkle,
-  Target,
 } from "../../components/Icons";
 import { INTERVIEWS, MASTER_CV, CV_HISTORY } from "../../lib/app-data";
 import {
@@ -278,43 +277,41 @@ function SummaryTable({ rows }) {
   );
 }
 
-function ReviewCard({ focus, cv, showConfetti }) {
+function ReadyReview({ lines, done }) {
   return (
     <motion.div
-      className={s.reviewCard}
-      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+      className={s.reviewPanel}
+      initial={{ opacity: 0, y: 6, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.22 }}
     >
-      {showConfetti ? (
-        <div className={s.confetti} aria-hidden>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <i key={i} style={{ "--i": i }} />
-          ))}
-        </div>
-      ) : null}
-      <p className={s.reviewEyebrow}>Ready to begin</p>
-      <div className={s.reviewRows}>
-        <div className={s.reviewRow}>
-          <Target size={14} aria-hidden />
-          <span>{focus}</span>
-        </div>
-        <div className={s.reviewRow}>
-          <FileText size={14} aria-hidden />
-          <span>{cv}</span>
-        </div>
-        <div className={s.reviewRow}>
-          <Mic size={14} aria-hidden />
-          <span>Voice interview</span>
-        </div>
-        <div className={s.reviewRow}>
-          <Clock size={14} aria-hidden />
-          <span>10 mins</span>
-        </div>
-        <div className={s.reviewRow}>
-          <Sparkle size={14} aria-hidden />
-          <span>AI feedback afterwards</span>
-        </div>
+      <div className={s.reviewTitle}>Ready to begin</div>
+      <div className={s.reviewBar} aria-hidden>
+        <i style={{ width: `${(done / lines.length) * 100}%` }} />
+      </div>
+      <div className={s.reviewSteps}>
+        {lines.map((label, i) => {
+          const state = i < done ? "done" : i === done ? "active" : "pending";
+          return (
+            <div
+              key={label}
+              className={`${s.reviewStepRow} ${s[`reviewStep_${state}`]}`}
+            >
+              <span className={s.reviewStepIcon} aria-hidden>
+                {state === "done" ? (
+                  <span className={`${s.reviewStepCheck} anim-scale-in`}>
+                    <Check size={12} stroke={3.5} />
+                  </span>
+                ) : state === "active" ? (
+                  <span className={s.reviewStepSpinner} />
+                ) : (
+                  <span className={s.reviewStepDot} />
+                )}
+              </span>
+              <span>{label}</span>
+            </div>
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -389,9 +386,9 @@ export default function MockHubPage() {
   const [dragOver, setDragOver] = useState(false);
   const [selectedCvId, setSelectedCvId] = useState("master");
   const [showReview, setShowReview] = useState(false);
+  const [reviewDone, setReviewDone] = useState(0);
   const [phase, setPhase] = useState("wizard");
   const [prepStep, setPrepStep] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
 
   const upcoming = useMemo(
     () =>
@@ -461,13 +458,6 @@ export default function MockHubPage() {
     return false;
   }
 
-  const goToStep = useCallback((step, pane) => {
-    setDirection(step >= wizardStep ? 1 : -1);
-    setWizardStep(step);
-    if (pane) setFocusPane(pane);
-    setShowReview(false);
-  }, [wizardStep]);
-
   const contextLabel = useCallback(() => {
     if (contextMode === "generic") return "Generic Practice";
     if (contextMode === "interview" && selectedInterview) {
@@ -480,6 +470,36 @@ export default function MockHubPage() {
   }, [contextMode, selectedInterview, jdFileName]);
 
   const cvLabel = selectedCvId === "none" ? "No CV" : selectedCv?.label ?? MASTER_CV.fileName;
+
+  const reviewLines = useMemo(
+    () => [
+      `Interview — ${contextLabel()}`,
+      `CV — ${cvLabel}`,
+      `Duration — 10 mins`,
+      `Questions — 5`,
+      `AI feedback afterwards`,
+    ],
+    [contextLabel, cvLabel]
+  );
+
+  const reviewComplete = reviewDone >= reviewLines.length;
+
+  useEffect(() => {
+    if (!showReview) {
+      setReviewDone(0);
+      return undefined;
+    }
+    if (reviewComplete) return undefined;
+    const t = window.setTimeout(() => setReviewDone((d) => d + 1), 850);
+    return () => window.clearTimeout(t);
+  }, [showReview, reviewDone, reviewComplete]);
+
+  const goToStep = useCallback((step, pane) => {
+    setDirection(step >= wizardStep ? 1 : -1);
+    setWizardStep(step);
+    if (pane) setFocusPane(pane);
+    setShowReview(false);
+  }, [wizardStep]);
 
   const ctaLabel = useMemo(() => {
     if (wizardStep === 1) {
@@ -562,9 +582,9 @@ export default function MockHubPage() {
       return;
     }
     if (!showReview) {
-      setShowConfetti(true);
+      setDirection(1);
+      setReviewDone(0);
       setShowReview(true);
-      window.setTimeout(() => setShowConfetti(false), 1200);
       return;
     }
     beginPreparing();
@@ -616,8 +636,29 @@ export default function MockHubPage() {
     return "welcoming";
   }, [phase, wizardStep, showReview, focusPane]);
 
-  const slideKey =
-    wizardStep === 2 ? "step-2" : `step-1-${focusPane}`;
+  const slideKey = showReview
+    ? "review"
+    : wizardStep === 2
+      ? "step-2"
+      : `step-1-${focusPane}`;
+
+  function renderReview() {
+    return (
+      <>
+        <button
+          type="button"
+          className={s.backBtn}
+          onClick={() => {
+            setShowReview(false);
+            setReviewDone(0);
+          }}
+        >
+          <ChevronLeft size={14} /> Back
+        </button>
+        <ReadyReview lines={reviewLines} done={reviewDone} />
+      </>
+    );
+  }
 
   const summaryRows = [
     { label: "Interview", value: contextLabel() },
@@ -628,7 +669,8 @@ export default function MockHubPage() {
 
   const showPinnedCta =
     phase === "wizard" &&
-    (wizardStep === 2 ||
+    (showReview ||
+      wizardStep === 2 ||
       (wizardStep === 1 && focusPane !== "home" && ctaLabel));
 
   function renderStep1() {
@@ -771,7 +813,6 @@ export default function MockHubPage() {
             setDirection(-1);
             setWizardStep(1);
             setFocusPane(contextMode === "interview" ? "interview" : contextMode === "jd" ? "jd" : "home");
-            setShowReview(false);
           }}
         >
           <ChevronLeft size={14} /> Back
@@ -794,13 +835,6 @@ export default function MockHubPage() {
           <span className={s.uploadCvSub}>PDF, DOCX</span>
         </motion.button>
         <SummaryTable rows={summaryRows} />
-        {showReview ? (
-          <ReviewCard
-            focus={contextLabel()}
-            cv={cvLabel}
-            showConfetti={showConfetti}
-          />
-        ) : null}
       </>
     );
   }
@@ -824,27 +858,48 @@ export default function MockHubPage() {
       <section className={s.actionCard}>
         {phase === "wizard" ? (
           <>
-            <WizardStepper step={wizardStep} />
-            <div className={s.wizardHeading}>
-              <h2 className={s.wizardTitle}>Mock interview</h2>
-              <p className={s.wizardSub}>{stepSubtitle}</p>
-            </div>
-            <div className={s.slideViewport}>
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={slideKey}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={slideTransition}
-                  className={s.slidePane}
-                >
-                  {wizardStep === 1 ? renderStep1() : renderStep2()}
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            {showReview ? (
+              <div className={s.slideViewport}>
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key="review"
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={slideTransition}
+                    className={s.slidePane}
+                  >
+                    {renderReview()}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            ) : (
+              <>
+                <WizardStepper step={wizardStep} />
+                <div className={s.wizardHeading}>
+                  <h2 className={s.wizardTitle}>Mock interview</h2>
+                  <p className={s.wizardSub}>{stepSubtitle}</p>
+                </div>
+                <div className={s.slideViewport}>
+                  <AnimatePresence mode="wait" custom={direction}>
+                    <motion.div
+                      key={slideKey}
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={slideTransition}
+                      className={s.slidePane}
+                    >
+                      {wizardStep === 1 ? renderStep1() : renderStep2()}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </>
+            )}
             {showPinnedCta ? (
               <motion.div
                 className={s.pinnedCta}
@@ -856,11 +911,14 @@ export default function MockHubPage() {
                   type="button"
                   className={`btn btn-primary btn-pill ${s.pinnedCtaBtn}`}
                   onClick={handleCta}
-                  disabled={wizardStep === 1 && !canContinueStep1()}
+                  disabled={
+                    (wizardStep === 1 && !canContinueStep1()) ||
+                    (showReview && !reviewComplete)
+                  }
                   whileTap={{ scale: 0.98 }}
                 >
                   {showReview ? <Mic size={16} /> : null}
-                  {ctaLabel}
+                  {showReview && !reviewComplete ? "Checking your setup…" : ctaLabel}
                   {!showReview ? <ChevronRight size={15} /> : null}
                 </motion.button>
               </motion.div>
