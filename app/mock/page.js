@@ -18,9 +18,6 @@ import {
   Upload,
   Check,
   Sparkle,
-  Target,
-  Star,
-  MessageCircle,
   Play,
 } from "../../components/Icons";
 import { INTERVIEWS, MASTER_CV, CV_HISTORY, USER } from "../../lib/app-data";
@@ -33,23 +30,22 @@ import { clearSession, clearResult } from "../../lib/interview-session";
 import s from "./mock.module.css";
 
 const JD_MIN_CHARS = 80;
-const PREP_STEPS = [
-  "CV analysed",
-  "Questions generated",
-  "Interview room ready",
-];
-const PREP_CHECKLIST = [
-  "Loading CV…",
-  "Analysing role…",
-  "Preparing interviewer…",
-  "Warming voice engine…",
-  "Ready.",
-];
-const REVIEW_STEP_MS = 380;
+const DURATION_LABEL = "8–10 minutes";
 
-function haptic() {
+const PREP_CHECKLIST = [
+  { label: "CV understood", speech: "Just reviewing your experience…" },
+  { label: "Job analysed", speech: "Looking at what this role needs…" },
+  { label: "Building follow-up questions", speech: "Preparing a few follow-ups…" },
+  { label: "Calibrating difficulty", speech: "Tuning the challenge for you…" },
+  { label: "Preparing voice…", speech: "Almost ready — warming up my voice…" },
+];
+
+const REVIEW_STEP_MS = 420;
+const LAUNCH_BEATS = ["3", "2", "1", "Let's begin"];
+
+function haptic(ms = 8) {
   try {
-    navigator.vibrate?.(8);
+    navigator.vibrate?.(ms);
   } catch {
     /* noop */
   }
@@ -66,6 +62,15 @@ function cvSubtitle(opt) {
   return opt.badge || opt.meta;
 }
 
+function TimeBadge({ className = "" }) {
+  return (
+    <span className={`${s.timeBadge} ${className}`.trim()}>
+      <Clock size={12} aria-hidden />
+      {DURATION_LABEL}
+    </span>
+  );
+}
+
 function StepDots({ step, total = 2 }) {
   return (
     <div className={s.stepDots} aria-hidden>
@@ -76,19 +81,49 @@ function StepDots({ step, total = 2 }) {
   );
 }
 
-function BigChoice({ icon: Icon, title, sub, onClick, primary = false }) {
+function CoachBubble({ pose = "welcoming", title, children, tips }) {
+  return (
+    <div className={s.coachBubble}>
+      <div className={s.coachBubbleAvatar} aria-hidden>
+        <Avatar pose={pose} alt="" className={s.coachBubbleImg} />
+      </div>
+      <div className={s.coachBubbleBody}>
+        {title ? <p className={s.coachBubbleTitle}>{title}</p> : null}
+        <div className={s.coachBubbleText}>{children}</div>
+        {tips?.length ? (
+          <ul className={s.coachTips}>
+            {tips.map((tip) => (
+              <li key={tip}>{tip}</li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function BigChoice({
+  icon: Icon,
+  title,
+  sub,
+  onClick,
+  primary = false,
+  accent = "mic",
+  meta,
+}) {
   return (
     <button
       type="button"
-      className={`${s.bigChoice} ${primary ? s.bigChoicePrimary : ""}`}
+      className={`${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`}
       onClick={onClick}
     >
       <span className={s.bigChoiceIcon} aria-hidden>
-        <Icon size={24} />
+        <Icon size={primary ? 26 : 22} />
       </span>
       <span className={s.bigChoiceBody}>
         <span className={s.bigChoiceTitle}>{title}</span>
         <span className={s.bigChoiceSub}>{sub}</span>
+        {meta ? <span className={s.bigChoiceMeta}>{meta}</span> : null}
       </span>
       <ChevronRight size={18} className={s.bigChoiceChev} aria-hidden />
     </button>
@@ -135,7 +170,7 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
               <span className={s.interviewMeta}>
                 <span>{iv.date}</span>
                 <span className={s.interviewMetaDot}>·</span>
-                <span>~10 min mock</span>
+                <span>{DURATION_LABEL}</span>
               </span>
             </span>
             <span className={s.interviewSide}>
@@ -151,24 +186,53 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
   );
 }
 
-function SelectedCvCard({ cv, onOpenSheet }) {
+function MissionCard({
+  title,
+  subtitle,
+  focusAreas,
+  cv,
+  onChangeCv,
+}) {
   return (
-    <button type="button" className={s.selectedCvCard} onClick={onOpenSheet}>
-      <span className={s.selectedCvThumb} aria-hidden>
-        <FileText size={22} />
-      </span>
-      <span className={s.selectedCvBody}>
-        <span className={s.selectedCvEyebrow}>CV</span>
-        <span className={s.selectedCvName}>{friendlyCvName(cv)}</span>
-        <span className={s.selectedCvSub}>{cvSubtitle(cv)}</span>
-        {cv.score != null ? (
-          <span className={s.selectedCvScore}>
-            <Sparkle size={11} /> AI Match {cv.score}%
+    <div className={s.missionCard}>
+      <div className={s.missionHead}>
+        <span className={s.missionEyebrow}>Your interview</span>
+        <TimeBadge />
+      </div>
+      <h2 className={s.missionTitle}>{title}</h2>
+      {subtitle ? <p className={s.missionSub}>{subtitle}</p> : null}
+
+      <div className={s.missionMeta}>
+        <span>5 AI questions</span>
+        <span className={s.missionMetaDot}>·</span>
+        <span>Instant feedback</span>
+      </div>
+
+      {focusAreas?.length ? (
+        <div className={s.focusChips}>
+          {focusAreas.map((area) => (
+            <span key={area} className={s.focusChip}>
+              {area}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <button type="button" className={s.missionCv} onClick={onChangeCv}>
+        <span className={s.missionCvThumb} aria-hidden>
+          <FileText size={18} />
+        </span>
+        <span className={s.missionCvBody}>
+          <span className={s.missionCvLabel}>CV</span>
+          <span className={s.missionCvName}>{friendlyCvName(cv)}</span>
+          <span className={s.missionCvSub}>
+            {cvSubtitle(cv)}
+            {cv.score != null ? ` · AI Match ${cv.score}%` : ""}
           </span>
-        ) : null}
-      </span>
-      <ChevronRight size={16} className={s.selectedCvChev} aria-hidden />
-    </button>
+        </span>
+        <span className={s.missionCvChange}>Change</span>
+      </button>
+    </div>
   );
 }
 
@@ -253,28 +317,39 @@ function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload 
   );
 }
 
-function SummaryCard({ items }) {
-  return (
-    <div className={s.summaryCard}>
-      {items.map((item) => (
-        <div key={item.text} className={s.summaryRow}>
-          <span className={s.summaryIcon} aria-hidden>
-            <item.icon size={15} />
-          </span>
-          <span className={s.summaryText}>{item.text}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ReadyChecklist({ lines, done, coachMessage }) {
+function ThinkingPrep({ lines, done }) {
   const progress = (done / lines.length) * 100;
   const allDone = done >= lines.length;
+  const speech =
+    allDone
+      ? "Perfect — I'm ready when you are."
+      : lines[Math.min(done, lines.length - 1)]?.speech;
 
   return (
-    <div className={s.readyPanel}>
-      <p className={s.coachSpeech}>{coachMessage}</p>
+    <div className={s.thinkingPrep}>
+      <div className={s.thinkingAvatarWrap}>
+        <motion.div
+          animate={{ scale: [1, 1.03, 1] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <Avatar
+            pose={allDone ? "thumbsup" : "thinking"}
+            alt="AI coach preparing"
+            className={s.thinkingAvatar}
+          />
+        </motion.div>
+      </div>
+
+      <motion.p
+        key={speech}
+        className={s.thinkingSpeech}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.28 }}
+      >
+        {speech}
+      </motion.p>
+
       <div className={s.reviewBar} aria-hidden>
         <motion.div
           className={s.reviewBarFill}
@@ -283,8 +358,9 @@ function ReadyChecklist({ lines, done, coachMessage }) {
           transition={{ duration: 0.5, ease: [0.3, 0.6, 0.2, 1] }}
         />
       </div>
+
       <div className={s.reviewSteps}>
-        {lines.map((label, i) => {
+        {lines.map((item, i) => {
           if (i > done) return null;
           const state =
             i < done || (allDone && i === lines.length - 1)
@@ -294,7 +370,7 @@ function ReadyChecklist({ lines, done, coachMessage }) {
                 : "pending";
           return (
             <motion.div
-              key={label}
+              key={item.label}
               className={`${s.reviewStepRow} ${s[`reviewStep_${state}`]}`}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -311,7 +387,7 @@ function ReadyChecklist({ lines, done, coachMessage }) {
                   <span className={s.reviewStepDot} />
                 )}
               </span>
-              <span>{label}</span>
+              <span>{item.label}</span>
             </motion.div>
           );
         })}
@@ -320,53 +396,51 @@ function ReadyChecklist({ lines, done, coachMessage }) {
   );
 }
 
-function PreparingOverlay({ step, onDone }) {
+function LaunchOverlay({ beat, onDone }) {
   useEffect(() => {
-    if (step < PREP_STEPS.length) {
-      const t = setTimeout(() => onDone(step + 1), 900);
+    if (beat < LAUNCH_BEATS.length - 1) {
+      const t = setTimeout(() => onDone(beat + 1), beat < 3 ? 520 : 900);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => onDone(-1), 700);
     return () => clearTimeout(t);
-  }, [step, onDone]);
+  }, [beat, onDone]);
+
+  const label = LAUNCH_BEATS[beat] ?? "Let's begin";
+  const isFinal = beat >= LAUNCH_BEATS.length - 1;
 
   return (
     <motion.div
-      className={s.preparingOverlay}
+      className={s.launchOverlay}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
     >
-      <div className={s.preparingHero}>
-        <Avatar pose="welcoming" alt="AI coach preparing your mock" className={s.preparingAvatar} />
-      </div>
-      <motion.p
-        className={s.preparingQuote}
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.3 }}
+      <motion.div
+        className={s.launchAvatarWrap}
+        animate={{ scale: isFinal ? 1.04 : 1 }}
+        transition={{ duration: 0.35 }}
       >
-        Perfect. I&apos;ve got everything I need. Let&apos;s begin.
-      </motion.p>
-      <ul className={s.prepList}>
-        {PREP_STEPS.map((label, i) => {
-          const done = i < step;
-          const active = i === step;
-          return (
-            <li
-              key={label}
-              className={`${s.prepItem} ${done ? s.prepItemDone : ""} ${active ? s.prepItemActive : ""}`}
-            >
-              <span className={s.prepIcon}>
-                {done ? <Check size={12} stroke={3} /> : active ? <span className={s.prepSpinner} /> : null}
-              </span>
-              {label}
-              {done ? " ✓" : ""}
-            </li>
-          );
-        })}
-      </ul>
+        <Avatar pose="welcoming" alt="" className={s.launchAvatar} />
+      </motion.div>
+      <motion.div
+        key={label}
+        className={`${s.launchBeat} ${isFinal ? s.launchBeatFinal : ""}`}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 420, damping: 22 }}
+      >
+        {isFinal ? (
+          <>
+            <span className={s.launchMic} aria-hidden>
+              <Mic size={22} />
+            </span>
+            {label}
+          </>
+        ) : (
+          label
+        )}
+      </motion.div>
     </motion.div>
   );
 }
@@ -388,8 +462,8 @@ export default function MockHubPage() {
   const [selectedCvId, setSelectedCvId] = useState("master");
   const [cvSheetOpen, setCvSheetOpen] = useState(false);
   const [reviewDone, setReviewDone] = useState(0);
-  const [phase, setPhase] = useState("wizard");
-  const [prepStep, setPrepStep] = useState(0);
+  const [phase, setPhase] = useState("wizard"); // wizard | launching
+  const [launchBeat, setLaunchBeat] = useState(0);
 
   const upcoming = useMemo(
     () =>
@@ -451,32 +525,33 @@ export default function MockHubPage() {
   const contextLabel = useCallback(() => {
     if (contextMode === "generic") return "Generic Practice";
     if (contextMode === "interview" && selectedInterview) {
-      return `${selectedInterview.company} — ${selectedInterview.role}`;
+      return selectedInterview.role;
     }
     if (contextMode === "jd") {
-      return jdFileName ? jdFileName.replace(/\.[^.]+$/, "") : "Job Description";
+      return jdFileName ? jdFileName.replace(/\.[^.]+$/, "") : "Job Description Practice";
     }
     return "Mock Practice";
   }, [contextMode, selectedInterview, jdFileName]);
 
+  const missionSubtitle = useMemo(() => {
+    if (contextMode === "interview" && selectedInterview) {
+      return selectedInterview.company;
+    }
+    if (contextMode === "jd") return "From your job description";
+    return "AI Coach · behavioural practice";
+  }, [contextMode, selectedInterview]);
+
+  const focusAreas = useMemo(() => {
+    if (contextMode === "interview" && selectedInterview) {
+      return ["Role-specific", "Behavioural", "Communication", "Confidence"];
+    }
+    if (contextMode === "jd") {
+      return ["Role fit", "Behavioural", "Communication", "Confidence"];
+    }
+    return ["Behavioural", "Communication", "Customer service", "Confidence"];
+  }, [contextMode, selectedInterview]);
+
   const cvLabel = selectedCvId === "none" ? "No CV" : selectedCv?.label ?? MASTER_CV.fileName;
-
-  const coachMessage = useMemo(
-    () =>
-      `Hi ${USER.name}, I've reviewed your CV and I'm almost ready. I'll ask five tailored questions, just like a real interviewer. When you're ready, press Start Interview.`,
-    []
-  );
-
-  const summaryItems = useMemo(
-    () => [
-      { icon: Target, text: contextLabel() },
-      { icon: FileText, text: friendlyCvName(selectedCv) },
-      { icon: Clock, text: "10 minute interview" },
-      { icon: MessageCircle, text: "5 AI questions" },
-      { icon: Star, text: "Instant AI feedback" },
-    ],
-    [contextLabel, selectedCv]
-  );
 
   const reviewComplete = reviewDone >= PREP_CHECKLIST.length;
 
@@ -572,15 +647,15 @@ export default function MockHubPage() {
     setScreen("checking");
   }
 
-  function beginPreparing() {
-    haptic();
+  function beginLaunch() {
+    haptic(12);
     const config = buildConfig();
     clearMockSetup();
     clearSession();
     clearResult();
     saveMockSetup(config);
-    setPrepStep(0);
-    setPhase("preparing");
+    setLaunchBeat(0);
+    setPhase("launching");
   }
 
   function buildConfig() {
@@ -596,12 +671,12 @@ export default function MockHubPage() {
     };
   }
 
-  function finishPreparing(nextStep) {
-    if (nextStep < 0) {
+  function finishLaunch(nextBeat) {
+    if (nextBeat < 0) {
       router.push(buildInterviewHref({ ...buildConfig(), version: 1 }));
       return;
     }
-    setPrepStep(nextStep);
+    setLaunchBeat(nextBeat);
   }
 
   const headerMeta = useMemo(() => {
@@ -634,14 +709,14 @@ export default function MockHubPage() {
     if (screen === "ready") {
       return {
         title: "Mock interview",
-        description: "Confirm your setup",
+        description: "Your interview is ready",
         back: true,
         step: showSteps ? 2 : null,
       };
     }
     return {
       title: "Mock interview",
-      description: "Your coach is getting ready",
+      description: "Your coach is preparing",
       back: true,
       step: showSteps ? 2 : null,
     };
@@ -650,42 +725,42 @@ export default function MockHubPage() {
   function renderHome() {
     return (
       <div className="anim-fade-up">
-        <div className={s.coachIntro}>
-          <div className={s.coachIntroAvatar} aria-hidden>
-            <Avatar pose="welcoming" alt="" className={s.coachIntroImg} />
-          </div>
-          <div>
-            <p className={s.coachIntroTitle}>Ready when you are</p>
-            <p className={s.coachIntroSub}>
-              A 10-minute practice with tailored questions and instant feedback.
-            </p>
-          </div>
-        </div>
+        <CoachBubble pose="welcoming" title={`Ready for another interview, ${USER.name}?`}>
+          <p>
+            I&apos;ll ask realistic questions and give you clear feedback after
+            every session — just like a real interviewer.
+          </p>
+          <TimeBadge className={s.timeBadgeInBubble} />
+        </CoachBubble>
 
         <h1 className="page-h1">How do you want to practice?</h1>
-        <p className="page-sub">
-          Pick a focus and we&apos;ll set up your AI interviewer.
-        </p>
+        <p className="page-sub">Pick a focus and I&apos;ll set up your session.</p>
 
         <div className={s.choiceStack}>
           <BigChoice
             icon={Mic}
             title="Generic practice"
             sub="Great for any interview — start in seconds."
+            meta={`⏱ ${DURATION_LABEL}`}
             onClick={selectGeneric}
             primary
+            accent="mic"
           />
           <BigChoice
             icon={Calendar}
             title="Upcoming interview"
             sub="Tailored to a role you've already saved."
+            meta={`⏱ ${DURATION_LABEL}`}
             onClick={openInterview}
+            accent="calendar"
           />
           <BigChoice
             icon={FileText}
             title="Job description"
             sub="Paste a posting and get role-specific questions."
+            meta={`⏱ ${DURATION_LABEL}`}
             onClick={openJd}
+            accent="file"
           />
         </div>
 
@@ -721,10 +796,9 @@ export default function MockHubPage() {
     return (
       <div className="anim-fade-up">
         <StepDots step={1} />
-        <h1 className="page-h1">Which interview?</h1>
-        <p className="page-sub">
-          We&apos;ll tailor questions to this role and company.
-        </p>
+        <CoachBubble pose="presenting" title="Which interview should we prep for?">
+          <p>I&apos;ll tailor questions to this role and company.</p>
+        </CoachBubble>
         <InterviewPicker
           interviews={upcoming}
           selectedId={selectedInterviewId}
@@ -760,10 +834,9 @@ export default function MockHubPage() {
     return (
       <div className="anim-fade-up">
         <StepDots step={1} />
-        <h1 className="page-h1">Add the job description</h1>
-        <p className="page-sub">
-          Paste the posting or upload a file — we&apos;ll build questions from it.
-        </p>
+        <CoachBubble pose="thinking" title="Share the job description">
+          <p>Paste the posting or upload a file — I&apos;ll build questions from it.</p>
+        </CoachBubble>
 
         <div className={s.jdTabs} role="tablist">
           <button
@@ -858,28 +931,32 @@ export default function MockHubPage() {
     return (
       <div className="anim-fade-up">
         {showSteps ? <StepDots step={2} /> : null}
-        <h1 className="page-h1">You&apos;re almost in</h1>
-        <p className="page-sub">
-          Your AI interviewer will use this CV to tailor questions and give personalised feedback.
-        </p>
 
-        <SelectedCvCard cv={selectedCv} onOpenSheet={() => setCvSheetOpen(true)} />
-        <button
-          type="button"
-          className={s.changeCvBtn}
-          onClick={() => setCvSheetOpen(true)}
+        <CoachBubble
+          pose="thumbsup"
+          title="Great choice."
+          tips={["Speak naturally", "It's okay to pause", "We'll review everything afterwards"]}
         >
-          Change CV
-        </button>
+          <p>
+            I&apos;ve reviewed your CV and I&apos;m going to challenge you just like
+            a real interviewer would.
+          </p>
+        </CoachBubble>
 
-        <SummaryCard items={summaryItems} />
+        <MissionCard
+          title={contextLabel()}
+          subtitle={missionSubtitle}
+          focusAreas={focusAreas}
+          cv={selectedCv}
+          onChangeCv={() => setCvSheetOpen(true)}
+        />
 
         <button
           type="button"
           className={`btn btn-primary ${s.primaryCta}`}
           onClick={beginChecking}
         >
-          <Play size={15} /> Begin Mock Interview
+          <Play size={15} /> Begin Interview
         </button>
         <p className={s.reassurance}>You can leave at any time.</p>
 
@@ -905,31 +982,22 @@ export default function MockHubPage() {
   }
 
   function renderChecking() {
-    const showSteps = contextMode === "interview" || contextMode === "jd";
     return (
       <div className="anim-fade-up">
-        {showSteps ? <StepDots step={2} /> : null}
-        <h1 className="page-h1">Preparing your interview</h1>
-        <p className="page-sub">Your coach is getting everything ready.</p>
-
-        <ReadyChecklist
-          lines={PREP_CHECKLIST}
-          done={reviewDone}
-          coachMessage={coachMessage}
-        />
+        <ThinkingPrep lines={PREP_CHECKLIST} done={reviewDone} />
 
         <button
           type="button"
           className={`btn btn-primary ${s.primaryCta} ${reviewComplete ? s.ctaReady : ""}`}
           disabled={!reviewComplete}
-          onClick={beginPreparing}
+          onClick={beginLaunch}
         >
           {reviewComplete ? (
             <>
               <Play size={15} /> Start Interview
             </>
           ) : (
-            "Checking setup…"
+            "Preparing…"
           )}
         </button>
         <p className={s.reassurance}>You can leave at any time.</p>
@@ -963,8 +1031,8 @@ export default function MockHubPage() {
       ) : null}
 
       <AnimatePresence>
-        {phase === "preparing" ? (
-          <PreparingOverlay step={prepStep} onDone={finishPreparing} />
+        {phase === "launching" ? (
+          <LaunchOverlay beat={launchBeat} onDone={finishLaunch} />
         ) : null}
       </AnimatePresence>
     </AppShell>

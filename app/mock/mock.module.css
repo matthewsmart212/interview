@@ -1,69 +1,122 @@
-/* ---------- Mock hub — aligned with home / CV / interviews ---------- */
+/* ---------- Mock hub — coach-led, app-aligned ---------- */
 
 .shell {
   overflow-x: clip;
 }
 
-/* ---------- coach intro (hub only) ---------- */
+/* ---------- coach bubble ---------- */
 
-.coachIntro {
+.coachBubble {
   display: flex;
-  align-items: center;
   gap: 14px;
-  margin-bottom: 22px;
-  padding: 14px 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 16px;
   border-radius: var(--radius-card);
-  border: 1px solid rgba(167, 139, 250, 0.16);
+  border: 1px solid rgba(167, 139, 250, 0.18);
   background:
     radial-gradient(
       circle at 0% 0%,
-      rgba(124, 92, 255, 0.14),
-      rgba(124, 92, 255, 0) 50%
+      rgba(124, 92, 255, 0.16),
+      rgba(124, 92, 255, 0) 52%
     ),
     var(--card);
   box-shadow: var(--shadow-sm), var(--card-inner);
   backdrop-filter: blur(14px);
 }
 
-.coachIntroAvatar {
+.coachBubbleAvatar {
   flex-shrink: 0;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   overflow: hidden;
-  background: linear-gradient(140deg, rgba(124, 92, 255, 0.35), rgba(91, 58, 214, 0.2));
-  border: 1px solid rgba(196, 181, 253, 0.2);
+  background: linear-gradient(140deg, rgba(124, 92, 255, 0.4), rgba(91, 58, 214, 0.22));
+  border: 1px solid rgba(196, 181, 253, 0.22);
+  box-shadow: 0 8px 18px rgba(91, 58, 214, 0.22);
 }
 
-.coachIntroImg {
+.coachBubbleImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
 }
 
-.coachIntroTitle {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -0.01em;
+.coachBubbleBody {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
 }
 
-.coachIntroSub {
-  margin: 3px 0 0;
-  font-size: 12.5px;
-  line-height: 1.45;
+.coachBubbleTitle {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+}
+
+.coachBubbleText {
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--text-2);
 }
 
-/* ---------- step dots (match interviews/new) ---------- */
+.coachBubbleText p {
+  margin: 0;
+}
+
+.coachTips {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.coachTips li {
+  position: relative;
+  padding-left: 14px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: rgba(237, 233, 254, 0.88);
+}
+
+.coachTips li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #c4b5fd;
+}
+
+.timeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(124, 92, 255, 0.14);
+  border: 1px solid rgba(196, 181, 253, 0.18);
+  font-size: 11px;
+  font-weight: 600;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+
+.timeBadgeInBubble {
+  margin-top: 10px;
+}
+
+/* ---------- step dots ---------- */
 
 .stepDots {
   display: flex;
   gap: 6px;
   justify-content: center;
-  margin: 2px 0 20px;
+  margin: 2px 0 16px;
 }
 
 .stepDots i {
@@ -78,29 +131,31 @@
   background: var(--brand) !important;
 }
 
-/* ---------- big choice cards (match CV start) ---------- */
+/* ---------- big choice cards ---------- */
 
 .choiceStack {
-  margin-top: 22px;
+  margin-top: 20px;
 }
 
 .bigChoice {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
   width: 100%;
   text-align: left;
+  overflow: hidden;
   background:
     radial-gradient(
       circle at 0% 0%,
-      rgba(124, 92, 255, 0.12),
+      rgba(124, 92, 255, 0.1),
       rgba(124, 92, 255, 0) 48%
     ),
     var(--card);
   border: 1px solid rgba(167, 139, 250, 0.16);
   border-radius: var(--radius-card);
-  padding: 18px 16px;
-  margin-bottom: 12px;
+  padding: 16px 16px;
+  margin-bottom: 11px;
   box-shadow: var(--shadow-sm), var(--card-inner);
   backdrop-filter: blur(14px);
   color: inherit;
@@ -108,8 +163,7 @@
   cursor: pointer;
   transition:
     transform 0.15s ease,
-    border-color 0.15s ease,
-    background 0.15s ease;
+    border-color 0.15s ease;
 }
 
 .bigChoice:active {
@@ -117,41 +171,75 @@
 }
 
 .bigChoicePrimary {
+  padding: 22px 18px;
+  margin-bottom: 14px;
   background: var(--gradient-primary);
-  border-color: rgba(196, 181, 253, 0.4);
-  box-shadow: var(--glow-purple-sm), 0 0 20px rgba(124, 92, 255, 0.18);
+  border-color: rgba(196, 181, 253, 0.42);
+  box-shadow: var(--glow-purple-sm), 0 0 24px rgba(124, 92, 255, 0.22);
 }
 
-.bigChoicePrimary .bigChoiceTitle,
-.bigChoicePrimary .bigChoiceSub {
+.bigChoicePrimary .bigChoiceTitle {
+  font-size: 16.5px;
   color: #fff;
 }
 
 .bigChoicePrimary .bigChoiceSub {
-  color: rgba(255, 255, 255, 0.86);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.bigChoicePrimary .bigChoiceMeta {
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .bigChoicePrimary .bigChoiceIcon {
+  width: 58px;
+  height: 58px;
+  border-radius: 17px;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .bigChoicePrimary .bigChoiceChev {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .bigChoiceIcon {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background: var(--brand-050);
   color: var(--brand);
   border: 1px solid rgba(196, 181, 253, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.accent_mic .bigChoiceIcon {
+  background: rgba(251, 191, 36, 0.16);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.accent_calendar .bigChoiceIcon {
+  background: rgba(96, 165, 250, 0.16);
+  color: #93c5fd;
+  border-color: rgba(96, 165, 250, 0.22);
+}
+
+.accent_file .bigChoiceIcon {
+  background: rgba(52, 211, 153, 0.14);
+  color: #6ee7b7;
+  border-color: rgba(52, 211, 153, 0.2);
+}
+
+.bigChoicePrimary.accent_mic .bigChoiceIcon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.24);
 }
 
 .bigChoiceBody {
@@ -176,6 +264,14 @@
   color: var(--text-2);
 }
 
+.bigChoiceMeta {
+  display: block;
+  margin-top: 7px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
 .bigChoiceChev {
   flex-shrink: 0;
   color: var(--muted);
@@ -192,7 +288,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 4px;
 }
 
 .interviewCard {
@@ -200,15 +296,11 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 14px 14px;
+  padding: 14px;
   border-radius: var(--radius-card);
   border: 1.5px solid rgba(167, 139, 250, 0.14);
   background:
-    radial-gradient(
-      circle at 0% 0%,
-      rgba(124, 92, 255, 0.08),
-      transparent 50%
-    ),
+    radial-gradient(circle at 0% 0%, rgba(124, 92, 255, 0.08), transparent 50%),
     var(--card);
   box-shadow: var(--shadow-sm), var(--card-inner);
   color: inherit;
@@ -305,7 +397,7 @@
 }
 
 .emptyState {
-  margin-top: 20px;
+  margin-top: 12px;
   padding: 24px 16px;
   text-align: center;
   border-radius: var(--radius-card);
@@ -342,7 +434,7 @@
 .jdTabs {
   display: flex;
   gap: 6px;
-  margin-top: 20px;
+  margin-top: 4px;
   padding: 4px;
   border-radius: 12px;
   background: rgba(0, 0, 0, 0.22);
@@ -480,161 +572,153 @@
   }
 }
 
-/* ---------- ready — CV + summary ---------- */
+/* ---------- mission / launch card ---------- */
 
-.selectedCvCard {
+.missionCard {
+  margin-top: 4px;
+  padding: 18px 18px 16px;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(196, 181, 253, 0.22);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(167, 139, 250, 0.28), transparent 42%),
+    radial-gradient(circle at 12% 100%, rgba(124, 92, 255, 0.18), transparent 48%),
+    linear-gradient(168deg, rgba(48, 36, 88, 0.97), rgba(28, 20, 54, 0.99));
+  box-shadow:
+    0 14px 32px rgba(91, 58, 214, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.missionHead {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.missionEyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(196, 181, 253, 0.8);
+}
+
+.missionTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.missionSub {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: rgba(237, 233, 254, 0.88);
+}
+
+.missionMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.missionMetaDot {
+  opacity: 0.5;
+}
+
+.focusChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.focusChip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(196, 181, 253, 0.16);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #ede9fe;
+}
+
+.missionCv {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  margin-top: 20px;
-  padding: 16px;
-  border-radius: var(--radius-card);
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 16px;
   border: 1px solid rgba(167, 139, 250, 0.2);
-  background:
-    radial-gradient(circle at 0% 0%, rgba(124, 92, 255, 0.14), transparent 55%),
-    var(--card);
-  box-shadow: var(--shadow-sm), var(--card-inner);
-  backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.22);
   color: inherit;
   font-family: inherit;
   text-align: left;
   cursor: pointer;
-  transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease;
 }
 
-.selectedCvCard:active {
-  transform: scale(0.99) translateY(-1px);
+.missionCv:active {
+  background: rgba(0, 0, 0, 0.3);
 }
 
-.selectedCvThumb {
+.missionCvThumb {
   flex-shrink: 0;
-  width: 48px;
-  height: 56px;
-  border-radius: 12px;
+  width: 40px;
+  height: 48px;
+  border-radius: 10px;
   background: linear-gradient(145deg, rgba(124, 92, 255, 0.35), rgba(124, 92, 255, 0.12));
   border: 1px solid rgba(196, 181, 253, 0.2);
   color: #ddd6fe;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.selectedCvBody {
+.missionCvBody {
   flex: 1;
   min-width: 0;
 }
 
-.selectedCvEyebrow {
+.missionCvLabel {
   display: block;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(196, 181, 253, 0.75);
+  color: rgba(196, 181, 253, 0.7);
 }
 
-.selectedCvName {
+.missionCvName {
   display: block;
-  margin-top: 3px;
-  font-size: 15px;
+  margin-top: 2px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #fff;
-  line-height: 1.25;
 }
 
-.selectedCvSub {
+.missionCvSub {
   display: block;
-  margin-top: 3px;
-  font-size: 12.5px;
-  color: var(--text-2);
-}
-
-.selectedCvScore {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #c4b5fd;
-}
-
-.selectedCvChev {
-  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 11.5px;
   color: var(--muted);
-  opacity: 0.5;
 }
 
-.changeCvBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  margin: 12px auto 18px;
-  padding: 8px 18px;
-  border: 1px solid rgba(167, 139, 250, 0.28);
-  border-radius: 999px;
-  background: rgba(124, 92, 255, 0.08);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #c4b5fd;
-  cursor: pointer;
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
-
-.changeCvBtn:hover {
-  color: #ede9fe;
-  background: rgba(124, 92, 255, 0.16);
-  border-color: rgba(196, 181, 253, 0.4);
-}
-
-.summaryCard {
-  padding: 16px 18px;
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(167, 139, 250, 0.14);
-  background:
-    radial-gradient(circle at 100% 0%, rgba(124, 92, 255, 0.1), transparent 50%),
-    var(--card);
-  box-shadow: var(--shadow-sm), var(--card-inner);
-  backdrop-filter: blur(14px);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.summaryRow {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.summaryIcon {
+.missionCvChange {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: rgba(124, 92, 255, 0.16);
-  border: 1px solid rgba(196, 181, 253, 0.12);
-  color: #c4b5fd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.summaryText {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: #ede9fe;
-  line-height: 1.3;
+  color: #c4b5fd;
 }
 
 /* ---------- CTAs ---------- */
@@ -643,7 +727,7 @@
   width: 100%;
   justify-content: center;
   gap: 8px;
-  margin-top: 22px;
+  margin-top: 20px;
   padding: 14px 18px;
   font-size: 15px;
 }
@@ -817,28 +901,46 @@
   cursor: pointer;
 }
 
-/* ---------- checking / ready checklist ---------- */
+/* ---------- thinking prep ---------- */
 
-.readyPanel {
-  margin-top: 18px;
-  padding: 18px 16px;
+.thinkingPrep {
+  margin-top: 4px;
+  padding: 20px 16px 18px;
   border-radius: var(--radius-card);
   border: 1px solid rgba(167, 139, 250, 0.16);
   background:
-    radial-gradient(circle at 50% 0%, rgba(124, 92, 255, 0.12), transparent 55%),
+    radial-gradient(circle at 50% 0%, rgba(124, 92, 255, 0.16), transparent 55%),
     var(--card);
   box-shadow: var(--shadow-sm), var(--card-inner);
   backdrop-filter: blur(14px);
+  text-align: center;
 }
 
-.coachSpeech {
+.thinkingAvatarWrap {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 12px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(140deg, rgba(124, 92, 255, 0.35), rgba(91, 58, 214, 0.18));
+  border: 1px solid rgba(196, 181, 253, 0.22);
+  box-shadow: 0 12px 28px rgba(91, 58, 214, 0.28);
+}
+
+.thinkingAvatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.thinkingSpeech {
   margin: 0 auto 16px;
-  max-width: 300px;
-  font-size: 13.5px;
-  font-weight: 500;
-  line-height: 1.55;
-  text-align: center;
-  color: rgba(237, 233, 254, 0.94);
+  max-width: 280px;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #ede9fe;
 }
 
 .reviewBar {
@@ -846,7 +948,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .reviewBarFill {
@@ -858,16 +960,17 @@
 .reviewSteps {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  min-height: 156px;
-  padding: 0 2px;
+  gap: 12px;
+  min-height: 148px;
+  padding: 0 4px;
+  text-align: left;
 }
 
 .reviewStepRow {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 14px;
+  font-size: 13.5px;
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 
@@ -920,9 +1023,9 @@
   background: rgba(220, 214, 244, 0.28);
 }
 
-/* ---------- preparing overlay ---------- */
+/* ---------- launch countdown ---------- */
 
-.preparingOverlay {
+.launchOverlay {
   position: fixed;
   inset: 0;
   z-index: 50;
@@ -932,76 +1035,60 @@
   justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(circle at 50% 30%, rgba(124, 92, 255, 0.22), transparent 55%),
-    rgba(15, 11, 28, 0.96);
-  backdrop-filter: blur(12px);
+    radial-gradient(circle at 50% 35%, rgba(124, 92, 255, 0.28), transparent 55%),
+    rgba(15, 11, 28, 0.97);
+  backdrop-filter: blur(14px);
 }
 
-.preparingHero {
-  width: min(72%, 220px);
-  height: 200px;
-  margin-bottom: 12px;
+.launchAvatarWrap {
+  width: min(58%, 200px);
+  height: 180px;
+  margin-bottom: 18px;
 }
 
-.preparingAvatar {
+.launchAvatar {
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center bottom;
-  filter: drop-shadow(0 12px 28px rgba(124, 92, 255, 0.35));
+  filter: drop-shadow(0 14px 32px rgba(124, 92, 255, 0.4));
 }
 
-.preparingQuote {
-  margin: 0 0 16px;
-  max-width: 280px;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.45;
-  text-align: center;
-  color: #ede9fe;
+.launchBeat {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1;
 }
 
-.prepList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  width: min(100%, 260px);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.prepItem {
-  display: flex;
+.launchBeatFinal {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: rgba(220, 214, 244, 0.55);
+  gap: 12px;
+  font-size: 28px;
+  letter-spacing: -0.02em;
 }
 
-.prepItemActive {
-  color: #ede9fe;
-  font-weight: 600;
-}
-
-.prepItemDone {
-  color: #6ee7b7;
-}
-
-.prepIcon {
-  width: 20px;
-  height: 20px;
-  display: flex;
+.launchMic {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: #fff;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  box-shadow: 0 0 28px rgba(124, 92, 255, 0.55);
+  animation: micGlow 1.2s ease-in-out infinite;
 }
 
-.prepSpinner {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid rgba(196, 181, 253, 0.25);
-  border-top-color: #c4b5fd;
-  animation: mockspin 0.75s linear infinite;
+@keyframes micGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(124, 92, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(124, 92, 255, 0.7);
+  }
 }
