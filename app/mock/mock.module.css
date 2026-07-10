@@ -10,7 +10,7 @@
 
 .hero {
   position: relative;
-  height: 268px;
+  height: 228px;
   margin: 0 calc(-1 * var(--pad-x));
   overflow: hidden;
 }
@@ -92,119 +92,74 @@
 .actionCard {
   position: relative;
   z-index: 2;
-  margin-top: -44px;
-  padding: 12px 14px 0;
-  border-radius: var(--radius-card);
-  border: 1px solid rgba(196, 181, 253, 0.22);
+  margin-top: -38px;
+  padding: 10px 12px 0;
+  border-radius: 32px;
+  border: 1px solid rgba(196, 181, 253, 0.18);
   background:
     radial-gradient(
       circle at 50% 0%,
-      rgba(167, 139, 250, 0.16),
-      rgba(167, 139, 250, 0) 52%
+      rgba(167, 139, 250, 0.2),
+      rgba(167, 139, 250, 0) 55%
     ),
-    linear-gradient(168deg, rgba(42, 32, 78, 0.98), rgba(24, 18, 46, 0.99));
+    linear-gradient(168deg, rgba(42, 32, 78, 0.92), rgba(24, 18, 46, 0.96));
   box-shadow:
-    0 16px 36px rgba(8, 4, 24, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
+    0 24px 48px rgba(8, 4, 24, 0.48),
+    0 8px 20px rgba(124, 92, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   display: flex;
   flex-direction: column;
 }
 
-/* ---------- wizard stepper ---------- */
+/* ---------- compact stepper ---------- */
 
-.stepper {
-  margin: 0 auto 10px;
-  width: 100%;
-  max-width: 260px;
-}
-
-.stepperTrack {
+.compactStepper {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
-}
-
-.stepperNodeWrap {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.stepperNodeWrap:last-child {
-  flex: 0;
-}
-
-.stepperNode {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid rgba(167, 139, 250, 0.35);
-  background: rgba(255, 255, 255, 0.04);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.stepperNodeActive {
-  border-color: var(--brand);
-  background: rgba(124, 92, 255, 0.28);
-  box-shadow: 0 0 12px rgba(124, 92, 255, 0.45);
-}
-
-.stepperNodeDone {
-  border-color: #4ade80;
-  background: rgba(52, 211, 153, 0.2);
-  color: #6ee7b7;
-}
-
-.stepperDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(220, 214, 244, 0.45);
-}
-
-.stepperNodeActive .stepperDot {
-  background: #ddd6fe;
-}
-
-.stepperLine {
-  flex: 1;
-  height: 2px;
-  margin: 0 6px;
-  border-radius: 1px;
-  background: linear-gradient(90deg, #4ade80, rgba(167, 139, 250, 0.35));
-}
-
-.stepperLabels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
+  gap: 0;
+  margin: 0 auto 7px;
   padding: 0 4px;
 }
 
-.stepperLabel {
-  font-size: 9.5px;
-  font-weight: 600;
-  color: rgba(220, 214, 244, 0.5);
-  transition: color 0.25s ease;
+.compactStepWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.stepperLabelActive {
+.compactStepConnector {
+  width: 28px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(167, 139, 250, 0.22);
+}
+
+.compactStepConnectorDone {
+  background: linear-gradient(90deg, #4ade80, rgba(110, 231, 183, 0.5));
+}
+
+.compactStepLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(220, 214, 244, 0.45);
+  white-space: nowrap;
+}
+
+.compactStepActive {
   color: #ede9fe;
 }
 
-.stepperLabelDone {
-  color: rgba(110, 231, 183, 0.85);
+.compactStepDone {
+  color: rgba(110, 231, 183, 0.9);
 }
 
 .wizardHeading {
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .wizardTitle {
@@ -247,8 +202,8 @@
 .pinnedCta {
   position: sticky;
   bottom: 0;
-  margin: 10px -2px 0;
-  padding: 10px 0 12px;
+  margin: 8px -2px 0;
+  padding: 8px 0 10px;
   background: linear-gradient(
     180deg,
     rgba(24, 18, 46, 0) 0%,
@@ -262,8 +217,19 @@
   width: 100%;
   justify-content: center;
   gap: 7px;
-  padding: 13px 18px;
+  padding: 12px 18px;
   font-size: 15px;
+}
+
+.pinnedCtaReady {
+  box-shadow: var(--glow-purple-sm), 0 0 28px rgba(124, 92, 255, 0.35);
+}
+
+.ctaReassurance {
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 10px;
+  color: rgba(220, 214, 244, 0.48);
 }
 
 .actionTitle {
@@ -823,108 +789,338 @@
   box-shadow: 0 0 10px rgba(124, 92, 255, 0.4);
 }
 
-.uploadCvCard {
+/* ---------- step 2 — selected CV + glass summary ---------- */
+
+.confidenceCopy {
+  margin: 0 0 8px;
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: center;
+  color: rgba(220, 214, 244, 0.72);
+}
+
+.selectedCvCard {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(124, 92, 255, 0.14), transparent 55%),
+    rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(8, 4, 24, 0.2);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.selectedCvCard:hover {
+  border-color: rgba(196, 181, 253, 0.38);
+  box-shadow: 0 8px 22px rgba(124, 92, 255, 0.18);
+}
+
+.selectedCvThumb {
+  flex-shrink: 0;
+  width: 44px;
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(124, 92, 255, 0.35), rgba(124, 92, 255, 0.12));
+  border: 1px solid rgba(196, 181, 253, 0.2);
+  color: #ddd6fe;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.selectedCvBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.selectedCvEyebrow {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(196, 181, 253, 0.7);
+}
+
+.selectedCvName {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.selectedCvSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  color: rgba(220, 214, 244, 0.68);
+}
+
+.selectedCvScore {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.selectedCvChev {
+  flex-shrink: 0;
+  color: rgba(220, 214, 244, 0.4);
+}
+
+.changeCvBtn {
+  display: block;
   width: 100%;
-  margin-top: 8px;
-  padding: 12px 10px;
-  border-radius: 11px;
+  margin: 6px 0 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c4b5fd;
+  cursor: pointer;
+  text-align: center;
+}
+
+.changeCvBtn:hover {
+  color: #ddd6fe;
+}
+
+.glassSummary {
+  margin-top: 2px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(167, 139, 250, 0.14);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(124, 92, 255, 0.1), transparent 50%),
+    rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.glassSummaryRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.glassSummaryIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: rgba(124, 92, 255, 0.16);
+  border: 1px solid rgba(196, 181, 253, 0.12);
+  color: #c4b5fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glassSummaryText {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ede9fe;
+  line-height: 1.3;
+}
+
+/* ---------- CV bottom sheet ---------- */
+
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  border: none;
+  background: rgba(8, 4, 20, 0.62);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.sheetPanel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 61;
+  max-height: 72vh;
+  padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  border: 1px solid rgba(196, 181, 253, 0.2);
+  border-bottom: none;
+  background:
+    linear-gradient(180deg, rgba(42, 32, 78, 0.98), rgba(24, 18, 46, 0.99));
+  box-shadow: 0 -12px 40px rgba(8, 4, 24, 0.45);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  margin: 0 auto 12px;
+  border-radius: 2px;
+  background: rgba(220, 214, 244, 0.28);
+}
+
+.sheetTitle {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
+.sheetList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.sheetCvRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 11px;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sheetCvRowSelected {
+  border-color: rgba(167, 139, 250, 0.45);
+  background: rgba(124, 92, 255, 0.14);
+}
+
+.sheetCvThumb {
+  flex-shrink: 0;
+  width: 36px;
+  height: 42px;
+  border-radius: 8px;
+  background: rgba(124, 92, 255, 0.2);
+  border: 1px solid rgba(196, 181, 253, 0.14);
+  color: #ddd6fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheetCvBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheetCvName {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sheetCvMeta {
+  display: block;
+  margin-top: 1px;
+  font-size: 10px;
+  color: rgba(220, 214, 244, 0.65);
+}
+
+.sheetCvScore {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.sheetCvCheck {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheetUploadBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
   border: 2px dashed rgba(196, 181, 253, 0.32);
   background: rgba(124, 92, 255, 0.06);
   color: #c4b5fd;
   font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
-}
-
-.uploadCvCard:active {
-  background: rgba(124, 92, 255, 0.12);
-}
-
-.uploadCvTitle {
-  font-size: 11px;
-  font-weight: 700;
-  color: #ede9fe;
-}
-
-.uploadCvSub {
-  font-size: 9.5px;
-  color: rgba(220, 214, 244, 0.62);
-}
-
-.summaryTable {
-  margin-top: 8px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(167, 139, 250, 0.16);
-  background: rgba(0, 0, 0, 0.18);
-  display: grid;
-  gap: 5px;
-}
-
-.summaryTableRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.summaryTableKey {
-  font-size: 9.5px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: rgba(220, 214, 244, 0.55);
-}
-
-.summaryTableVal {
-  font-size: 10.5px;
-  font-weight: 600;
-  color: #ede9fe;
-  text-align: right;
-  line-height: 1.3;
 }
 
 .reviewPanel {
-  padding: 6px 2px 4px;
+  padding: 4px 2px 2px;
   text-align: left;
 }
 
-.reviewTitle {
+.coachSpeech {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.5;
   text-align: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 14px;
+  color: rgba(237, 233, 254, 0.92);
 }
 
 .reviewBar {
   height: 6px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
-.reviewBar i {
-  display: block;
+.reviewBarFill {
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, #9d86f7, #6c4ce6);
-  transition: width 0.75s cubic-bezier(0.3, 0.6, 0.2, 1);
 }
 
 .reviewSteps {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 168px;
+  gap: 10px;
+  min-height: 0;
 }
 
 .reviewStepRow {
@@ -1489,71 +1685,38 @@
 .utilityRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 12px;
 }
 
-.utilityCard {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(167, 139, 250, 0.14);
-  background:
-    radial-gradient(
-      circle at 0% 0%,
-      rgba(124, 92, 255, 0.1),
-      rgba(124, 92, 255, 0) 48%
-    ),
-    var(--card);
-  box-shadow: var(--shadow-sm), var(--card-inner);
-  backdrop-filter: blur(14px);
-  transition: transform 0.15s ease;
-}
-
-.utilityCard:active {
-  transform: scale(0.98);
-}
-
-.utilityIcon {
-  flex-shrink: 0;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: rgba(124, 92, 255, 0.2);
-  color: #ddd6fe;
-  border: 1px solid rgba(196, 181, 253, 0.14);
-  display: flex;
+.utilityLink {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.utilityTitle {
-  flex: 1;
-  min-width: 0;
-  font-size: 13px;
+  gap: 4px;
+  padding: 8px 6px;
+  font-size: 11.5px;
   font-weight: 600;
-  line-height: 1;
-  color: var(--text);
-  white-space: nowrap;
+  color: rgba(220, 214, 244, 0.65);
+  text-decoration: none;
+  transition: color 0.15s ease;
 }
 
-.utilityChev {
-  flex-shrink: 0;
-  color: var(--muted);
-  opacity: 0.5;
+.utilityLink:hover {
+  color: #c4b5fd;
+}
+
+.utilityLink svg {
+  opacity: 0.45;
 }
 
 @media (max-width: 359px) {
   .hero {
-    height: 228px;
+    height: 200px;
   }
 
-  .utilityTitle {
-    font-size: 10px;
+  .glassSummaryText {
+    font-size: 11.5px;
   }
 }
