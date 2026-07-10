@@ -83,11 +83,11 @@ function StepDots({ step, total = 2 }) {
 
 function CoachBubble({ pose = "welcoming", title, children, tips }) {
   return (
-    <div className={s.coachBubble}>
-      <div className={s.coachBubbleAvatar} aria-hidden>
-        <Avatar pose={pose} alt="" className={s.coachBubbleImg} />
+    <div className={s.coachScene}>
+      <div className={s.coachSceneAvatar} aria-hidden>
+        <Avatar pose={pose} alt="" className={s.coachSceneImg} />
       </div>
-      <div className={s.coachBubbleBody}>
+      <div className={s.coachBubble}>
         {title ? <p className={s.coachBubbleTitle}>{title}</p> : null}
         <div className={s.coachBubbleText}>{children}</div>
         {tips?.length ? (
