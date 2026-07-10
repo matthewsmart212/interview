@@ -283,11 +283,11 @@
 }
 
 .optionGridHome .optionTitle {
-  font-size: 16.5px;
+  font-size: 14.5px;
 }
 
 .optionGridHome .optionSub {
-  font-size: 14.5px;
+  font-size: 12.5px;
 }
 
 .optionCardPrimary {
@@ -364,7 +364,7 @@
   gap: 7px;
   margin-top: 10px;
   padding: 11px 16px;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .startBtn {
@@ -928,7 +928,7 @@
 .utilityTitle {
   flex: 1;
   min-width: 0;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1;
   color: var(--text);
