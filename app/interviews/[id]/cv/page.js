@@ -12,11 +12,13 @@ import {
   Shield,
   FileText,
 } from "../../../../components/Icons";
-import { getInterview, MASTER_CV } from "../../../../lib/app-data";
+import { getInterview, saveTailoredCv } from "../../../../lib/db";
+import { useAppDb } from "../../../../lib/db/use-app-db";
 import s from "../../interviews.module.css";
 
 export default function TailoredCvPage() {
   const { id } = useParams();
+  const { MASTER_CV } = useAppDb();
   const iv = getInterview(id);
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
@@ -108,6 +110,7 @@ export default function TailoredCvPage() {
             onClick={() => {
               setGenerating(true);
               setTimeout(() => {
+                saveTailoredCv(id);
                 setGenerating(false);
                 setGenerated(true);
               }, 1600);

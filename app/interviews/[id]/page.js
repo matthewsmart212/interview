@@ -16,7 +16,8 @@ import {
   ChevronRight,
   Plus,
 } from "../../../components/Icons";
-import { getInterview, mocksForInterview } from "../../../lib/app-data";
+import { getInterview, mocksForInterview } from "../../../lib/db";
+import { useAppDb } from "../../../lib/db/use-app-db";
 import s from "../interviews.module.css";
 
 function scoreCls(score) {
@@ -27,6 +28,7 @@ function scoreCls(score) {
 
 export default function InterviewPrepPage() {
   const { id } = useParams();
+  useAppDb();
   const iv = getInterview(id);
 
   if (!iv) {

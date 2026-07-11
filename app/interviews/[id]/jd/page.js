@@ -6,7 +6,8 @@ import { useParams, useRouter } from "next/navigation";
 import Phone from "../../../../components/Phone";
 import PageHeader from "../../../../components/PageHeader";
 import { Sparkle, FileText } from "../../../../components/Icons";
-import { getInterview } from "../../../../lib/app-data";
+import { getInterview, saveInterviewJd } from "../../../../lib/db";
+import { useAppDb } from "../../../../lib/db/use-app-db";
 import s from "../../interviews.module.css";
 
 const SAMPLE_JD =
@@ -15,6 +16,7 @@ const SAMPLE_JD =
 export default function JobDescriptionPage() {
   const { id } = useParams();
   const router = useRouter();
+  useAppDb();
   const iv = getInterview(id);
   const [text, setText] = useState("");
   const [saved, setSaved] = useState(false);
@@ -128,7 +130,10 @@ export default function JobDescriptionPage() {
               className="btn btn-primary"
               style={{ opacity: text.trim() ? 1 : 0.5 }}
               disabled={!text.trim()}
-              onClick={() => setSaved(true)}
+              onClick={() => {
+                saveInterviewJd(id, text);
+                setSaved(true);
+              }}
             >
               Save & analyse <Sparkle size={17} />
             </button>

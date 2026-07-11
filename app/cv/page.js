@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
 import Avatar from "../../components/Avatar";
@@ -11,10 +13,11 @@ import {
   CvHistoryDropdown,
 } from "../../components/ui";
 import { Sparkle, Download, Upload, Shield, Plus } from "../../components/Icons";
-import { MASTER_CV, INTERVIEWS, CV_HISTORY } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
 import s from "./cvhub.module.css";
 
 export default function CvHubPage() {
+  const { MASTER_CV, INTERVIEWS, CV_HISTORY } = useAppDb();
   const tailored = INTERVIEWS.filter((iv) => iv.tailoredCv.exists);
 
   return (

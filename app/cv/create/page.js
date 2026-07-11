@@ -2,9 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Phone from "../../../components/Phone";
 import PageHeader from "../../../components/PageHeader";
-import { Plus, Check, Sparkle, Edit } from "../../../components/Icons";
+import { Plus, Check, Sparkle } from "../../../components/Icons";
+import {
+  createMasterCvFromForm,
+  updateUser,
+} from "../../../lib/db";
 import s from "../cvhub.module.css";
 import i from "../../interviews/interviews.module.css";
 
@@ -20,6 +25,7 @@ const SKILL_OPTIONS = [
 ];
 
 export default function CvCreatePage() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -33,6 +39,17 @@ export default function CvCreatePage() {
     setSkills((prev) =>
       prev.includes(sk) ? prev.filter((x) => x !== sk) : [...prev, sk]
     );
+
+  const finishCreate = () => {
+    if (name.trim()) updateUser({ name: name.trim() });
+    createMasterCvFromForm({
+      targetRole: role.trim() || undefined,
+      about: about.trim() || "Professional CV built from your answers.",
+      jobs,
+      skills,
+    });
+    setStep(3);
+  };
 
   return (
     <Phone>
@@ -176,7 +193,7 @@ export default function CvCreatePage() {
               className="btn btn-primary"
               style={{ marginTop: 24, opacity: skills.length ? 1 : 0.5 }}
               disabled={!skills.length}
-              onClick={() => setStep(3)}
+              onClick={finishCreate}
             >
               Build my CV <Sparkle size={17} />
             </button>
@@ -193,9 +210,13 @@ export default function CvCreatePage() {
               We&apos;ve turned your answers into a clean, professional CV.
               You can improve it any time.
             </p>
-            <Link href="/cv" className="btn btn-primary">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => router.push("/cv")}
+            >
               See my CV
-            </Link>
+            </button>
             <Link href="/cv/improve" className="btn btn-ghost" style={{ marginTop: 8 }}>
               Get improvement tips
             </Link>

@@ -1,3 +1,5 @@
+import { promoteOnboarding } from "./db/services/promote-onboarding";
+
 /**
  * Front-end onboarding profile — persisted in localStorage until a backend exists.
  */
@@ -122,6 +124,7 @@ export function isOnboardingComplete(): boolean {
 export function completeOnboarding(profile: OnboardingProfile): OnboardingProfile {
   const next = { ...profile, completedAt: Date.now() };
   saveProfile(next);
+  promoteOnboarding(next, { fresh: false });
   return next;
 }
 
@@ -148,6 +151,7 @@ export function skipOnboardingForDev(): OnboardingProfile {
     },
   };
   saveProfile(profile);
+  promoteOnboarding(profile, { fresh: false });
   return profile;
 }
 

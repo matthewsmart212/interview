@@ -1,0 +1,386 @@
+import type {
+  AppState,
+  CvHistoryEntry,
+  Interview,
+  MasterCV,
+  MockSession,
+  TailoredCV,
+  UserProfile,
+} from "../types";
+import { getState, setState } from "../store";
+import {
+  accentFor,
+  createId,
+  dateChipFrom,
+  daysAwayFrom,
+  extractJdHighlights,
+  formatDisplayDate,
+  formatDisplayTime,
+  initialsFrom,
+} from "../ids";
+import type { InterviewType } from "../../onboarding-store";
+import type { InterviewAnswer, InterviewFeedbackResult } from "../../types";
+import type { MockSetupConfig } from "../../mock-setup";
+
+/* ---------------- user ---------------- */
+
+export function getUser(): UserProfile {
+  return getState().user;
+}
+
+export function updateUser(patch: Partial<UserProfile>): UserProfile {
+  return setState((s) => ({
+    ...s,
+    user: { ...s.user, ...patch, updatedAt: Date.now() },
+  })).user;
+}
+
+/* ---------------- CV ---------------- */
+
+export function getMasterCv(): MasterCV {
+  return getState().masterCv;
+}
+
+export function getCvHistory(): CvHistoryEntry[] {
+  return getState().cvHistory;
+}
+
+export function setMasterCv(cv: MasterCV, historyEntry?: CvHistoryEntry): MasterCV {
+  return setState((s) => {
+    const history = historyEntry
+      ? [
+          { ...historyEntry, current: true },
+          ...s.cvHistory.map((h) => ({ ...h, current: false })),
+        ]
+      : s.cvHistory;
+    return { ...s, masterCv: cv, cvHistory: history };
+  }).masterCv;
+}
+
+export function uploadMasterCv(input: {
+  fileName: string;
+  summary?: string;
+  score?: number;
+  sections?: MasterCV["sections"];
+}): MasterCV {
+  const updatedAt = formatDisplayDate();
+  const score = input.score ?? 72;
+  const cv: MasterCV = {
+    id: "master-cv",
+    exists: true,
+    source: "upload",
+    fileName: input.fileName,
+    updatedAt,
+    score,
+    summary:
+      input.summary ??
+      "Uploaded CV ready for scoring, tailoring and mock interview practice.",
+    sections: input.sections ?? {
+      experience: [],
+      education: [],
+      skills: [],
+    },
+  };
+  const entry: CvHistoryEntry = {
+    id: createId("cv"),
+    fileName: input.fileName,
+    uploadedAt: updatedAt,
+    score,
+    current: true,
+  };
+  return setMasterCv(cv, entry);
+}
+
+export function createMasterCvFromForm(input: {
+  targetRole?: string;
+  about: string;
+  jobs: { role: string; company: string; period: string }[];
+  skills: string[];
+}): MasterCV {
+  const updatedAt = formatDisplayDate();
+  const fileName = `${(getUser().name || "My").replace(/\s+/g, "-")}-CV.pdf`;
+  const score = Math.min(88, 55 + input.skills.length * 3 + input.jobs.length * 5);
+  const cv: MasterCV = {
+    id: "master-cv",
+    exists: true,
+    source: "create",
+    fileName,
+    updatedAt,
+    score,
+    summary: input.about,
+    sections: {
+      experience: input.jobs.map((j) => ({
+        role: j.role,
+        company: j.company,
+        period: j.period,
+        points: [`Worked as ${j.role} at ${j.company}`],
+      })),
+      education: [],
+      skills: input.skills,
+    },
+  };
+  const entry: CvHistoryEntry = {
+    id: createId("cv"),
+    fileName,
+    uploadedAt: updatedAt,
+    score,
+    current: true,
+  };
+  return setMasterCv(cv, entry);
+}
+
+export function bumpMasterCvScore(delta = 6): MasterCV {
+  return setState((s) => {
+    const score = Math.min(98, s.masterCv.score + delta);
+    const updatedAt = formatDisplayDate();
+    return {
+      ...s,
+      masterCv: { ...s.masterCv, score, updatedAt },
+      cvHistory: s.cvHistory.map((h) =>
+        h.current ? { ...h, score, uploadedAt: updatedAt } : h
+      ),
+    };
+  }).masterCv;
+}
+
+/* ---------------- interviews ---------------- */
+
+export function listInterviews(): Interview[] {
+  return getState().interviews.map(refreshInterviewDerived);
+}
+
+export function getInterview(id: string): Interview | null {
+  const iv = getState().interviews.find((i) => i.id === id);
+  return iv ? refreshInterviewDerived(iv) : null;
+}
+
+function refreshInterviewDerived(iv: Interview): Interview {
+  const daysAway = daysAwayFrom(iv.date);
+  const status = daysAway < 0 ? "past" : "upcoming";
+  return { ...iv, daysAway, status: iv.status === "past" ? "past" : status };
+}
+
+export function createInterview(input: {
+  role: string;
+  company?: string;
+  type?: InterviewType;
+  date?: string;
+  jd?: string;
+}): Interview {
+  const id = createId("iv");
+  const company = input.company?.trim() || "Company";
+  const date = input.date?.trim() || formatDisplayDate(new Date(Date.now() + 14 * 86400000));
+  const hasJD = Boolean(input.jd?.trim());
+  const t = Date.now();
+  const interview: Interview = {
+    id,
+    role: input.role.trim(),
+    company,
+    initials: initialsFrom(company, input.role),
+    accent: accentFor(id),
+    type: input.type ?? "In-person",
+    date,
+    dateChip: dateChipFrom(date),
+    daysAway: daysAwayFrom(date),
+    status: "upcoming",
+    readiness: hasJD ? 28 : 12,
+    hasJD,
+    jd: hasJD ? input.jd!.trim() : null,
+    jdHighlights: hasJD ? extractJdHighlights(input.jd!) : [],
+    tailoredCv: { exists: false },
+    mockIds: [],
+    createdAt: t,
+    updatedAt: t,
+  };
+
+  setState((s) => ({
+    ...s,
+    interviews: [interview, ...s.interviews],
+  }));
+  return refreshInterviewDerived(interview);
+}
+
+export function updateInterview(
+  id: string,
+  patch: Partial<Interview>
+): Interview | null {
+  let updated: Interview | null = null;
+  setState((s) => ({
+    ...s,
+    interviews: s.interviews.map((iv) => {
+      if (iv.id !== id) return iv;
+      updated = refreshInterviewDerived({
+        ...iv,
+        ...patch,
+        updatedAt: Date.now(),
+      });
+      return updated;
+    }),
+  }));
+  return updated;
+}
+
+export function saveInterviewJd(id: string, jd: string): Interview | null {
+  const trimmed = jd.trim();
+  return updateInterview(id, {
+    hasJD: Boolean(trimmed),
+    jd: trimmed || null,
+    jdHighlights: trimmed ? extractJdHighlights(trimmed) : [],
+    readiness: Math.max(getInterview(id)?.readiness ?? 0, trimmed ? 40 : 12),
+  });
+}
+
+export function saveTailoredCv(
+  interviewId: string,
+  input?: { score?: number; changes?: string[] }
+): TailoredCV | null {
+  const iv = getInterview(interviewId);
+  if (!iv) return null;
+  const master = getMasterCv();
+  const score = input?.score ?? Math.min(96, (master.score || 70) + 8);
+  const updatedAt = formatDisplayDate();
+  const changes =
+    input?.changes ??
+    [
+      `Summary rewritten to match ${iv.company} language`,
+      "Most relevant experience moved to the top",
+      "Skills aligned to the job description",
+    ];
+
+  const tailored: TailoredCV = {
+    id: `tailored-${interviewId}`,
+    interviewId,
+    score,
+    updatedAt,
+    changes,
+  };
+
+  setState((s) => ({
+    ...s,
+    tailoredCvs: { ...s.tailoredCvs, [interviewId]: tailored },
+    interviews: s.interviews.map((row) =>
+      row.id === interviewId
+        ? {
+            ...row,
+            tailoredCv: { exists: true, score, updatedAt, changes },
+            readiness: Math.max(row.readiness, 55),
+            updatedAt: Date.now(),
+          }
+        : row
+    ),
+  }));
+
+  return tailored;
+}
+
+export function getTailoredCv(interviewId: string): TailoredCV | null {
+  return getState().tailoredCvs[interviewId] ?? null;
+}
+
+/* ---------------- mock sessions / history ---------------- */
+
+export function listMockSessions(): MockSession[] {
+  return [...getState().mockSessions].sort(
+    (a, b) => (b.completedAt || 0) - (a.completedAt || 0)
+  );
+}
+
+export function getMockSession(id: string): MockSession | null {
+  return getState().mockSessions.find((m) => m.id === id) ?? null;
+}
+
+export function mocksForInterview(interviewId: string): MockSession[] {
+  return listMockSessions().filter((m) => m.interviewId === interviewId);
+}
+
+export function recordMockSession(input: {
+  setup?: MockSetupConfig | null;
+  feedback: InterviewFeedbackResult;
+  answers?: Record<number, InterviewAnswer>;
+  durationMin?: number;
+}): MockSession {
+  const setup = input.setup;
+  const interviewId = setup?.interviewId;
+  const interview = interviewId ? getInterview(interviewId) : null;
+  const now = new Date();
+  const top = input.feedback.questions[input.feedback.topAnswerIndex];
+  const weakest = [...input.feedback.questions].sort((a, b) => a.score - b.score)[0];
+
+  const session: MockSession = {
+    id: createId("mock"),
+    interviewId,
+    contextMode: setup?.contextMode ?? "generic",
+    contextLabel: setup?.contextLabel ?? "Generic Practice",
+    role: interview?.role ?? setup?.contextLabel ?? "Practice interview",
+    company: interview?.company ?? "Generic",
+    date: formatDisplayDate(now),
+    time: formatDisplayTime(now),
+    score: input.feedback.overallScore,
+    headline: input.feedback.headline,
+    questions: input.feedback.questions.length,
+    durationMin: input.durationMin ?? 10,
+    best: top?.category ?? "Top answer",
+    weakest: weakest?.category ?? "Needs work",
+    skills: [
+      {
+        name: "Relevance",
+        value: Math.round(
+          input.feedback.questions.reduce((a, q) => a + q.score, 0) /
+            Math.max(1, input.feedback.questions.length)
+        ),
+      },
+      { name: "STAR structure", value: Math.max(40, input.feedback.overallScore - 5) },
+      { name: "Clarity", value: Math.min(98, input.feedback.overallScore + 4) },
+    ],
+    completedAt: now.getTime(),
+    feedback: input.feedback,
+    answers: input.answers,
+  };
+
+  setState((s) => ({
+    ...s,
+    mockSessions: [session, ...s.mockSessions],
+    interviews: s.interviews.map((iv) => {
+      if (!interviewId || iv.id !== interviewId) return iv;
+      const mockIds = [session.id, ...iv.mockIds.filter((id) => id !== session.id)];
+      const readiness = Math.min(98, Math.max(iv.readiness, session.score - 5));
+      return { ...iv, mockIds, readiness, updatedAt: Date.now() };
+    }),
+    user: {
+      ...s.user,
+      streak: s.user.streak + 1,
+      updatedAt: Date.now(),
+    },
+  }));
+
+  return session;
+}
+
+/* ---------------- saved questions ---------------- */
+
+export function getSavedQuestionIds(): string[] {
+  return getState().savedQuestionIds;
+}
+
+export function toggleSavedQuestion(id: string): string[] {
+  return setState((s) => {
+    const exists = s.savedQuestionIds.includes(id);
+    return {
+      ...s,
+      savedQuestionIds: exists
+        ? s.savedQuestionIds.filter((x) => x !== id)
+        : [...s.savedQuestionIds, id],
+    };
+  }).savedQuestionIds;
+}
+
+/* ---------------- snapshot helpers for UI ---------------- */
+
+export function getAppSnapshot(): AppState {
+  const s = getState();
+  return {
+    ...s,
+    interviews: s.interviews.map(refreshInterviewDerived),
+    mockSessions: listMockSessions(),
+  };
+}

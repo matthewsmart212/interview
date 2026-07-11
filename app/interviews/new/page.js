@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Phone from "../../../components/Phone";
 import PageHeader from "../../../components/PageHeader";
-import { Calendar, FileText, Sparkle, Check, Plus } from "../../../components/Icons";
+import { Calendar, FileText, Sparkle, Check } from "../../../components/Icons";
+import { createInterview } from "../../../lib/db";
 import s from "../interviews.module.css";
 
 const SAMPLE_JD =
@@ -18,8 +19,21 @@ export default function NewInterviewPage() {
   const [date, setDate] = useState("");
   const [jdChoice, setJdChoice] = useState(null); // "paste" | "skip"
   const [jd, setJd] = useState("");
+  const [createdId, setCreatedId] = useState(null);
 
   const canContinueDetails = role.trim().length > 0;
+
+  const finishCreate = () => {
+    const iv = createInterview({
+      role,
+      company: company.trim() || undefined,
+      type,
+      date: date.trim() || undefined,
+      jd: jdChoice === "paste" ? jd : undefined,
+    });
+    setCreatedId(iv.id);
+    setStep(2);
+  };
 
   return (
     <Phone>
@@ -192,7 +206,7 @@ export default function NewInterviewPage() {
                     : 0.5,
               }}
               disabled={!(jdChoice === "skip" || (jdChoice === "paste" && jd.trim()))}
-              onClick={() => setStep(2)}
+              onClick={finishCreate}
             >
               Continue
             </button>
@@ -220,7 +234,10 @@ export default function NewInterviewPage() {
               <br />
               Your prep plan is ready — let&apos;s get you confident.
             </p>
-            <Link href="/interviews/tesco-csa" className="btn btn-primary">
+            <Link
+              href={createdId ? `/interviews/${createdId}` : "/interviews"}
+              className="btn btn-primary"
+            >
               Open my prep plan
             </Link>
             <Link

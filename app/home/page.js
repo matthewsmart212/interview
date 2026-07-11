@@ -1,13 +1,13 @@
-import Phone from "../../components/Phone";
+"use client";
+
 import PersonalizedPageHeader from "../../components/home/PersonalizedPageHeader";
-import BottomNav from "../../components/BottomNav";
 import HomeChoiceCard from "../../components/home/HomeChoiceCard";
 import NextInterviewCard from "../../components/home/NextInterviewCard";
 import StatPillRow, { StatPill } from "../../components/home/StatPillRow";
 import QuickActionRow from "../../components/home/QuickActionRow";
 import { AppShell, PageSection } from "../../components/ui";
 import { FileText, Mic, MessageCircle, Calendar } from "../../components/Icons";
-import { INTERVIEWS, MASTER_CV, MOCK_HISTORY } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
 import styles from "./home.module.css";
 
 const QUICK_ACTIONS = [
@@ -32,6 +32,8 @@ const QUICK_ACTIONS = [
 ];
 
 export default function HomePage() {
+  const { INTERVIEWS, MASTER_CV, MOCK_HISTORY } = useAppDb();
+
   const next = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
     (a, b) => a.daysAway - b.daysAway
   )[0];

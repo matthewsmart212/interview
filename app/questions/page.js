@@ -4,23 +4,25 @@ import { useState } from "react";
 import PageHeader from "../../components/PageHeader";
 import { AppShell } from "../../components/ui";
 import { Bookmark } from "../../components/Icons";
+import { toggleSavedQuestion } from "../../lib/db";
+import { useAppDb } from "../../lib/db/use-app-db";
 import s from "./questions.module.css";
 
 const FILTERS = ["All", "Behavioural", "Situational", "Technical"];
 
 const QUESTIONS = [
-  { q: "Tell me about a time you dealt with a difficult customer.", cat: "Behavioural" },
-  { q: "How do you handle working under pressure?", cat: "Situational" },
-  { q: "Give an example of teamwork.", cat: "Behavioural" },
-  { q: "How do you prioritise your tasks?", cat: "Situational" },
-  { q: "Why do you want to work here?", cat: "Behavioural" },
-  { q: "What makes you a good fit for this role?", cat: "Behavioural" },
-  { q: "Describe a system you would build to handle refunds.", cat: "Technical" },
+  { id: "q-difficult-customer", q: "Tell me about a time you dealt with a difficult customer.", cat: "Behavioural" },
+  { id: "q-under-pressure", q: "How do you handle working under pressure?", cat: "Situational" },
+  { id: "q-teamwork", q: "Give an example of teamwork.", cat: "Behavioural" },
+  { id: "q-prioritise", q: "How do you prioritise your tasks?", cat: "Situational" },
+  { id: "q-why-here", q: "Why do you want to work here?", cat: "Behavioural" },
+  { id: "q-good-fit", q: "What makes you a good fit for this role?", cat: "Behavioural" },
+  { id: "q-refunds", q: "Describe a system you would build to handle refunds.", cat: "Technical" },
 ];
 
 export default function QuestionsPage() {
+  const { savedQuestionIds } = useAppDb();
   const [filter, setFilter] = useState("All");
-  const [saved, setSaved] = useState({});
 
   const list =
     filter === "All"
@@ -51,24 +53,25 @@ export default function QuestionsPage() {
       </div>
 
       <div className="stack">
-        {list.map((item) => (
-          <div className={s.qcard} key={item.q}>
-            <div className={s.qbody}>
-              <div className={s.qtext}>{item.q}</div>
-              <span className="tag">{item.cat}</span>
+        {list.map((item) => {
+          const isSaved = savedQuestionIds.includes(item.id);
+          return (
+            <div className={s.qcard} key={item.id}>
+              <div className={s.qbody}>
+                <div className={s.qtext}>{item.q}</div>
+                <span className="tag">{item.cat}</span>
+              </div>
+              <button
+                type="button"
+                className={`${s.mark}${isSaved ? " " + s.on : ""}`}
+                aria-label="Save question"
+                onClick={() => toggleSavedQuestion(item.id)}
+              >
+                <Bookmark size={20} filled={isSaved} />
+              </button>
             </div>
-            <button
-              type="button"
-              className={`${s.mark}${saved[item.q] ? " " + s.on : ""}`}
-              aria-label="Save question"
-              onClick={() =>
-                setSaved((p) => ({ ...p, [item.q]: !p[item.q] }))
-              }
-            >
-              <Bookmark size={20} filled={!!saved[item.q]} />
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </AppShell>
   );

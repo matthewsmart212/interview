@@ -11,13 +11,15 @@ import {
   Mic,
   ChevronRight,
 } from "../../../components/Icons";
-import { getMock, getInterview } from "../../../lib/app-data";
+import { getMockSession, getInterview } from "../../../lib/db";
+import { useAppDb } from "../../../lib/db/use-app-db";
 import s from "../history.module.css";
 import iv from "../../interviews/interviews.module.css";
 
 export default function MockDetailPage() {
   const { id } = useParams();
-  const mk = getMock(id);
+  useAppDb();
+  const mk = getMockSession(id);
 
   if (!mk) {
     return (

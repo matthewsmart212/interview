@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Phone from "../../../components/Phone";
 import PageHeader from "../../../components/PageHeader";
 import { Upload, Check, FileText } from "../../../components/Icons";
+import { uploadMasterCv } from "../../../lib/db";
 import s from "../cvhub.module.css";
 
 const PARSED = [
@@ -17,12 +19,19 @@ const PARSED = [
 export default function CvUploadPage() {
   // idle -> parsing -> done
   const [stage, setStage] = useState("idle");
+  const [fileName, setFileName] = useState("My-CV.pdf");
+  const router = useRouter();
 
   useEffect(() => {
     if (stage !== "parsing") return undefined;
     const t = setTimeout(() => setStage("done"), 2200);
     return () => clearTimeout(t);
   }, [stage]);
+
+  const finishUpload = () => {
+    uploadMasterCv({ fileName });
+    router.push("/cv");
+  };
 
   return (
     <Phone>
@@ -45,7 +54,10 @@ export default function CvUploadPage() {
             <button
               className={s.dropzone}
               style={{ marginTop: 24 }}
-              onClick={() => setStage("parsing")}
+              onClick={() => {
+                setFileName("My-CV.pdf");
+                setStage("parsing");
+              }}
             >
               <span className={s.dropIcon}>
                 <Upload size={26} />
@@ -104,9 +116,14 @@ export default function CvUploadPage() {
               ))}
             </div>
 
-            <Link href="/cv" className="btn btn-primary" style={{ marginTop: 20 }}>
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{ marginTop: 20 }}
+              onClick={finishUpload}
+            >
               Looks right — continue
-            </Link>
+            </button>
             <button
               className="btn btn-ghost"
               style={{ marginTop: 6 }}

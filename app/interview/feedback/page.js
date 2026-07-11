@@ -19,7 +19,27 @@ import {
   clearSession,
   loadResult,
 } from "../../../lib/interview-session";
+import { completeMockFromLiveResult } from "../../../lib/db";
 import m from "../interview.module.css";
+
+const MOCK_HISTORY_GUARD = "ic_mock_history_stamp";
+
+function mockResultStamp(result) {
+  if (!result) return "";
+  return `${result.overallScore}|${result.headline}|${result.questions?.length ?? 0}`;
+}
+
+function writeMockHistoryOnce(result) {
+  if (typeof window === "undefined" || !result) return;
+  const stamp = mockResultStamp(result);
+  try {
+    if (sessionStorage.getItem(MOCK_HISTORY_GUARD) === stamp) return;
+    completeMockFromLiveResult();
+    sessionStorage.setItem(MOCK_HISTORY_GUARD, stamp);
+  } catch {
+    completeMockFromLiveResult();
+  }
+}
 
 function scoreTier(score) {
   if (score >= 85) return "high";
@@ -253,7 +273,9 @@ export default function FeedbackPage() {
   // undefined = still reading localStorage, null = nothing stored
   const [result, setResult] = useState(undefined);
   useEffect(() => {
-    setResult(loadResult());
+    const loaded = loadResult();
+    setResult(loaded);
+    if (loaded) writeMockHistoryOnce(loaded);
   }, []);
 
   if (result === undefined)

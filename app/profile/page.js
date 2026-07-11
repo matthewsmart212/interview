@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
 import { AppShell, PageSection } from "../../components/ui";
@@ -16,6 +19,12 @@ import {
   LogOut,
   ChevronRight,
 } from "../../components/Icons";
+import {
+  updateUser,
+  resetToDemo,
+  resetToEmpty,
+} from "../../lib/db";
+import { useAppDb } from "../../lib/db/use-app-db";
 import s from "./profile.module.css";
 
 const ACCOUNT = [
@@ -50,6 +59,23 @@ function Menu({ items }) {
 }
 
 export default function ProfilePage() {
+  const { user, USER } = useAppDb();
+  const [editing, setEditing] = useState(false);
+  const [nameDraft, setNameDraft] = useState("");
+
+  const displayName = user?.name || USER.name || "Alex";
+
+  const startEdit = () => {
+    setNameDraft(displayName);
+    setEditing(true);
+  };
+
+  const saveEdit = () => {
+    const next = nameDraft.trim();
+    if (next) updateUser({ name: next });
+    setEditing(false);
+  };
+
   return (
     <AppShell>
       <PageHeader
@@ -61,15 +87,37 @@ export default function ProfilePage() {
       <div className={`card ${s.header}`}>
         <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
         <div className="grow">
-          <div className={s.name}>Alex Johnson</div>
-          <div className={s.email}>alex.johnson@email.com</div>
+          {editing ? (
+            <input
+              className="input"
+              value={nameDraft}
+              onChange={(e) => setNameDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") saveEdit();
+                if (e.key === "Escape") setEditing(false);
+              }}
+              autoFocus
+              aria-label="Your name"
+            />
+          ) : (
+            <div className={s.name}>{displayName}</div>
+          )}
+          <div className={s.email}>
+            {displayName.toLowerCase().replace(/\s+/g, ".")}@email.com
+          </div>
           <span className={`badge badge-brand ${s.role}`}>
             Customer Service Advisor
           </span>
         </div>
-        <button type="button" className={s.editBtn}>
-          <Edit size={15} /> Edit
-        </button>
+        {editing ? (
+          <button type="button" className={s.editBtn} onClick={saveEdit}>
+            Save
+          </button>
+        ) : (
+          <button type="button" className={s.editBtn} onClick={startEdit}>
+            <Edit size={15} /> Edit
+          </button>
+        )}
       </div>
 
       <div className={s.pro}>
@@ -93,6 +141,33 @@ export default function ProfilePage() {
 
       <PageSection title="Support">
         <Menu items={SUPPORT} />
+      </PageSection>
+
+      <PageSection title="Data">
+        <div className={`card ${s.menu}`}>
+          <button
+            type="button"
+            className={s.item}
+            onClick={() => resetToDemo()}
+          >
+            <span className={s.mi}>
+              <Sparkle size={19} />
+            </span>
+            <span className={s.lbl}>Reset to demo data</span>
+            <ChevronRight size={19} className={s.chev} />
+          </button>
+          <button
+            type="button"
+            className={s.item}
+            onClick={() => resetToEmpty()}
+          >
+            <span className={s.mi}>
+              <Shield size={19} />
+            </span>
+            <span className={s.lbl}>Clear all data</span>
+            <ChevronRight size={19} className={s.chev} />
+          </button>
+        </div>
       </PageSection>
 
       <button type="button" className={s.logout}>

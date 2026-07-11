@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
 import { AppShell, PageSection, ProgressCard } from "../../components/ui";
 import { Mic, Target, Trophy, Clock, ChevronRight } from "../../components/Icons";
-import { MOCK_HISTORY } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
 import styles from "./progress.module.css";
 
 const STATS = [
@@ -96,6 +98,9 @@ function ScoreChart() {
 }
 
 export default function ProgressPage() {
+  const { MOCK_HISTORY } = useAppDb();
+  const recent = MOCK_HISTORY.slice(0, 3);
+
   return (
     <AppShell navActive="progress">
       <PageHeader
@@ -156,7 +161,7 @@ export default function ProgressPage() {
         }
       >
         <div className="card">
-          {MOCK_HISTORY.slice(0, 3).map((mk) => (
+          {recent.map((mk) => (
             <Link href={`/history/${mk.id}`} className={styles.histRow} key={mk.id}>
               <span
                 className={`${styles.histScore}${

@@ -1,8 +1,11 @@
+"use client";
+
 import Phone from "../../../components/Phone";
 import PageHeader from "../../../components/PageHeader";
 import CircularProgress from "../../../components/CircularProgress";
 import { Check, ChevronRight, Sparkle, Download } from "../../../components/Icons";
-import { MASTER_CV } from "../../../lib/app-data";
+import { bumpMasterCvScore } from "../../../lib/db";
+import { useAppDb } from "../../../lib/db/use-app-db";
 import styles from "../cv.module.css";
 
 const SUGGESTIONS = [
@@ -13,6 +16,8 @@ const SUGGESTIONS = [
 ];
 
 export default function CvImprovePage() {
+  const { MASTER_CV } = useAppDb();
+
   return (
     <Phone>
       <div className="screen screen-pad has-app-header">
@@ -57,7 +62,12 @@ export default function CvImprovePage() {
           ))}
         </div>
 
-        <button className="btn btn-primary" style={{ marginTop: 22 }}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          style={{ marginTop: 22 }}
+          onClick={() => bumpMasterCvScore()}
+        >
           Optimise My CV <Sparkle size={18} />
         </button>
         <button className={styles.download}>

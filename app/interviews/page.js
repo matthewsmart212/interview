@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   AppShell,
@@ -8,10 +10,11 @@ import {
 } from "../../components/ui";
 import PageHeader from "../../components/PageHeader";
 import { Plus, Calendar } from "../../components/Icons";
-import { INTERVIEWS } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
 import s from "./interviews.module.css";
 
 export default function InterviewsPage() {
+  const { INTERVIEWS } = useAppDb();
   const upcoming = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
     (a, b) => a.daysAway - b.daysAway
   );

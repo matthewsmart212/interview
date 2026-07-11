@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import PageHeader from "../../components/PageHeader";
 import {
@@ -7,7 +9,7 @@ import {
   PageSection,
 } from "../../components/ui";
 import { ChevronRight, Mic } from "../../components/Icons";
-import { MOCK_HISTORY } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
 import s from "./history.module.css";
 
 function scoreCls(score) {
@@ -17,6 +19,8 @@ function scoreCls(score) {
 }
 
 export default function HistoryPage() {
+  const { MOCK_HISTORY } = useAppDb();
+
   return (
     <AppShell navActive="progress">
       <PageHeader
