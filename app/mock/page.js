@@ -28,10 +28,11 @@ import {
   clearMockSetup,
 } from "../../lib/mock-setup";
 import { clearSession, clearResult } from "../../lib/interview-session";
+import { MOCK_DURATION_LABEL } from "../../lib/config/product";
 import s from "./mock.module.css";
 
 const JD_MIN_CHARS = 80;
-const DURATION_LABEL = "8–10 minutes";
+const DURATION_LABEL = MOCK_DURATION_LABEL;
 
 const PREP_CHECKLIST = [
   { label: "CV understood", speech: "Just reviewing your experience…" },

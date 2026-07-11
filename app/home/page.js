@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import PersonalizedPageHeader from "../../components/home/PersonalizedPageHeader";
 import HomeChoiceCard from "../../components/home/HomeChoiceCard";
 import NextInterviewCard from "../../components/home/NextInterviewCard";
@@ -8,6 +9,7 @@ import QuickActionRow from "../../components/home/QuickActionRow";
 import { AppShell, PageSection } from "../../components/ui";
 import { FileText, Mic, MessageCircle, Calendar } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
+import { getSessionUser, pullSupabaseToLocal } from "../../lib/supabase/sync";
 import styles from "./home.module.css";
 
 const QUICK_ACTIONS = [
@@ -32,7 +34,21 @@ const QUICK_ACTIONS = [
 ];
 
 export default function HomePage() {
-  const { INTERVIEWS, MASTER_CV, MOCK_HISTORY } = useAppDb();
+  const { INTERVIEWS, MASTER_CV, MOCK_HISTORY, user } = useAppDb();
+  const synced = useRef(false);
+
+  useEffect(() => {
+    if (synced.current) return;
+    synced.current = true;
+    (async () => {
+      const sessionUser = await getSessionUser();
+      if (!sessionUser) return;
+      // Prefer cloud when local is still a blank fresh user
+      if (!user?.onboardingCompletedAt && !MASTER_CV.exists && INTERVIEWS.length === 0) {
+        await pullSupabaseToLocal();
+      }
+    })();
+  }, [user, MASTER_CV.exists, INTERVIEWS.length]);
 
   const next = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
     (a, b) => a.daysAway - b.daysAway

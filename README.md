@@ -1,54 +1,50 @@
 # Interview Coach AI
 
-A mobile-first front-end for an AI interview-prep app that offers mock interviews,
-CV generation/optimisation, and instant AI feedback. Built with **Next.js (App Router)**.
-This is **front-end only** — there is no backend logic yet (all data is mocked).
+A mobile-first AI interview-prep app (Next.js App Router) with local-first data,
+Supabase auth/sync, OpenAI coaching brain, and Inworld TTS.
 
 ## Getting started
 
 ```bash
+cp .env.example .env.local   # then fill keys
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The UI is designed mobile-first;
-on wider screens it is centered inside a phone frame.
+Open [http://localhost:3000](http://localhost:3000).
+
+Backend / auth / AI setup: see **[docs/SETUP.md](docs/SETUP.md)**.
+
+## Stack
+
+- **Auth:** Supabase (email magic link + Google)
+- **Data:** localStorage first, sync to Supabase when signed in
+- **AI:** OpenAI `gpt-4.1-mini` (CV, JD, questions, feedback)
+- **TTS:** Inworld AI
+- **CV upload:** PDF + DOCX via `/api/cv/parse`
 
 ## Screens / routes
 
 | Route                          | Screen                                            |
 | ------------------------------ | ------------------------------------------------- |
-| `/`                            | Welcome / onboarding                              |
-| `/setup`                       | "Let's get you ready" interview setup form        |
+| `/`                            | Welcome                                           |
+| `/login`                       | Magic link + Google sign-in                       |
+| `/onboarding`                  | Fresh-user onboarding (+ seed/skip for dev)       |
 | `/home`                        | Home dashboard                                    |
-| `/cv`                          | Improve My CV (match score + suggestions)         |
-| `/interview`                   | AI mock interview loop (question → answer × 5)    |
-| `/interview/analyzing`         | Animated analysis of all answers (auto-advances)  |
-| `/interview/feedback`          | Overall AI feedback (score, per-question breakdown) |
-| `/interview/feedback/detailed` | Per-question feedback (Q1–Q5 selector + Feedback / Transcript / Better Answer tabs) |
-| `/questions`                   | Interview questions (filterable + bookmark)       |
-| `/progress`                    | Progress stats, score-over-time chart, top skills |
-| `/profile`                     | Profile & settings                                |
-
-## Image assets
-
-The AI coach avatar and interview background are loaded from `public/`:
-
-- **Avatars** – `public/avatars/*.png` (see `public/avatars/README.md` for the exact
-  filenames and which pose is used on each screen). Rendered via the `Avatar`
-  component (`components/Avatar.js`).
-- **Background** – `public/backgrounds/room.png`, shown behind the avatar on the
-  interview screens (see `public/backgrounds/README.md`).
-
-Every avatar/background gracefully falls back to a placeholder (labelled box or a
-solid colour) if the file is missing, so the UI always renders. Add the PNGs at the
-documented paths and they appear automatically — no code changes required.
-
-Standard UI icons (chevrons, checks, mic, bookmark, nav, etc.) are implemented as
-inline SVGs in `components/Icons.js`.
+| `/cv`                          | CV hub                                            |
+| `/cv/upload`                   | PDF/DOCX upload + AI score                        |
+| `/mock`                        | Mock interview setup (~8–10 min / 5 questions)    |
+| `/interview`                   | Live mock loop                                    |
+| `/interview/feedback`          | Overall AI feedback                               |
+| `/questions`                   | Interview questions                               |
+| `/progress`                    | Progress stats                                    |
+| `/profile`                     | Profile, sync, logout                             |
 
 ## Structure
 
-- `app/` – routes (one folder per screen) with co-located CSS modules
-- `app/globals.css` – design tokens (colours, radius, shadows) and shared UI classes
-- `components/` – reusable UI (`Phone`, `TopBar`, `BottomNav`, `CircularProgress`, `Waveform`, `Placeholder`, `Icons`)
+- `app/` – routes + API
+- `lib/db/` – local data layer
+- `lib/supabase/` – clients + sync
+- `lib/ai/` – OpenAI + Inworld helpers
+- `lib/config/product.js` – mock length, model defaults
+- `supabase/migrations/` – SQL schema

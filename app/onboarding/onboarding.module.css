@@ -494,6 +494,31 @@
   transform: translateX(-50%) scale(0.98);
 }
 
+.seedDev {
+  margin-top: 18px;
+  width: 100%;
+  border: 1px dashed rgba(167, 139, 250, 0.4);
+  background: rgba(124, 58, 237, 0.08);
+  color: #c4b5fd;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.seedDev:active {
+  transform: scale(0.99);
+}
+
+.seedHint {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+  text-align: center;
+}
+
 .progressLabel {
   text-align: center;
   font-size: 11px;

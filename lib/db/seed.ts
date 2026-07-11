@@ -100,7 +100,10 @@ export function buildDemoState(): AppState {
     seededAt: now(),
     user: buildSeedUser(),
     masterCv: buildSeedMasterCv(),
-    cvHistory: structuredClone(CV_HISTORY),
+    cvHistory: structuredClone(CV_HISTORY).map((h) => ({
+      ...h,
+      current: Boolean(h.current),
+    })),
     interviews: buildSeedInterviews(),
     tailoredCvs: Object.fromEntries(
       INTERVIEWS.filter((iv) => iv.tailoredCv?.exists).map((iv) => [

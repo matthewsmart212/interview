@@ -50,7 +50,7 @@ export default function WelcomePage() {
             <Link href="/onboarding" className="btn btn-primary">
               Get Started
             </Link>
-            <Link href="/home" className={styles.signin}>
+            <Link href="/login" className={styles.signin}>
               I already have an account
             </Link>
           </div>

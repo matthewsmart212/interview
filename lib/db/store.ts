@@ -39,13 +39,12 @@ function isBrowser() {
   return typeof window !== "undefined";
 }
 
-/** Load state: memory → localStorage → demo seed. */
+/** Load state: memory → localStorage → empty fresh user (not demo). */
 export function getState(): AppState {
   if (memory) return memory;
 
   if (!isBrowser()) {
-    // SSR / build: return demo snapshot (not persisted)
-    return buildDemoState();
+    return buildEmptyState();
   }
 
   const stored = getJSON<AppState>(APP_STATE_KEY);
@@ -55,7 +54,7 @@ export function getState(): AppState {
     return memory;
   }
 
-  memory = buildDemoState();
+  memory = buildEmptyState();
   setJSON(APP_STATE_KEY, memory);
   hydrated = true;
   return memory;

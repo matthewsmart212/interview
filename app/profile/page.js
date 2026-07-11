@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import PageHeader from "../../components/PageHeader";
 import { AppShell, PageSection } from "../../components/ui";
 import Avatar from "../../components/Avatar";
@@ -25,6 +26,12 @@ import {
   resetToEmpty,
 } from "../../lib/db";
 import { useAppDb } from "../../lib/db/use-app-db";
+import {
+  getSessionUser,
+  pushLocalToSupabase,
+  pullSupabaseToLocal,
+  signOut,
+} from "../../lib/supabase/sync";
 import s from "./profile.module.css";
 
 const ACCOUNT = [
@@ -59,11 +66,20 @@ function Menu({ items }) {
 }
 
 export default function ProfilePage() {
+  const router = useRouter();
   const { user, USER } = useAppDb();
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
+  const [authEmail, setAuthEmail] = useState("");
+  const [syncMsg, setSyncMsg] = useState("");
 
   const displayName = user?.name || USER.name || "Alex";
+
+  useEffect(() => {
+    getSessionUser().then((u) => {
+      if (u?.email) setAuthEmail(u.email);
+    });
+  }, []);
 
   const startEdit = () => {
     setNameDraft(displayName);
@@ -74,6 +90,22 @@ export default function ProfilePage() {
     const next = nameDraft.trim();
     if (next) updateUser({ name: next });
     setEditing(false);
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/login");
+  };
+
+  const handleSync = async () => {
+    setSyncMsg("Syncing…");
+    const pull = await pullSupabaseToLocal();
+    if (!pull.ok && pull.error !== "Not signed in") {
+      setSyncMsg(pull.error || "Pull failed");
+      return;
+    }
+    const push = await pushLocalToSupabase();
+    setSyncMsg(push.ok ? "Synced with cloud." : push.error || "Sync failed");
   };
 
   return (
@@ -103,10 +135,11 @@ export default function ProfilePage() {
             <div className={s.name}>{displayName}</div>
           )}
           <div className={s.email}>
-            {displayName.toLowerCase().replace(/\s+/g, ".")}@email.com
+            {authEmail ||
+              `${displayName.toLowerCase().replace(/\s+/g, ".")}@email.com`}
           </div>
           <span className={`badge badge-brand ${s.role}`}>
-            Customer Service Advisor
+            {authEmail ? "Signed in" : "Local only"}
           </span>
         </div>
         {editing ? (
@@ -145,6 +178,23 @@ export default function ProfilePage() {
 
       <PageSection title="Data">
         <div className={`card ${s.menu}`}>
+          {authEmail ? (
+            <button type="button" className={s.item} onClick={handleSync}>
+              <span className={s.mi}>
+                <Sparkle size={19} />
+              </span>
+              <span className={s.lbl}>Sync with cloud</span>
+              <ChevronRight size={19} className={s.chev} />
+            </button>
+          ) : (
+            <Link className={s.item} href="/login">
+              <span className={s.mi}>
+                <Sparkle size={19} />
+              </span>
+              <span className={s.lbl}>Sign in to sync</span>
+              <ChevronRight size={19} className={s.chev} />
+            </Link>
+          )}
           <button
             type="button"
             className={s.item}
@@ -168,9 +218,14 @@ export default function ProfilePage() {
             <ChevronRight size={19} className={s.chev} />
           </button>
         </div>
+        {syncMsg ? (
+          <p className="page-sub" style={{ marginTop: 8, textAlign: "center" }}>
+            {syncMsg}
+          </p>
+        ) : null}
       </PageSection>
 
-      <button type="button" className={s.logout}>
+      <button type="button" className={s.logout} onClick={handleLogout}>
         <LogOut size={18} /> Log out
       </button>
     </AppShell>

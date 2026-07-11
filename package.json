@@ -20,13 +20,19 @@
   },
   "homepage": "https://github.com/matthewsmart212/interview#readme",
   "dependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.110.2",
     "framer-motion": "^12.42.2",
+    "mammoth": "^1.12.0",
     "next": "^16.2.9",
+    "openai": "^6.46.0",
+    "pdf-parse": "^2.4.5",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19.2.17",
     "typescript": "^6.0.3"
   }

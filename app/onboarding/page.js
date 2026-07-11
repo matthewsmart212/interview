@@ -250,7 +250,7 @@ export default function OnboardingPage() {
             <div className={s.heroCopy}>
               <span className={s.heroEyebrow}>
                 <span className={s.heroDot} aria-hidden />
-                Account created
+                Fresh start
               </span>
               <h1 className="page-h1">Hi there! I&apos;m your coach.</h1>
               <p className="page-sub">
@@ -283,6 +283,17 @@ export default function OnboardingPage() {
           >
             Nice to meet you{profile.name.trim() ? `, ${firstName}` : ""}
           </PrimaryButton>
+
+          <button
+            type="button"
+            className={s.seedDev}
+            onClick={handleSkipAll}
+          >
+            Seed demo data &amp; skip to dashboard
+          </button>
+          <p className={s.seedHint}>
+            Dev only — loads sample CV, interviews and mocks so you can browse the full app.
+          </p>
         </div>
       )}
 
@@ -1032,7 +1043,7 @@ export default function OnboardingPage() {
           </div>
         </div>
       )}
-      {currentStep !== "done" && (
+      {currentStep !== "done" && currentStep !== "welcome" && (
         <button
           type="button"
           className={s.devSkip}

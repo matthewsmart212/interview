@@ -1,4 +1,5 @@
 import { promoteOnboarding } from "./db/services/promote-onboarding";
+import { resetToDemo } from "./db/store";
 
 /**
  * Front-end onboarding profile — persisted in localStorage until a backend exists.
@@ -128,30 +129,40 @@ export function completeOnboarding(profile: OnboardingProfile): OnboardingProfil
   return next;
 }
 
-/** Dev shortcut — mark onboarding done with sensible defaults and enter the app. */
+/**
+ * Dev shortcut — seed demo data and skip straight to the dashboard.
+ * Fresh installs start empty; Matthew uses this on the welcome step.
+ */
 export function skipOnboardingForDev(): OnboardingProfile {
+  const demo = resetToDemo();
   const profile: OnboardingProfile = {
     ...defaultProfile(),
-    name: "Alex",
-    goal: "both",
+    name: demo.user.name || "Alex",
+    goal: demo.user.goal || "both",
     completedAt: Date.now(),
-    cv: { source: "skip" },
+    cv: {
+      source: demo.masterCv.exists ? "upload" : "skip",
+      fileName: demo.masterCv.fileName || undefined,
+    },
     interview: {
-      role: "Customer Service Advisor",
-      company: "Tesco",
-      type: "In-person",
-      date: "24 May 2026",
-      hasJd: false,
-      jd: "",
+      role: demo.interviews[0]?.role || "Customer Service Advisor",
+      company: demo.interviews[0]?.company || "Tesco",
+      type: (demo.interviews[0]?.type as InterviewType) || "In-person",
+      date: demo.interviews[0]?.date || "24 May 2026",
+      hasJd: Boolean(demo.interviews[0]?.hasJD),
+      jd: demo.interviews[0]?.jd || "",
     },
     apply: {
       targetRole: "Customer service roles",
       hasJd: false,
       jd: "",
     },
+    preferences: {
+      interviewFormat: demo.user.preferences.interviewFormat,
+      voicePractice: demo.user.preferences.voicePractice,
+    },
   };
   saveProfile(profile);
-  promoteOnboarding(profile, { fresh: false });
   return profile;
 }
 
