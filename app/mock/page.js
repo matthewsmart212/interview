@@ -725,7 +725,7 @@ export default function MockHubPage() {
   function renderHome() {
     return (
       <div className="anim-fade-up">
-        <CoachBubble pose="welcoming" title={`Ready for another interview, ${USER.name}?`}>
+        <CoachBubble pose="welcoming" title={`Ready for an interview, ${USER.name}?`}>
           <p>
             I&apos;ll ask realistic questions and give you clear feedback after
             every session — just like a real interviewer.
@@ -740,7 +740,7 @@ export default function MockHubPage() {
           <BigChoice
             icon={Mic}
             title="Generic practice"
-            sub="Great for any interview — start in seconds."
+            sub="Great for any interview."
             meta={`⏱ ${DURATION_LABEL}`}
             onClick={selectGeneric}
             primary
@@ -757,7 +757,7 @@ export default function MockHubPage() {
           <BigChoice
             icon={FileText}
             title="Job description"
-            sub="Paste a posting and get role-specific questions."
+            sub="Paste a job description for tailored questions."
             meta={`⏱ ${DURATION_LABEL}`}
             onClick={openJd}
             accent="file"
