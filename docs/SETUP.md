@@ -14,8 +14,11 @@ Keys live in `.env.local` (gitignored). Copy from `.env.example`.
 ### Site URL
 Supabase → **Authentication → URL Configuration**
 
-- Site URL: `http://localhost:3000` (prod: your domain)
-- Redirect URLs: `http://localhost:3000/auth/callback`
+- Site URL: your stable Vercel production URL (or `http://localhost:3000` for now)
+- Redirect URLs (add all):
+  - `http://localhost:3000/**`
+  - `http://localhost:3000/auth/callback`
+  - `https://*-matthew-smarts-projects-821a4e01.vercel.app/**`
 
 ### Email magic link
 Supabase → **Authentication → Providers → Email**
