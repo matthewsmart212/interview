@@ -43,3 +43,4 @@ export {
 
 export { promoteOnboarding } from "./services/promote-onboarding";
 export { completeMockFromLiveResult } from "./services/complete-mock";
+export { resetToFreshOnboarding } from "./services/reset-fresh";

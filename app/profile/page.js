@@ -23,7 +23,7 @@ import {
 import {
   updateUser,
   resetToDemo,
-  resetToEmpty,
+  resetToFreshOnboarding,
 } from "../../lib/db";
 import { useAppDb } from "../../lib/db/use-app-db";
 import {
@@ -95,6 +95,11 @@ export default function ProfilePage() {
   const handleLogout = async () => {
     await signOut();
     router.push("/login");
+  };
+
+  const handleRestartFresh = () => {
+    resetToFreshOnboarding();
+    router.replace("/");
   };
 
   const handleSync = async () => {
@@ -209,12 +214,12 @@ export default function ProfilePage() {
           <button
             type="button"
             className={s.item}
-            onClick={() => resetToEmpty()}
+            onClick={handleRestartFresh}
           >
             <span className={s.mi}>
               <Shield size={19} />
             </span>
-            <span className={s.lbl}>Clear all data</span>
+            <span className={s.lbl}>Clear &amp; restart onboarding</span>
             <ChevronRight size={19} className={s.chev} />
           </button>
         </div>
