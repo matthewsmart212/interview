@@ -20,7 +20,8 @@ import {
   Sparkle,
   Play,
 } from "../../components/Icons";
-import { INTERVIEWS, MASTER_CV, CV_HISTORY, USER } from "../../lib/app-data";
+import { useAppDb } from "../../lib/db/use-app-db";
+import { uploadMasterCv } from "../../lib/db";
 import {
   saveMockSetup,
   buildInterviewHref,
@@ -449,6 +450,7 @@ export default function MockHubPage() {
   const router = useRouter();
   const fileRef = useRef(null);
   const cvUploadRef = useRef(null);
+  const { INTERVIEWS, MASTER_CV, CV_HISTORY, USER } = useAppDb();
 
   // home | interview | jd | ready | checking
   const [screen, setScreen] = useState("home");
@@ -470,13 +472,14 @@ export default function MockHubPage() {
       INTERVIEWS.filter((i) => i.status === "upcoming").sort(
         (a, b) => a.daysAway - b.daysAway
       ),
-    []
+    [INTERVIEWS]
   );
 
   const cvOptions = useMemo(() => {
     const recent = CV_HISTORY[0];
-    return [
-      {
+    const options = [];
+    if (MASTER_CV?.exists) {
+      options.push({
         id: "master",
         type: "master",
         label: MASTER_CV.fileName,
@@ -485,7 +488,9 @@ export default function MockHubPage() {
         meta: `Master CV · score ${MASTER_CV.score}`,
         badge: "Default",
         badgeCls: "ready",
-      },
+      });
+    }
+    options.push(
       ...CV_HISTORY.filter((c) => !c.current).map((c) => ({
         id: c.id,
         type: "upload",
@@ -496,7 +501,7 @@ export default function MockHubPage() {
         badge: recent?.id === c.id ? "Most recent" : null,
         badgeCls: "upcoming",
       })),
-      ...INTERVIEWS.filter((iv) => iv.tailoredCv.exists).map((iv) => ({
+      ...INTERVIEWS.filter((iv) => iv.tailoredCv?.exists).map((iv) => ({
         id: `tailored-${iv.id}`,
         type: "tailored",
         label: `${iv.company} — tailored`,
@@ -515,9 +520,10 @@ export default function MockHubPage() {
         meta: "Generic feedback only",
         badge: null,
         badgeCls: "",
-      },
-    ];
-  }, []);
+      }
+    );
+    return options;
+  }, [INTERVIEWS, MASTER_CV, CV_HISTORY]);
 
   const selectedInterview = upcoming.find((i) => i.id === selectedInterviewId);
   const selectedCv = cvOptions.find((c) => c.id === selectedCvId) ?? cvOptions[0];
@@ -551,7 +557,10 @@ export default function MockHubPage() {
     return ["Behavioural", "Communication", "Customer service", "Confidence"];
   }, [contextMode, selectedInterview]);
 
-  const cvLabel = selectedCvId === "none" ? "No CV" : selectedCv?.label ?? MASTER_CV.fileName;
+  const cvLabel =
+    selectedCvId === "none"
+      ? "No CV"
+      : selectedCv?.label ?? MASTER_CV?.fileName ?? "CV";
 
   const reviewComplete = reviewDone >= PREP_CHECKLIST.length;
 
@@ -965,6 +974,13 @@ export default function MockHubPage() {
           type="file"
           accept=".pdf,.doc,.docx"
           className={s.fileInput}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            uploadMasterCv({ fileName: file.name });
+            setSelectedCvId("master");
+            e.target.value = "";
+          }}
         />
         <CvBottomSheet
           open={cvSheetOpen}

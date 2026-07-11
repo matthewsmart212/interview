@@ -55,8 +55,15 @@ export default function CvUploadPage() {
               className={s.dropzone}
               style={{ marginTop: 24 }}
               onClick={() => {
-                setFileName("My-CV.pdf");
-                setStage("parsing");
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = ".pdf,.doc,.docx,.txt";
+                input.onchange = () => {
+                  const file = input.files?.[0];
+                  setFileName(file?.name || "My-CV.pdf");
+                  setStage("parsing");
+                };
+                input.click();
               }}
             >
               <span className={s.dropIcon}>
