@@ -83,6 +83,8 @@ export default function ProfilePage() {
           ? "Your CV is ready. Replace it anytime — I'll use it in every mock."
           : "Upload your CV so I can personalise questions and feedback."
       }
+      heroVariant="medium"
+      messageVariant="compact"
     >
       <div className={s.hero}>
         <div className={s.heroText}>

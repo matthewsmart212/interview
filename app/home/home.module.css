@@ -8,25 +8,26 @@
   align-items: center;
   gap: 12px;
   padding: 14px;
-  border-radius: 16px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.nextIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.nextCard:hover,
+.nextCard:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+  outline: none;
 }
 
-.nextBody {
+.nextCard:active {
+  transform: scale(0.99);
+}
+
+.nextMain {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -36,24 +37,42 @@
 
 .nextLabel {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 650;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
 }
 
-.nextTitle {
-  font-size: 14.5px;
-  font-weight: 600;
+.nextRole {
+  font-size: 15.5px;
+  font-weight: 650;
   color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.015em;
+}
+
+.nextCompany {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .nextMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.5);
+}
+
+.dot {
+  opacity: 0.55;
 }
 
 .nextChev {
@@ -67,104 +86,68 @@
   gap: 10px;
 }
 
-.primaryCta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.28);
-}
-
-.primaryIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.16);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.primaryText {
-  flex: 1;
-  min-width: 0;
+.secondaryCta {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-}
-
-.primaryTitle {
-  font-size: 15.5px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 13px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  background: rgba(124, 92, 255, 0.12);
+  color: #fff;
+  font-size: 14.5px;
   font-weight: 650;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.primarySub {
-  font-size: 12.5px;
-  opacity: 0.82;
+.secondaryCta:active {
+  transform: scale(0.99);
 }
 
-.secondaryCta {
+.secondaryHint {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.tertiaryCta {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: transparent;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
   font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.tertiaryCta:hover,
+.tertiaryCta:focus-visible {
+  border-color: rgba(255, 255, 255, 0.22);
+  outline: none;
+}
+
+.tertiaryCta:active {
+  transform: scale(0.99);
 }
 
 .recent {
-  margin-top: 22px;
+  margin-top: 20px;
 }
 
-.recentRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 2px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.recentScore {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-}
-
-.recentBody {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.recentTitle {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.recentSub {
+.sectionLabel {
+  margin: 0 0 4px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }

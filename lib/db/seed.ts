@@ -72,11 +72,26 @@ export function buildEmptyMasterCv(): MasterCV {
 
 export function buildSeedInterviews(): Interview[] {
   const t = now();
-  return INTERVIEWS.map((iv) => {
+  return INTERVIEWS.map((iv, index) => {
     const { tailoredCv: _removed, ...rest } = structuredClone(iv) as Interview & {
       tailoredCv?: unknown;
     };
-    return { ...rest, createdAt: t, updatedAt: t };
+    // Seed prep flags so readiness reflects real completed actions.
+    const prep =
+      index === 0
+        ? {
+            questionsReviewed: true,
+            starPrepared: true,
+            companyResearched: true,
+            feedbackReviewed: true,
+          }
+        : {
+            questionsReviewed: false,
+            starPrepared: false,
+            companyResearched: false,
+            feedbackReviewed: false,
+          };
+    return { ...rest, prep, createdAt: t, updatedAt: t };
   }) as Interview[];
 }
 

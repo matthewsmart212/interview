@@ -27,6 +27,7 @@ export {
   getInterview,
   createInterview,
   updateInterview,
+  updateInterviewPrep,
   saveInterviewJd,
   listMockSessions,
   getMockSession,

@@ -236,7 +236,8 @@ body:has(.coach-route) .app-shell {
 }
 
 .coach-route.has-nav {
-  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  /* Keep sheet content clear of the fixed bottom nav + centre FAB */
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px);
 }
 .app-header .icon-btn {
   color: #fff;
@@ -908,11 +909,19 @@ body:has(.coach-route) .app-shell {
 .nav-item.active {
   color: #fff;
 }
+.nav-item:focus-visible {
+  outline: 2px solid rgba(196, 181, 253, 0.55);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+.nav-item.active > svg {
+  color: #fff;
+}
 
 /* center standout mock tab */
 .nav-item-mock {
   position: relative;
-  margin-top: -28px;
+  margin-top: -22px;
   gap: 4px;
 }
 .nav-mock-btn {
@@ -924,13 +933,20 @@ body:has(.coach-route) .app-shell {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px rgba(30, 16, 84, 0.4);
+  box-shadow: 0 8px 18px rgba(30, 16, 84, 0.35);
   border: 3px solid var(--interview-bar-theme);
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   transform: translateY(8px);
+}
+.nav-item-mock.active .nav-mock-btn {
+  box-shadow: 0 10px 22px rgba(91, 58, 214, 0.45);
 }
 .nav-item-mock:active .nav-mock-btn {
   transform: translateY(8px) scale(0.94);
+}
+.nav-item-mock:focus-visible .nav-mock-btn {
+  outline: 2px solid rgba(196, 181, 253, 0.7);
+  outline-offset: 2px;
 }
 .nav-item-mock span:last-child {
   font-weight: 600;

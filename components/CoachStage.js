@@ -1,11 +1,15 @@
 "use client";
 
 import Avatar from "./Avatar";
+import CoachMessage from "./CoachMessage";
 import styles from "./coach-stage.module.css";
 
 /**
- * Full-bleed interview room + coach avatar.
- * Content (options) sits in the sheet underneath — she's always the guide.
+ * Full-bleed interview room + coach avatar + options sheet.
+ *
+ * heroVariant: large | medium | compact | pointing | celebration
+ * messageVariant: default | compact | none
+ * sheetVariant: standard | elevated | fullHeight
  */
 export default function CoachStage({
   pose = "welcoming",
@@ -14,26 +18,47 @@ export default function CoachStage({
   children,
   className = "",
   noHeader = false,
+  heroVariant = "large",
+  messageVariant = "default",
+  sheetVariant = "standard",
 }) {
+  const showMessage =
+    messageVariant !== "none" && Boolean(title || speech);
+
+  const stageClass = [
+    styles.stage,
+    noHeader ? styles.noHeader : "",
+    styles[`hero_${heroVariant}`] || "",
+    showMessage ? "" : styles.noMessage,
+    styles[`sheet_${sheetVariant}`] || "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={`${styles.stage} ${noHeader ? styles.noHeader : ""} ${className}`.trim()}
-    >
+    <div className={stageClass}>
       <div className={styles.bg} aria-hidden />
       <div className={styles.shade} aria-hidden />
 
       <div className={styles.coach}>
-        <Avatar pose={pose} alt="Your interview coach" fill className={styles.avatar} />
+        <Avatar
+          pose={pose}
+          alt="Your interview coach"
+          fill
+          className={styles.avatar}
+        />
       </div>
 
-      {(title || speech) && (
+      {showMessage ? (
         <div className={styles.speechWrap}>
-          <div className={styles.speech}>
-            {title ? <p className={styles.speechTitle}>{title}</p> : null}
-            {speech ? <p className={styles.speechText}>{speech}</p> : null}
-          </div>
+          <CoachMessage
+            title={title}
+            speech={speech}
+            variant={messageVariant === "compact" ? "compact" : "default"}
+          />
         </div>
-      )}
+      ) : null}
 
       <div className={styles.sheet}>
         <div className={styles.sheetInner}>{children}</div>

@@ -355,7 +355,7 @@ function LaunchOverlay({ beat, onDone }) {
 
 export default function MockHubPage() {
   const router = useRouter();
-  const { INTERVIEWS, MASTER_CV, USER } = useAppDb();
+  const { INTERVIEWS, MASTER_CV } = useAppDb();
 
   // home | context | ready | checking
   const [screen, setScreen] = useState("home");
@@ -518,31 +518,67 @@ export default function MockHubPage() {
   }, [screen, contextMode]);
 
   function renderHome() {
+    const nearest = upcoming[0];
+    const preferInterview = Boolean(nearest);
+
     return (
       <div className="anim-fade-up">
         <div className={s.sheetHead}>
-          <h1 className={s.sheetTitle}>How do you want to practice?</h1>
+          <div className={s.sheetHeadCopy}>
+            <h1 className={s.sheetTitle}>How do you want to practise?</h1>
+            <p className={s.sheetSub}>
+              Choose a quick general mock or practise for a saved interview.
+            </p>
+          </div>
           <TimeBadge />
         </div>
 
         <div className={s.choiceStack}>
-          <ChoiceCard
-            icon={Mic}
-            title="Generic practice"
-            sub="Great for any interview."
-            meta={`⏱ ${DURATION_LABEL}`}
-            onClick={selectGeneric}
-            primary
-            accent="mic"
-          />
-          <ChoiceCard
-            icon={Calendar}
-            title="Upcoming interview"
-            sub="Practice for a role you've already saved."
-            meta={`⏱ ${DURATION_LABEL}`}
-            onClick={openInterview}
-            accent="calendar"
-          />
+          {preferInterview ? (
+            <>
+              <ChoiceCard
+                icon={Calendar}
+                title="Upcoming interview"
+                sub={`${nearest.role} at ${nearest.company}`}
+                meta={
+                  nearest.readiness != null
+                    ? `Readiness ${nearest.readiness}% · ${DURATION_LABEL}`
+                    : DURATION_LABEL
+                }
+                onClick={openInterview}
+                primary
+                accent="calendar"
+              />
+              <ChoiceCard
+                icon={Mic}
+                title="Generic practice"
+                sub="Build confidence with common interview questions."
+                meta={DURATION_LABEL}
+                onClick={selectGeneric}
+                accent="mic"
+              />
+            </>
+          ) : (
+            <>
+              <ChoiceCard
+                icon={Mic}
+                title="Generic practice"
+                sub="Build confidence with common interview questions."
+                meta={DURATION_LABEL}
+                onClick={selectGeneric}
+                primary
+                accent="mic"
+              />
+              <ChoiceCard
+                icon={Calendar}
+                title="Upcoming interview"
+                sub="Practise for a role you've already saved."
+                meta={DURATION_LABEL}
+                onClick={openInterview}
+                accent="calendar"
+              />
+            </>
+          )}
         </div>
 
         {!hasCv ? <CvNudge /> : null}
@@ -677,24 +713,31 @@ export default function MockHubPage() {
   const coachByScreen = {
     home: {
       pose: "welcoming",
-      title: `Ready for an interview, ${USER.name}?`,
-      speech:
-        "I'll ask realistic questions and give you clear feedback — just like a real interviewer.",
+      title: undefined,
+      speech: undefined,
+      heroVariant: "large",
+      messageVariant: "none",
     },
     context: {
       pose: "presenting",
-      title: "Which interview should we prep for?",
+      title: "Which interview?",
       speech: "Pick one and I'll shape the questions around that role.",
+      heroVariant: "medium",
+      messageVariant: "compact",
     },
     ready: {
       pose: "thumbsup",
       title: "Great choice.",
       speech: "I'm ready when you are. Let's begin when you tap below.",
+      heroVariant: "medium",
+      messageVariant: "compact",
     },
     checking: {
       pose: "thinking",
       title: "Give me a moment…",
       speech: "I'm reviewing your CV and calibrating the session.",
+      heroVariant: "medium",
+      messageVariant: "compact",
     },
   };
   const coach = coachByScreen[screen] || coachByScreen.home;
@@ -706,6 +749,9 @@ export default function MockHubPage() {
       coachPose={coach.pose}
       coachTitle={coach.title}
       coachSpeech={coach.speech}
+      heroVariant={coach.heroVariant}
+      messageVariant={coach.messageVariant}
+      sheetVariant={screen === "home" ? "elevated" : "standard"}
     >
       {phase === "wizard" ? (
         <>

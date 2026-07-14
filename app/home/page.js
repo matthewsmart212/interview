@@ -2,11 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AppShell } from "../../components/ui";
+import {
+  AppShell,
+  PrimaryActionCard,
+  NavigationRow,
+  ReadinessRing,
+} from "../../components/ui";
 import { Mic, Plus, ChevronRight, Calendar } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import { getSessionUser, pullSupabaseToLocal } from "../../lib/supabase/sync";
 import { getFirstName, loadProfile } from "../../lib/onboarding-store";
+import {
+  calculateInterviewReadiness,
+  buildPrepRoadmap,
+} from "../../lib/readiness";
 import styles from "./home.module.css";
 
 export default function HomePage() {
@@ -38,10 +47,25 @@ export default function HomePage() {
     (a, b) => a.daysAway - b.daysAway
   )[0];
   const lastMock = MOCK_HISTORY[0];
+  const readiness = next ? calculateInterviewReadiness(next) : 0;
+  const openPrepTasks = next
+    ? buildPrepRoadmap(next, { mocks: MOCK_HISTORY.filter((m) => m.interviewId === next.id) }).filter(
+        (t) => !t.done
+      ).length
+    : 0;
 
   const speech = next
-    ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Pick a mock and we'll practise together.`
+    ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Let's get you ready.`
     : "Add an interview, then run a mock. I'll guide you the whole way.";
+
+  const countdown =
+    next == null
+      ? ""
+      : next.daysAway === 0
+        ? "Today"
+        : next.daysAway === 1
+          ? "Tomorrow"
+          : `in ${next.daysAway} days`;
 
   return (
     <AppShell
@@ -50,61 +74,63 @@ export default function HomePage() {
       coachPose="waving"
       coachTitle={`Hi ${firstName}`}
       coachSpeech={speech}
+      heroVariant="large"
+      messageVariant="default"
+      sheetVariant="standard"
     >
       {next ? (
         <Link href={`/interviews/${next.id}`} className={styles.nextCard}>
-          <span className={styles.nextIcon}>
-            <Calendar size={18} />
-          </span>
-          <span className={styles.nextBody}>
+          <span className={styles.nextMain}>
             <span className={styles.nextLabel}>Next interview</span>
-            <span className={styles.nextTitle}>
-              {next.role} · {next.company}
-            </span>
+            <span className={styles.nextRole}>{next.role}</span>
+            <span className={styles.nextCompany}>{next.company}</span>
             <span className={styles.nextMeta}>
+              <Calendar size={12} aria-hidden />
               {next.date}
-              {next.hasJD ? " · JD ready" : " · Add a job description"}
+              <span className={styles.dot}>·</span>
+              {countdown}
             </span>
           </span>
-          <ChevronRight size={18} className={styles.nextChev} />
+          <ReadinessRing value={readiness} size={52} stroke={6} showLabel label="Ready" />
+          <ChevronRight size={18} className={styles.nextChev} aria-hidden />
         </Link>
       ) : null}
 
       <div className={styles.primaryStack}>
-        <Link href="/mock" className={styles.primaryCta}>
-          <span className={styles.primaryIcon}>
-            <Mic size={22} />
-          </span>
-          <span className={styles.primaryText}>
-            <span className={styles.primaryTitle}>Start a mock interview</span>
-            <span className={styles.primarySub}>
-              {next
-                ? `Practise for ${next.company}`
-                : "Generic practice or pick an interview"}
-            </span>
-          </span>
-          <ChevronRight size={18} />
-        </Link>
+        <PrimaryActionCard
+          href="/mock"
+          icon={Mic}
+          title="Start a mock interview"
+          sub={
+            next
+              ? `Practise for ${next.company}`
+              : "Generic practice or pick an interview"
+          }
+        />
 
-        <Link href="/interviews/new" className={styles.secondaryCta}>
-          <Plus size={18} />
+        {next && openPrepTasks > 0 ? (
+          <Link href={`/interviews/${next.id}`} className={styles.secondaryCta}>
+            Continue preparation
+            <span className={styles.secondaryHint}>
+              {openPrepTasks} step{openPrepTasks === 1 ? "" : "s"} left
+            </span>
+          </Link>
+        ) : null}
+
+        <Link href="/interviews/new" className={styles.tertiaryCta}>
+          <Plus size={16} />
           <span>Add an interview</span>
         </Link>
       </div>
 
       {lastMock ? (
         <div className={styles.recent}>
-          <p className="section-title">Last practice</p>
-          <Link href={`/history/${lastMock.id}`} className={styles.recentRow}>
-            <span className={styles.recentScore}>{lastMock.score}</span>
-            <span className={styles.recentBody}>
-              <span className={styles.recentTitle}>
-                {lastMock.role} · {lastMock.company}
-              </span>
-              <span className={styles.recentSub}>{lastMock.date}</span>
-            </span>
-            <ChevronRight size={16} className={styles.nextChev} />
-          </Link>
+          <p className={styles.sectionLabel}>Last practice</p>
+          <NavigationRow
+            href={`/history/${lastMock.id}`}
+            title={`${lastMock.role} · ${lastMock.company}`}
+            sub={`${lastMock.date} · Score ${lastMock.score}`}
+          />
         </div>
       ) : null}
     </AppShell>

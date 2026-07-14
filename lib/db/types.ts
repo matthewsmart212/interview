@@ -57,6 +57,14 @@ export interface MasterCV {
   };
 }
 
+/** Manual prep steps the user can mark complete. */
+export interface InterviewPrep {
+  questionsReviewed: boolean;
+  starPrepared: boolean;
+  companyResearched: boolean;
+  feedbackReviewed: boolean;
+}
+
 export interface Interview {
   id: string;
   role: string;
@@ -69,10 +77,12 @@ export interface Interview {
   daysAway: number;
   status: "upcoming" | "past";
   outcome?: string;
+  /** Derived from prep actions — see lib/readiness.js */
   readiness: number;
   hasJD: boolean;
   jd: string | null;
   jdHighlights: string[];
+  prep?: InterviewPrep;
   mockIds: string[];
   createdAt: number;
   updatedAt: number;

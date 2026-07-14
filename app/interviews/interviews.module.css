@@ -58,6 +58,60 @@
   flex-shrink: 0;
 }
 
+.detailTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.detailCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.detailCompany {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.detailRole {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.practiseLabel {
+  margin: 22px 0 10px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.navBlock {
+  margin-top: 8px;
+}
+
+.mockBlock {
+  margin-top: 20px;
+}
+
+.mockList {
+  margin-top: 8px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
 .block {
   margin-top: 8px;
 }
@@ -372,10 +426,16 @@
   display: flex;
   align-items: center;
   gap: 13px;
-  padding: 12px 2px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+.mockRow:active {
+  background: rgba(255, 255, 255, 0.04);
 }
 .mockRow + .mockRow {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .mockScore {
   flex-shrink: 0;

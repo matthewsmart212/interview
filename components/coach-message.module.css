@@ -1,0 +1,60 @@
+.wrap {
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+.card {
+  max-width: 340px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: rgba(255, 248, 242, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 10px 28px rgba(8, 4, 24, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #1b1b23;
+  pointer-events: auto;
+}
+
+.compact .card {
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 20px;
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: #1b1b23;
+}
+
+.compact .title {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: rgba(27, 27, 35, 0.78);
+  font-weight: 500;
+}
+
+.compact .text {
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.compact .title:only-child,
+.compact .text:only-child {
+  margin: 0;
+}

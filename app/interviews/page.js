@@ -19,9 +19,12 @@ export default function InterviewsPage() {
   const past = INTERVIEWS.filter((i) => i.status === "past");
 
   const next = upcoming[0];
-  const speech = next
-    ? `You've got ${upcoming.length} upcoming. Let's get you ready for ${next.company}.`
-    : "Add the interview you're preparing for — I'll build practice around it.";
+  const speech =
+    upcoming.length === 0
+      ? "Add the interview you're preparing for — I'll build practice around it."
+      : upcoming.length === 1
+        ? "You've got one upcoming interview."
+        : `You've got ${upcoming.length} upcoming interviews.`;
 
   return (
     <AppShell
@@ -29,6 +32,9 @@ export default function InterviewsPage() {
       coachPose="presenting"
       coachTitle="Your interviews"
       coachSpeech={speech}
+      heroVariant="medium"
+      messageVariant="compact"
+      sheetVariant="elevated"
     >
       <div className={s.sheetHead}>
         <p className={s.sheetTitle}>Interviews</p>
@@ -51,8 +57,12 @@ export default function InterviewsPage() {
             <div className={s.block}>
               <p className="section-title">Upcoming</p>
               <div className={`stack ${s.interviewStack}`}>
-                {upcoming.map((iv) => (
-                  <InterviewCard interview={iv} key={iv.id} />
+                {upcoming.map((iv, i) => (
+                  <InterviewCard
+                    interview={iv}
+                    key={iv.id}
+                    featured={i === 0}
+                  />
                 ))}
               </div>
             </div>

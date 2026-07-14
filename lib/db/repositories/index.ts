@@ -1,6 +1,7 @@
 import type {
   AppState,
   Interview,
+  InterviewPrep,
   MasterCV,
   MockSession,
   UserProfile,
@@ -19,6 +20,10 @@ import {
 import type { InterviewType } from "../../onboarding-store";
 import type { InterviewAnswer, InterviewFeedbackResult } from "../../types";
 import type { MockSetupConfig } from "../../mock-setup";
+import {
+  calculateInterviewReadiness,
+  normalizePrep,
+} from "../../readiness";
 
 /* ---------------- user ---------------- */
 
@@ -116,8 +121,19 @@ export function getInterview(id: string): Interview | null {
 
 function refreshInterviewDerived(iv: Interview): Interview {
   const daysAway = daysAwayFrom(iv.date);
-  const status = daysAway < 0 ? "past" : "upcoming";
-  return { ...iv, daysAway, status: iv.status === "past" ? "past" : status };
+  const derivedStatus: Interview["status"] =
+    iv.status === "past" || daysAway < 0 ? "past" : "upcoming";
+  const prep = normalizePrep(iv.prep);
+  const withPrep: Interview = {
+    ...iv,
+    prep,
+    daysAway,
+    status: derivedStatus,
+  };
+  return {
+    ...withPrep,
+    readiness: calculateInterviewReadiness(withPrep),
+  };
 }
 
 export function createInterview(input: {
@@ -143,10 +159,11 @@ export function createInterview(input: {
     dateChip: dateChipFrom(date),
     daysAway: daysAwayFrom(date),
     status: "upcoming",
-    readiness: hasJD ? 28 : 12,
+    readiness: 0,
     hasJD,
     jd: hasJD ? input.jd!.trim() : null,
     jdHighlights: hasJD ? extractJdHighlights(input.jd!) : [],
+    prep: normalizePrep(null),
     mockIds: [],
     createdAt: t,
     updatedAt: t,
@@ -185,7 +202,18 @@ export function saveInterviewJd(id: string, jd: string): Interview | null {
     hasJD: Boolean(trimmed),
     jd: trimmed || null,
     jdHighlights: trimmed ? extractJdHighlights(trimmed) : [],
-    readiness: Math.max(getInterview(id)?.readiness ?? 0, trimmed ? 40 : 12),
+  });
+}
+
+/** Mark or toggle a prep checklist flag. Readiness is recalculated on read. */
+export function updateInterviewPrep(
+  id: string,
+  patch: Partial<InterviewPrep>
+): Interview | null {
+  const iv = getInterview(id);
+  if (!iv) return null;
+  return updateInterview(id, {
+    prep: { ...normalizePrep(iv.prep), ...patch },
   });
 }
 
@@ -255,8 +283,7 @@ export function recordMockSession(input: {
     interviews: s.interviews.map((iv) => {
       if (!interviewId || iv.id !== interviewId) return iv;
       const mockIds = [session.id, ...iv.mockIds.filter((mid) => mid !== session.id)];
-      const readiness = Math.min(98, Math.max(iv.readiness, session.score - 5));
-      return { ...iv, mockIds, readiness, updatedAt: Date.now() };
+      return { ...iv, mockIds, updatedAt: Date.now() };
     }),
     user: {
       ...s.user,

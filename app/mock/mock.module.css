@@ -4,18 +4,32 @@
 
 .sheetHead {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.sheetHeadCopy {
+  flex: 1;
+  min-width: 0;
 }
 
 .sheetTitle {
   margin: 0;
-  font-size: 17px;
-  font-weight: 650;
+  font-size: 18px;
+  font-weight: 700;
   color: #fff;
   letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.sheetSub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+  max-width: 280px;
 }
 
 .sheetBack {
@@ -225,11 +239,11 @@
 }
 
 .bigChoicePrimary {
-  padding: 22px 18px;
-  margin-bottom: 14px;
-  background: var(--gradient-primary);
-  border-color: rgba(196, 181, 253, 0.42);
-  box-shadow: var(--glow-purple-sm), 0 0 24px rgba(124, 92, 255, 0.22);
+  padding: 18px 16px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
+  border-color: rgba(196, 181, 253, 0.35);
+  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.28);
 }
 
 .bigChoicePrimary .bigChoiceTitle {
