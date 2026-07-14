@@ -1,51 +1,34 @@
 .wrap {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  padding-top: 4px;
 }
 
-.strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.item {
+.card {
+  padding: 20px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
-  padding: 14px 8px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  min-width: 0;
 }
 
-.num {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #fff;
-  line-height: 1.2;
-}
-
-.lab {
-  display: block;
-  margin-top: 6px;
-  font-size: 10.5px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
-  line-height: 1.25;
-}
-
-.explain {
+.title {
   margin: 0;
-  text-align: center;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.body {
+  margin: 10px auto 0;
+  max-width: 280px;
   font-size: 13.5px;
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.6);
-  padding: 0 6px;
 }
 
 .cta {
-  margin-top: 4px;
+  margin-top: 18px;
 }

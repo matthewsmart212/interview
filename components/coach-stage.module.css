@@ -105,6 +105,26 @@
   --sheet-max: min(62vh, 560px);
 }
 
+/* Progress: show more of the thumbs-up pose; sheet sits lower */
+.hero_progress {
+  --pad-x: 20px;
+  --coach-top: calc(42px + env(safe-area-inset-top));
+  --coach-w: min(60vw, 230px);
+  --coach-h: min(34vh, 268px);
+  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
+  --sheet-max: min(56vh, 500px);
+}
+
+.hero_progress .speechWrap {
+  left: 22px;
+  right: 22px;
+}
+
+.hero_progress .sheetInner {
+  padding-top: 14px;
+  padding-bottom: 20px;
+}
+
 .hero_compact {
   --coach-w: min(48vw, 180px);
   --coach-h: min(22vh, 170px);
@@ -324,6 +344,12 @@
     --coach-h: min(24vh, 180px);
     --speech-top: calc(var(--coach-top) + min(18vh, 145px));
     --sheet-max: min(64vh, 520px);
+  }
+
+  .hero_progress {
+    --coach-h: min(28vh, 210px);
+    --speech-top: calc(var(--coach-top) + min(21vh, 165px));
+    --sheet-max: min(60vh, 520px);
   }
 
   .noMessage {

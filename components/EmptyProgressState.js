@@ -3,34 +3,22 @@ import { Mic } from "./Icons";
 import styles from "./empty-progress.module.css";
 
 /**
- * Motivating empty state for Progress when no mocks exist yet.
+ * Focused empty state for Progress when no mocks exist yet.
+ * No fake scores or fabricated metrics.
  */
-export default function EmptyProgressState({ streak = 0 }) {
+export default function EmptyProgressState() {
   return (
     <div className={styles.wrap}>
-      <div className={styles.strip}>
-        <div className={styles.item}>
-          <span className={styles.num}>Not started</span>
-          <span className={styles.lab}>Interview readiness</span>
-        </div>
-        <div className={styles.item}>
-          <span className={styles.num}>0</span>
-          <span className={styles.lab}>Mocks completed</span>
-        </div>
-        <div className={styles.item}>
-          <span className={styles.num}>{streak}</span>
-          <span className={styles.lab}>Day streak</span>
-        </div>
+      <div className={styles.card}>
+        <p className={styles.title}>Your progress starts with one mock</p>
+        <p className={styles.body}>
+          Complete a practice interview to unlock scores, strengths and
+          personalised feedback.
+        </p>
+        <Link href="/mock" className={`btn btn-primary ${styles.cta}`}>
+          <Mic size={17} /> Start your first mock
+        </Link>
       </div>
-
-      <p className={styles.explain}>
-        Complete your first mock to unlock scores, strengths and personalised
-        improvement areas.
-      </p>
-
-      <Link href="/mock" className={`btn btn-primary ${styles.cta}`}>
-        <Mic size={17} /> Start your first mock
-      </Link>
     </div>
   );
 }
