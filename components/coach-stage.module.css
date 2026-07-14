@@ -1,3 +1,13 @@
+/*
+  Coach stage = static room background (deepest layer) + a single scroll
+  container holding a consistent hero (avatar + speech) and the content panel.
+
+  On scroll the hero drifts up slowly and fades (parallax) while the panel
+  scrolls at full speed, giving the content more room as the user reads on.
+
+  Avatar + hero sizing is intentionally the SAME on every page so the header
+  section stays consistent screen-to-screen.
+*/
 .stage {
   position: relative;
   flex: 1;
@@ -5,13 +15,13 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  --coach-top: calc(48px + env(safe-area-inset-top));
-  --coach-w: min(70vw, 268px);
-  --coach-h: min(38dvh, 300px);
-  --speech-top: calc(var(--coach-top) + min(30dvh, 240px));
-  --sheet-max: min(56dvh, 500px);
+  --pad-x: 20px;
+  --coach-top: calc(40px + env(safe-area-inset-top));
+  --coach-w: min(56vw, 212px);
+  --coach-h: min(30dvh, 224px);
 }
 
+/* Deepest layer: the room — stays put while everything scrolls over it */
 .bg {
   position: absolute;
   inset: 0;
@@ -28,10 +38,10 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(18, 14, 36, 0.12) 0%,
-    rgba(18, 14, 36, 0) 28%,
-    rgba(18, 14, 36, 0.35) 58%,
-    rgba(18, 14, 36, 0.92) 100%
+    rgba(18, 14, 36, 0.14) 0%,
+    rgba(18, 14, 36, 0) 30%,
+    rgba(18, 14, 36, 0.38) 62%,
+    rgba(18, 14, 36, 0.95) 100%
   );
 }
 
@@ -42,17 +52,42 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(18, 14, 36, 0.2) 0%,
-    rgba(18, 14, 36, 0) 22%,
-    rgba(18, 14, 36, 0.15) 45%,
-    rgba(18, 14, 36, 0.88) 78%,
+    rgba(18, 14, 36, 0.22) 0%,
+    rgba(18, 14, 36, 0) 24%,
+    rgba(18, 14, 36, 0.18) 48%,
+    rgba(18, 14, 36, 0.9) 80%,
     rgba(18, 14, 36, 0.98) 100%
   );
 }
 
+/* The single scroll container (only this scrolls) */
+.scroller {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Consistent header: avatar + speech, same height on every page */
+.hero {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(var(--coach-top) + var(--coach-h) + 14px);
+  padding: 0 var(--pad-x);
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+
 .coach {
   position: absolute;
-  z-index: 2;
   left: 50%;
   top: var(--coach-top);
   transform: translateX(-50%);
@@ -70,171 +105,35 @@
   filter: drop-shadow(0 16px 28px rgba(8, 4, 24, 0.45));
 }
 
-/* --- Hero variants --- */
-
-.hero_large {
-  --coach-w: min(72vw, 280px);
-  --coach-h: min(40dvh, 320px);
-  --speech-top: calc(var(--coach-top) + min(32dvh, 255px));
-  --sheet-max: min(52dvh, 480px);
-}
-
-/* Home-only: ~12% shorter hero, speech closer, sheet starts higher */
-.hero_home {
-  --pad-x: 20px;
-  --coach-w: min(66vw, 252px);
-  --coach-h: min(34dvh, 272px);
-  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
-  --sheet-max: min(62dvh, 560px);
-}
-
-.hero_home .sheetInner {
-  padding-top: 16px;
-}
-
-.hero_medium {
-  --coach-w: min(56vw, 210px);
-  --coach-h: min(28dvh, 220px);
-  --speech-top: calc(var(--coach-top) + min(22dvh, 175px));
-  --sheet-max: min(62dvh, 560px);
-}
-
-/* Progress: show more of the thumbs-up pose; sheet sits lower */
-.hero_progress {
-  --pad-x: 20px;
-  --coach-top: calc(42px + env(safe-area-inset-top));
-  --coach-w: min(60vw, 230px);
-  --coach-h: min(34dvh, 268px);
-  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
-  --sheet-max: min(56dvh, 500px);
-}
-
-.hero_progress .sheetInner {
-  padding-top: 14px;
-}
-
-.hero_compact {
-  --coach-w: min(48vw, 180px);
-  --coach-h: min(22dvh, 170px);
-  --speech-top: calc(var(--coach-top) + min(18dvh, 140px));
-  --sheet-max: min(68dvh, 600px);
-}
-
-.hero_pointing {
-  --coach-w: min(58vw, 220px);
-  --coach-h: min(30dvh, 240px);
-  --sheet-max: min(64dvh, 580px);
-}
-
-.hero_pointing .coach {
-  left: 28%;
-  transform: translateX(-50%);
-}
-
-/* Interviews-only: ~20% shorter pointing hero, sheet starts higher */
-.hero_interviews {
-  --pad-x: 20px;
-  --coach-w: min(46vw, 176px);
-  --coach-h: min(24dvh, 192px);
-  --speech-top: calc(var(--coach-top) + min(17dvh, 138px));
-  --sheet-max: min(72dvh, 640px);
-}
-
-.hero_interviews .coach {
-  left: 26%;
-  transform: translateX(-50%);
-  animation-name: coachEnterPointing;
-}
-
-.hero_interviews .sheetInner {
-  padding-top: 14px;
-}
-
-.hero_celebration {
-  --coach-w: min(64vw, 240px);
-  --coach-h: min(32dvh, 260px);
-  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
-  --sheet-max: min(58dvh, 520px);
-}
-
-.noMessage {
-  --sheet-max: min(66dvh, 600px);
-}
-
-.noMessage.hero_large {
-  --sheet-max: min(60dvh, 540px);
-}
-
-/* Mock hub home: show shoulders above the sheet, keep sheet scannable */
-.hero_mock {
-  --pad-x: 20px;
-  --coach-top: calc(40px + env(safe-area-inset-top));
-  --coach-w: min(70vw, 268px);
-  --coach-h: min(44dvh, 330px);
-  --sheet-max: min(54dvh, 470px);
-}
-
-.noMessage.hero_mock {
-  --sheet-max: min(56dvh, 490px);
-}
-
-.hero_mock .sheetInner {
-  padding-top: 14px;
-}
-
-/* Speech + sheet share one flow column pinned to the bottom of the stage,
-   so the sheet can never scroll over / cover the coach greeting. */
-.content {
-  position: relative;
-  z-index: 3;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
 .speechWrap {
   position: relative;
   z-index: 3;
-  flex-shrink: 0;
   display: flex;
   justify-content: center;
-  margin: 0 var(--pad-x) 12px;
+  margin-bottom: 12px;
   pointer-events: none;
   animation: speechEnter 0.45s ease-out 0.12s both;
 }
 
-.sheet {
+/* When there is no coach message, keep a consistent minimum header height */
+.noMessage .hero {
+  min-height: calc(var(--coach-top) + var(--coach-h) + 10px);
+}
+
+/* Frosted content panel — flush to the fixed nav */
+.panel {
   position: relative;
-  z-index: 4;
-  max-height: var(--sheet-max);
+  z-index: 2;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  animation: sheetEnter 0.5s ease-out 0.08s both;
-}
-
-.sheet_fullHeight {
-  --sheet-max: min(72dvh, 640px);
-}
-
-.sheet_elevated .sheetInner {
-  box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.42);
-}
-
-.sheetInner {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  /* Sheet is flush to the nav; keep 20px breathing room above it, inside scroll */
   padding: 18px var(--pad-x) var(--nav-content-gap);
   border-radius: 24px 24px 0 0;
   background: linear-gradient(
     180deg,
-    rgba(30, 24, 52, 0.78) 0%,
-    rgba(19, 15, 34, 0.95) 26%,
+    rgba(30, 24, 52, 0.82) 0%,
+    rgba(19, 15, 34, 0.96) 26%,
     rgba(19, 15, 34, 0.98) 100%
   );
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -242,7 +141,7 @@
   border-top-color: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 -14px 44px rgba(0, 0, 0, 0.4);
 }
 
 /* When used without a top app header (welcome / auth / onboarding) */
@@ -261,21 +160,6 @@
   }
 }
 
-.hero_pointing .coach {
-  animation-name: coachEnterPointing;
-}
-
-@keyframes coachEnterPointing {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
 @keyframes speechEnter {
   from {
     opacity: 0;
@@ -284,61 +168,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes sheetEnter {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-height: 700px) {
-  .hero_large {
-    --coach-h: min(32dvh, 230px);
-    --speech-top: calc(var(--coach-top) + min(24dvh, 185px));
-    --sheet-max: min(58dvh, 480px);
-  }
-
-  .hero_mock {
-    --coach-h: min(36dvh, 260px);
-    --sheet-max: min(58dvh, 500px);
-  }
-
-  .noMessage.hero_mock {
-    --sheet-max: min(60dvh, 520px);
-  }
-
-  .hero_home {
-    --coach-h: min(28dvh, 210px);
-    --speech-top: calc(var(--coach-top) + min(21dvh, 165px));
-    --sheet-max: min(64dvh, 540px);
-  }
-
-  .hero_interviews {
-    --coach-h: min(20dvh, 160px);
-    --speech-top: calc(var(--coach-top) + min(14dvh, 115px));
-    --sheet-max: min(74dvh, 600px);
-  }
-
-  .hero_medium {
-    --coach-h: min(24dvh, 180px);
-    --speech-top: calc(var(--coach-top) + min(18dvh, 145px));
-    --sheet-max: min(64dvh, 520px);
-  }
-
-  .hero_progress {
-    --coach-h: min(28dvh, 210px);
-    --speech-top: calc(var(--coach-top) + min(21dvh, 165px));
-    --sheet-max: min(60dvh, 520px);
-  }
-
-  .noMessage {
-    --sheet-max: min(68dvh, 560px);
   }
 }

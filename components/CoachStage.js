@@ -1,15 +1,20 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Avatar from "./Avatar";
 import CoachMessage from "./CoachMessage";
 import styles from "./coach-stage.module.css";
 
 /**
- * Full-bleed interview room + coach avatar + options sheet.
+ * Full-bleed interview room + coach avatar + content panel.
  *
- * heroVariant: large | medium | compact | pointing | celebration
- * messageVariant: default | compact | none
- * sheetVariant: standard | elevated | fullHeight
+ * The room is a static backdrop; the hero (avatar + speech) and the content
+ * panel share one scroll container. On scroll the hero drifts up slowly and
+ * fades while the panel scrolls at full speed — a parallax that hands more
+ * of the screen to the content as the user reads on.
+ *
+ * heroVariant only selects the avatar pose now; avatar/header sizing is the
+ * same across every page for a consistent header section.
  */
 export default function CoachStage({
   pose = "welcoming",
@@ -23,15 +28,48 @@ export default function CoachStage({
   sheetVariant = "standard",
   messageClampLines,
 }) {
-  const showMessage =
-    messageVariant !== "none" && Boolean(title || speech);
+  const scrollerRef = useRef(null);
+  const heroRef = useRef(null);
+
+  const showMessage = messageVariant !== "none" && Boolean(title || speech);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const hero = heroRef.current;
+    if (!scroller || !hero) return;
+
+    const reduce = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduce) return;
+
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      const t = scroller.scrollTop;
+      const h = hero.offsetHeight || 1;
+      // Hero moves up at ~0.6x (translate back down by 0.4t); panel scrolls 1x.
+      const y = t * 0.4;
+      const opacity = Math.max(0, 1 - t / (h * 0.85));
+      hero.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
+      hero.style.opacity = opacity.toFixed(3);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    apply();
+    return () => {
+      scroller.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const stageClass = [
     styles.stage,
     noHeader ? styles.noHeader : "",
-    styles[`hero_${heroVariant}`] || "",
     showMessage ? "" : styles.noMessage,
-    styles[`sheet_${sheetVariant}`] || "",
     className,
   ]
     .filter(Boolean)
@@ -42,30 +80,30 @@ export default function CoachStage({
       <div className={styles.bg} aria-hidden />
       <div className={styles.shade} aria-hidden />
 
-      <div className={styles.coach}>
-        <Avatar
-          pose={pose}
-          alt="Your interview coach"
-          fill
-          className={styles.avatar}
-        />
-      </div>
-
-      <div className={styles.content}>
-        {showMessage ? (
-          <div className={styles.speechWrap}>
-            <CoachMessage
-              title={title}
-              speech={speech}
-              variant={messageVariant === "compact" ? "compact" : "default"}
-              clampLines={messageClampLines}
+      <div className={styles.scroller} ref={scrollerRef}>
+        <div className={styles.hero} ref={heroRef}>
+          <div className={styles.coach}>
+            <Avatar
+              pose={pose}
+              alt="Your interview coach"
+              fill
+              className={styles.avatar}
             />
           </div>
-        ) : null}
 
-        <div className={styles.sheet}>
-          <div className={styles.sheetInner}>{children}</div>
+          {showMessage ? (
+            <div className={styles.speechWrap}>
+              <CoachMessage
+                title={title}
+                speech={speech}
+                variant={messageVariant === "compact" ? "compact" : "default"}
+                clampLines={messageClampLines}
+              />
+            </div>
+          ) : null}
         </div>
+
+        <div className={styles.panel}>{children}</div>
       </div>
     </div>
   );
