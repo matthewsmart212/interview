@@ -1,5 +1,9 @@
 /* ---------- shared: interviews list / prep hub / JD / tailored CV ---------- */
 
+.page {
+  overflow-x: clip;
+}
+
 .headRow {
   display: flex;
   align-items: center;
@@ -19,10 +23,11 @@
   color: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 7px 11px;
   font-size: 13px;
   font-weight: 600;
   box-shadow: none;
+  text-decoration: none;
 }
 
 .sheetHead {
@@ -30,7 +35,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .sheetTitle {
@@ -39,6 +44,15 @@
   font-weight: 650;
   color: #fff;
   letter-spacing: -0.02em;
+}
+
+.sectionLabel {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .detailMeta {
@@ -113,22 +127,24 @@
 }
 
 .block {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .block + .block {
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .interviewStack {
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .upcomingEmpty {
-  padding: 16px 14px;
+  padding: 14px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .upcomingEmptyTitle {
@@ -145,6 +161,21 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
+.upcomingEmptyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(124, 92, 255, 0.18);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
 .upcomingEmptyCta {
   display: inline-flex;
   align-items: center;
@@ -154,6 +185,28 @@
   font-weight: 650;
   color: #c4b5fd;
   text-decoration: none;
+}
+
+.practiseLink {
+  margin: 18px 0 8px;
+  padding-bottom: 12px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.45;
+}
+
+.practiseLink a {
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.practiseLink a:hover,
+.practiseLink a:focus-visible {
+  color: rgba(255, 255, 255, 0.88);
+  outline: none;
 }
 
 /* interview list card (legacy — detail subpages) */

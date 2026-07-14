@@ -123,6 +123,31 @@
   transform: translateX(-50%);
 }
 
+/* Interviews-only: ~20% shorter pointing hero, sheet starts higher */
+.hero_interviews {
+  --pad-x: 20px;
+  --coach-w: min(46vw, 176px);
+  --coach-h: min(24vh, 192px);
+  --speech-top: calc(var(--coach-top) + min(17vh, 138px));
+  --sheet-max: min(72vh, 640px);
+}
+
+.hero_interviews .coach {
+  left: 26%;
+  transform: translateX(-50%);
+  animation-name: coachEnterPointing;
+}
+
+.hero_interviews .speechWrap {
+  left: 20px;
+  right: 20px;
+}
+
+.hero_interviews .sheetInner {
+  padding-top: 14px;
+  padding-bottom: 20px;
+}
+
 .hero_celebration {
   --coach-w: min(64vw, 240px);
   --coach-h: min(32vh, 260px);
@@ -260,6 +285,12 @@
     --coach-h: min(28vh, 210px);
     --speech-top: calc(var(--coach-top) + min(21vh, 165px));
     --sheet-max: min(64vh, 540px);
+  }
+
+  .hero_interviews {
+    --coach-h: min(20vh, 160px);
+    --speech-top: calc(var(--coach-top) + min(14vh, 115px));
+    --sheet-max: min(74vh, 600px);
   }
 
   .hero_medium {
