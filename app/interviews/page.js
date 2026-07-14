@@ -9,22 +9,21 @@ import {
 } from "../../components/ui";
 import { Plus, Calendar } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import s from "./interviews.module.css";
 
 export default function InterviewsPage() {
-  const { INTERVIEWS } = useAppDb();
-  const upcoming = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
-    (a, b) => a.daysAway - b.daysAway
-  );
-  const past = INTERVIEWS.filter((i) => i.status === "past");
+  const db = useAppDb();
+  const journey = journeyStateFromDb(db);
+  const { upcoming, past, nearestUpcoming } = journey;
 
-  const next = upcoming[0];
-  const speech =
-    upcoming.length === 0
-      ? "Add the interview you're preparing for — I'll build practice around it."
-      : upcoming.length === 1
+  const speech = journey.isEmpty
+    ? "Add an upcoming interview and I'll build your preparation plan around it."
+    : journey.hasUpcoming
+      ? upcoming.length === 1
         ? "You've got one upcoming interview."
-        : `You've got ${upcoming.length} upcoming interviews.`;
+        : `You've got ${upcoming.length} upcoming interviews.`
+      : "Nothing coming up yet — add your next interview when you're ready.";
 
   return (
     <AppShell
@@ -43,30 +42,46 @@ export default function InterviewsPage() {
         </Link>
       </div>
 
-      {INTERVIEWS.length === 0 ? (
+      {journey.isEmpty ? (
         <EmptyStateCard
           icon={Calendar}
           title="No interviews yet"
-          description="Add a role and job description, then practise mocks against it."
+          description="Add an upcoming interview and I'll build your preparation plan around it."
         >
           <PrimaryButton href="/interviews/new">Add an interview</PrimaryButton>
+          <p className={s.skipNote} style={{ marginTop: 16 }}>
+            Just want to practise?{" "}
+            <Link href="/mock" className="link-btn">
+              Start a generic mock
+            </Link>
+          </p>
         </EmptyStateCard>
       ) : (
         <>
-          {upcoming.length > 0 ? (
-            <div className={s.block}>
-              <p className="section-title">Upcoming</p>
+          <div className={s.block}>
+            <p className="section-title">Upcoming</p>
+            {upcoming.length > 0 ? (
               <div className={`stack ${s.interviewStack}`}>
                 {upcoming.map((iv, i) => (
                   <InterviewCard
                     interview={iv}
                     key={iv.id}
-                    featured={i === 0}
+                    featured={i === 0 && iv.id === nearestUpcoming?.id}
                   />
                 ))}
               </div>
-            </div>
-          ) : null}
+            ) : (
+              <div className={s.upcomingEmpty}>
+                <p className={s.upcomingEmptyTitle}>Nothing coming up yet</p>
+                <p className={s.upcomingEmptySub}>
+                  Add your next interview to start preparing.
+                </p>
+                <Link href="/interviews/new" className={s.upcomingEmptyCta}>
+                  <Plus size={14} /> Add an interview
+                </Link>
+              </div>
+            )}
+          </div>
 
           {past.length > 0 ? (
             <div className={s.block}>
@@ -79,12 +94,21 @@ export default function InterviewsPage() {
             </div>
           ) : null}
 
-          <p className={s.skipNote}>
-            Just want to practise?{" "}
-            <Link href="/mock" className="link-btn">
-              Start a mock →
-            </Link>
-          </p>
+          {!journey.hasUpcoming ? (
+            <p className={s.skipNote}>
+              Just want to practise?{" "}
+              <Link href="/mock" className="link-btn">
+                Start a generic mock
+              </Link>
+            </p>
+          ) : (
+            <p className={s.skipNote}>
+              Just want to practise?{" "}
+              <Link href="/mock" className="link-btn">
+                Start a mock →
+              </Link>
+            </p>
+          )}
         </>
       )}
     </AppShell>

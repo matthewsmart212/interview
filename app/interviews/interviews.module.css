@@ -124,6 +124,38 @@
   gap: 12px;
 }
 
+.upcomingEmpty {
+  padding: 16px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.upcomingEmptyTitle {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 650;
+  color: #fff;
+}
+
+.upcomingEmptySub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.upcomingEmptyCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 650;
+  color: #c4b5fd;
+  text-decoration: none;
+}
+
 /* interview list card (legacy — detail subpages) */
 .card {
   display: flex;

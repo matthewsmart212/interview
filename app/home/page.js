@@ -12,14 +12,19 @@ import { Mic, Plus, ChevronRight, Calendar } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import { getSessionUser, pullSupabaseToLocal } from "../../lib/supabase/sync";
 import { getFirstName, loadProfile } from "../../lib/onboarding-store";
-import {
-  calculateInterviewReadiness,
-  buildPrepRoadmap,
-} from "../../lib/readiness";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import styles from "./home.module.css";
 
+function countdownLabel(daysAway) {
+  if (daysAway === 0) return "Today";
+  if (daysAway === 1) return "Tomorrow";
+  return `in ${daysAway} days`;
+}
+
 export default function HomePage() {
-  const { INTERVIEWS, MASTER_CV, MOCK_HISTORY, user, USER } = useAppDb();
+  const db = useAppDb();
+  const { INTERVIEWS, MASTER_CV, user, USER } = db;
+  const journey = journeyStateFromDb(db);
   const synced = useRef(false);
   const [firstName, setFirstName] = useState(
     (USER.name || "").split(/\s+/)[0] || "there"
@@ -43,29 +48,17 @@ export default function HomePage() {
     })();
   }, [user, MASTER_CV.exists, INTERVIEWS.length]);
 
-  const next = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
-    (a, b) => a.daysAway - b.daysAway
-  )[0];
-  const lastMock = MOCK_HISTORY[0];
-  const readiness = next ? calculateInterviewReadiness(next) : 0;
-  const openPrepTasks = next
-    ? buildPrepRoadmap(next, { mocks: MOCK_HISTORY.filter((m) => m.interviewId === next.id) }).filter(
-        (t) => !t.done
-      ).length
-    : 0;
+  const next = journey.nearestUpcoming;
+  const lastMock = journey.lastMock;
 
-  const speech = next
-    ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Let's get you ready.`
-    : "Add an interview, then run a mock. I'll guide you the whole way.";
-
-  const countdown =
-    next == null
-      ? ""
-      : next.daysAway === 0
-        ? "Today"
-        : next.daysAway === 1
-          ? "Tomorrow"
-          : `in ${next.daysAway} days`;
+  let speech = "Add an interview to get started — I'll guide you from there.";
+  if (journey.hasUpcoming && next) {
+    speech = `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Let's get you ready.`;
+  } else if (journey.isHistoryOnly) {
+    speech = journey.hasMocks
+      ? "Nice work practising. Add your next interview when you're ready."
+      : "Add your next interview and I'll build a prep plan around it.";
+  }
 
   return (
     <AppShell
@@ -78,7 +71,7 @@ export default function HomePage() {
       messageVariant="default"
       sheetVariant="standard"
     >
-      {next ? (
+      {journey.hasUpcoming && next ? (
         <Link href={`/interviews/${next.id}`} className={styles.nextCard}>
           <span className={styles.nextMain}>
             <span className={styles.nextLabel}>Next interview</span>
@@ -88,42 +81,85 @@ export default function HomePage() {
               <Calendar size={12} aria-hidden />
               {next.date}
               <span className={styles.dot}>·</span>
-              {countdown}
+              {countdownLabel(next.daysAway)}
             </span>
           </span>
-          <ReadinessRing value={readiness} size={52} stroke={6} showLabel label="Ready" />
+          <ReadinessRing
+            value={journey.nearestReadiness ?? 0}
+            size={52}
+            stroke={6}
+            showLabel
+            label="Ready"
+          />
           <ChevronRight size={18} className={styles.nextChev} aria-hidden />
         </Link>
       ) : null}
 
       <div className={styles.primaryStack}>
-        <PrimaryActionCard
-          href="/mock"
-          icon={Mic}
-          title="Start a mock interview"
-          sub={
-            next
-              ? `Practise for ${next.company}`
-              : "Generic practice or pick an interview"
-          }
-        />
-
-        {next && openPrepTasks > 0 ? (
-          <Link href={`/interviews/${next.id}`} className={styles.secondaryCta}>
-            Continue preparation
-            <span className={styles.secondaryHint}>
-              {openPrepTasks} step{openPrepTasks === 1 ? "" : "s"} left
-            </span>
-          </Link>
+        {journey.isEmpty ? (
+          <>
+            <PrimaryActionCard
+              href="/interviews/new"
+              icon={Plus}
+              title="Add an interview"
+              sub="Tell me the role and date — I'll build your prep plan."
+            />
+            <Link href="/mock" className={styles.secondaryCta}>
+              Try a generic mock
+              <span className={styles.secondaryHint}>
+                Practise common questions anytime
+              </span>
+            </Link>
+          </>
         ) : null}
 
-        <Link href="/interviews/new" className={styles.tertiaryCta}>
-          <Plus size={16} />
-          <span>Add an interview</span>
-        </Link>
+        {journey.isHistoryOnly ? (
+          <>
+            <PrimaryActionCard
+              href="/mock"
+              icon={Mic}
+              title="Try a generic mock"
+              sub="Build confidence with common interview questions"
+            />
+            <Link href="/interviews/new" className={styles.secondaryCta}>
+              Add an interview
+              <span className={styles.secondaryHint}>
+                Start preparing for your next role
+              </span>
+            </Link>
+          </>
+        ) : null}
+
+        {journey.hasUpcoming && next ? (
+          <>
+            <PrimaryActionCard
+              href="/mock"
+              icon={Mic}
+              title={`Practise for ${next.company}`}
+              sub={`${next.role} · ${countdownLabel(next.daysAway)}`}
+            />
+            {journey.openPrepTasks > 0 ? (
+              <Link href={`/interviews/${next.id}`} className={styles.secondaryCta}>
+                Continue preparation
+                <span className={styles.secondaryHint}>
+                  {journey.openPrepTasks} step
+                  {journey.openPrepTasks === 1 ? "" : "s"} left
+                </span>
+              </Link>
+            ) : (
+              <Link href={`/interviews/${next.id}`} className={styles.secondaryCta}>
+                View preparation plan
+              </Link>
+            )}
+            <Link href="/mock" className={styles.tertiaryCta}>
+              <Mic size={16} />
+              <span>Generic practice</span>
+            </Link>
+          </>
+        ) : null}
       </div>
 
-      {lastMock ? (
+      {journey.hasMocks && lastMock ? (
         <div className={styles.recent}>
           <p className={styles.sectionLabel}>Last practice</p>
           <NavigationRow

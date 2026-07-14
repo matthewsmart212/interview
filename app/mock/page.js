@@ -19,6 +19,7 @@ import {
   ChevronLeft,
 } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import {
   saveMockSetup,
   buildInterviewHref,
@@ -82,16 +83,15 @@ function ChoiceCard({
   title,
   sub,
   onClick,
+  href,
   primary = false,
   accent = "mic",
   meta,
+  ctaLabel,
 }) {
-  return (
-    <button
-      type="button"
-      className={`${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`}
-      onClick={onClick}
-    >
+  const className = `${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`;
+  const body = (
+    <>
       <span className={s.bigChoiceIcon} aria-hidden>
         <Icon size={primary ? 26 : 22} />
       </span>
@@ -99,8 +99,23 @@ function ChoiceCard({
         <span className={s.bigChoiceTitle}>{title}</span>
         <span className={s.bigChoiceSub}>{sub}</span>
         {meta ? <span className={s.bigChoiceMeta}>{meta}</span> : null}
+        {ctaLabel ? <span className={s.bigChoiceCta}>{ctaLabel}</span> : null}
       </span>
       <ChevronRight size={18} className={s.bigChoiceChev} aria-hidden />
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {body}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" className={className} onClick={onClick}>
+      {body}
     </button>
   );
 }
@@ -355,7 +370,10 @@ function LaunchOverlay({ beat, onDone }) {
 
 export default function MockHubPage() {
   const router = useRouter();
-  const { INTERVIEWS, MASTER_CV } = useAppDb();
+  const db = useAppDb();
+  const { MASTER_CV } = db;
+  const journey = journeyStateFromDb(db);
+  const upcoming = journey.upcoming;
 
   // home | context | ready | checking
   const [screen, setScreen] = useState("home");
@@ -364,14 +382,6 @@ export default function MockHubPage() {
   const [reviewDone, setReviewDone] = useState(0);
   const [phase, setPhase] = useState("wizard"); // wizard | launching
   const [launchBeat, setLaunchBeat] = useState(0);
-
-  const upcoming = useMemo(
-    () =>
-      INTERVIEWS.filter((i) => i.status === "upcoming").sort(
-        (a, b) => a.daysAway - b.daysAway
-      ),
-    [INTERVIEWS]
-  );
 
   const selectedInterview = upcoming.find((i) => i.id === selectedInterviewId);
   const hasCv = Boolean(MASTER_CV?.exists);
@@ -518,8 +528,8 @@ export default function MockHubPage() {
   }, [screen, contextMode]);
 
   function renderHome() {
-    const nearest = upcoming[0];
-    const preferInterview = Boolean(nearest);
+    const nearest = journey.nearestUpcoming;
+    const preferInterview = journey.hasUpcoming && Boolean(nearest);
 
     return (
       <div className="anim-fade-up">
@@ -527,7 +537,9 @@ export default function MockHubPage() {
           <div className={s.sheetHeadCopy}>
             <h1 className={s.sheetTitle}>How do you want to practise?</h1>
             <p className={s.sheetSub}>
-              Choose a quick general mock or practise for a saved interview.
+              {preferInterview
+                ? "Choose a quick general mock or practise for a saved interview."
+                : "Start with a general mock, or add an interview for tailored practice."}
             </p>
           </div>
           <TimeBadge />
@@ -541,8 +553,8 @@ export default function MockHubPage() {
                 title="Upcoming interview"
                 sub={`${nearest.role} at ${nearest.company}`}
                 meta={
-                  nearest.readiness != null
-                    ? `Readiness ${nearest.readiness}% · ${DURATION_LABEL}`
+                  journey.nearestReadiness != null
+                    ? `Readiness ${journey.nearestReadiness}% · ${DURATION_LABEL}`
                     : DURATION_LABEL
                 }
                 onClick={openInterview}
@@ -570,11 +582,11 @@ export default function MockHubPage() {
                 accent="mic"
               />
               <ChoiceCard
-                icon={Calendar}
-                title="Upcoming interview"
-                sub="Practise for a role you've already saved."
-                meta={DURATION_LABEL}
-                onClick={openInterview}
+                icon={Plus}
+                title="Practise for an interview"
+                sub="Add an upcoming interview to get tailored questions."
+                ctaLabel="Add interview"
+                href="/interviews/new"
                 accent="calendar"
               />
             </>
