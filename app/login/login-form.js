@@ -158,7 +158,7 @@ export default function LoginForm() {
           </button>
           <div>
             New here?{" "}
-            <Link href="/welcome">Start onboarding</Link>
+            <Link href="/">Get started</Link>
           </div>
         </div>
       </div>

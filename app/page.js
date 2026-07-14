@@ -23,7 +23,7 @@ export default function WelcomePage() {
                 <Logo size="hero" priority className={styles.logo} />
               </h1>
               <p className={styles.sub}>
-                Your AI interview coach that prepares you to get the job.
+                Mock interviews that prepare you for the real thing.
               </p>
             </div>
             <Avatar

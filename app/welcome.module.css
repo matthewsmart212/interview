@@ -45,23 +45,27 @@
 
 .features {
   margin-top: 22px;
-  padding: 8px 6px;
+  padding: 4px 2px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 .feature {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 8px;
+  padding: 12px 4px;
 }
 .feature + .feature {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 .feature .fIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--brand-050);
-  color: var(--brand);
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,6 +74,7 @@
 .feature .fText {
   font-size: 14.5px;
   font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .actions {

@@ -1,36 +1,218 @@
-/* Home screen layout — iPhone 13/14/15 (~390px) tuned */
-
 .home {
   overflow-x: clip;
   max-width: 100%;
 }
 
-.choiceDivider {
-  border: none;
-  height: 1px;
-  margin: 33px 0 29px;
-  background: var(--divider);
+.coachIntro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 22px;
 }
 
-.choiceGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: stretch;
-  grid-auto-rows: 1fr;
-}
-
-.quickSection {
-  margin-top: 32px;
+.coachCopy {
+  flex: 1;
+  min-width: 0;
   padding-bottom: 8px;
 }
 
-.quickTitle {
-  composes: sectionTitle from "../../components/home/home-shared.module.css";
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
-.quickStack {
+.greeting {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.lead {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.62);
+  max-width: 220px;
+}
+
+.coachAvatar {
+  width: 118px;
+  height: 168px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.nextCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
+}
+
+.nextIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nextBody {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
+
+.nextLabel {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.nextTitle {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nextMeta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.nextChev {
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.primaryStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.primaryCta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.28);
+}
+
+.primaryIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.primaryText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.primaryTitle {
+  font-size: 15.5px;
+  font-weight: 650;
+}
+
+.primarySub {
+  font-size: 12.5px;
+  opacity: 0.82;
+}
+
+.secondaryCta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.recent {
+  margin-top: 28px;
+}
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.recentScore {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.recentBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recentTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recentSub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
 }

@@ -86,9 +86,8 @@ export default function InterviewPrepPage() {
     <Phone>
       <div className="screen screen-pad has-nav has-app-header">
         <PageHeader
-          icon="calendar"
-          title="Interview Prep"
-          description="Your checklist for this role"
+          title="Interview prep"
+          description="Checklist for this role"
           back
           backHref="/interviews"
         />

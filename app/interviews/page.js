@@ -23,9 +23,8 @@ export default function InterviewsPage() {
   return (
     <AppShell navActive="interviews">
       <PageHeader
-        icon="calendar"
-        title="My Interviews"
-        description="Upcoming and past interviews"
+        title="Interviews"
+        description="Your upcoming roles and past practice"
         right={
           <Link href="/interviews/new" className={s.addBtn}>
             <Plus size={15} stroke={2.6} /> Add
@@ -37,34 +36,36 @@ export default function InterviewsPage() {
         <EmptyStateCard
           icon={Calendar}
           title="No interviews yet"
-          description="Add your first interview and we'll build a prep plan around it."
+          description="Add a role and job description, then practise mocks against it."
         >
           <PrimaryButton href="/interviews/new">Add an interview</PrimaryButton>
         </EmptyStateCard>
       ) : (
         <>
-          <PageSection title="Upcoming interviews">
-            <div className={`stack ${s.interviewStack}`}>
-              {upcoming.map((iv, i) => (
-                <InterviewCard interview={iv} key={iv.id} featured={i === 0} />
-              ))}
-            </div>
-          </PageSection>
+          {upcoming.length > 0 ? (
+            <PageSection title="Upcoming">
+              <div className={`stack ${s.interviewStack}`}>
+                {upcoming.map((iv) => (
+                  <InterviewCard interview={iv} key={iv.id} />
+                ))}
+              </div>
+            </PageSection>
+          ) : null}
 
-          {past.length > 0 && (
-            <PageSection title="Past interviews">
+          {past.length > 0 ? (
+            <PageSection title="Past">
               <div className={`stack ${s.interviewStack}`}>
                 {past.map((iv) => (
                   <InterviewCard interview={iv} key={iv.id} />
                 ))}
               </div>
             </PageSection>
-          )}
+          ) : null}
 
           <p className={s.skipNote}>
-            Preparing without a set date?{" "}
+            Just want to practise?{" "}
             <Link href="/mock" className="link-btn">
-              Start a practice mock →
+              Start a mock →
             </Link>
           </p>
         </>

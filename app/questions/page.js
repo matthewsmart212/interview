@@ -32,9 +32,8 @@ export default function QuestionsPage() {
   return (
     <AppShell>
       <PageHeader
-        icon="messageCircle"
-        title="Interview Questions"
-        description="Role-specific questions to practise"
+        title="Questions"
+        description="Practise likely interview questions"
         back
         backHref="/home"
       />
