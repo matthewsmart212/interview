@@ -903,14 +903,13 @@ body:has(.coach-route) .app-shell {
   background: var(--interview-bar-theme);
   backdrop-filter: none;
   /* Thin low-opacity edge — quieter than a bright divider */
-  border-top: 1px solid rgba(139, 108, 245, 0.18);
+  border-top: 1px solid rgba(139, 108, 245, 0.06);
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
   padding: 0 8px calc(8px + env(safe-area-inset-bottom, 0px));
   z-index: 20;
-  /* Avoid layout shift when fonts/icons settle */
-  contain: layout style;
+  overflow: visible;
 }
 .nav-item {
   display: flex;
@@ -927,6 +926,8 @@ body:has(.coach-route) .app-shell {
   color: rgba(255, 255, 255, 0.42);
   font-weight: 500;
   text-decoration: none;
+  overflow: visible;
+  position: relative;
 }
 .nav-icon {
   display: flex;
@@ -938,10 +939,12 @@ body:has(.coach-route) .app-shell {
 }
 .nav-label {
   display: block;
+  flex-shrink: 0;
   width: 100%;
+  height: 12px;
   text-align: center;
   font-size: 10.5px;
-  line-height: 1.1;
+  line-height: 12px;
   letter-spacing: 0.01em;
   white-space: nowrap;
   overflow: hidden;
@@ -959,35 +962,35 @@ body:has(.coach-route) .app-shell {
   color: #fff;
 }
 
-/* Center standout mock tab — raised, but labels share the same baseline */
-.nav-item-mock {
-  position: relative;
-}
+/* Center standout mock tab — FAB rises; label stays on the shared baseline */
 .nav-item-mock .nav-icon {
-  width: 52px;
-  height: 52px;
-  margin-bottom: -2px;
+  position: relative;
+  width: 28px;
+  height: 28px;
 }
 .nav-mock-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
   width: 52px;
   height: 52px;
+  margin-left: -26px;
   border-radius: 50%;
   background: linear-gradient(150deg, #7d5cf0 0%, #5b3ad6 100%);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 14px rgba(30, 16, 84, 0.28);
+  box-shadow: 0 4px 10px rgba(30, 16, 84, 0.2);
   border: 3px solid var(--interview-bar-theme);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  /* Raise the FAB above the bar without shifting sibling labels */
-  transform: translateY(-18px);
+  transform: translateY(-14px);
 }
 .nav-item-mock.active .nav-mock-btn {
-  box-shadow: 0 7px 16px rgba(91, 58, 214, 0.34);
+  box-shadow: 0 5px 12px rgba(91, 58, 214, 0.26);
 }
 .nav-item-mock:active .nav-mock-btn {
-  transform: translateY(-18px) scale(0.94);
+  transform: translateY(-14px) scale(0.94);
 }
 .nav-item-mock:focus-visible .nav-mock-btn {
   outline: 2px solid rgba(196, 181, 253, 0.7);
