@@ -3,19 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../components/PageHeader";
-import { AppShell, PageSection } from "../../components/ui";
-import Avatar from "../../components/Avatar";
+import { AppShell } from "../../components/ui";
 import {
-  Settings,
   Edit,
   Sparkle,
   FileText,
-  Bookmark,
-  Bell,
-  Volume,
-  CreditCard,
-  HelpCircle,
   Shield,
   LogOut,
   ChevronRight,
@@ -34,40 +26,9 @@ import {
 } from "../../lib/supabase/sync";
 import s from "./profile.module.css";
 
-const ACCOUNT = [
-  { Icon: FileText, label: "My CV", href: "/cv" },
-  { Icon: Bookmark, label: "Saved Questions", href: "/questions" },
-  { Icon: CreditCard, label: "Subscription", href: "/profile" },
-];
-const PREFS = [
-  { Icon: Bell, label: "Notifications", href: "/profile" },
-  { Icon: Volume, label: "Voice & Language", href: "/profile" },
-  { Icon: Settings, label: "Settings", href: "/profile" },
-];
-const SUPPORT = [
-  { Icon: HelpCircle, label: "Help & Support", href: "/profile" },
-  { Icon: Shield, label: "Privacy & Security", href: "/profile" },
-];
-
-function Menu({ items }) {
-  return (
-    <div className={`card ${s.menu}`}>
-      {items.map(({ Icon, label, href }) => (
-        <Link className={s.item} key={label} href={href}>
-          <span className={s.mi}>
-            <Icon size={19} />
-          </span>
-          <span className={s.lbl}>{label}</span>
-          <ChevronRight size={19} className={s.chev} />
-        </Link>
-      ))}
-    </div>
-  );
-}
-
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, USER } = useAppDb();
+  const { user, USER, MASTER_CV } = useAppDb();
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [authEmail, setAuthEmail] = useState("");
@@ -114,16 +75,19 @@ export default function ProfilePage() {
   };
 
   return (
-    <AppShell>
-      <PageHeader
-        icon="user"
-        title="Profile"
-        description="Account, preferences and subscription"
-      />
-
-      <div className={`card ${s.header}`}>
-        <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
-        <div className="grow">
+    <AppShell
+      coachPose="idle"
+      coachTitle={displayName}
+      coachSpeech={
+        MASTER_CV.exists
+          ? "Your CV is ready. Replace it anytime — I'll use it in every mock."
+          : "Upload your CV so I can personalise questions and feedback."
+      }
+      heroVariant="medium"
+      messageVariant="compact"
+    >
+      <div className={s.hero}>
+        <div className={s.heroText}>
           {editing ? (
             <input
               className="input"
@@ -140,12 +104,8 @@ export default function ProfilePage() {
             <div className={s.name}>{displayName}</div>
           )}
           <div className={s.email}>
-            {authEmail ||
-              `${displayName.toLowerCase().replace(/\s+/g, ".")}@email.com`}
+            {authEmail || "Local account · not signed in"}
           </div>
-          <span className={`badge badge-brand ${s.role}`}>
-            {authEmail ? "Signed in" : "Local only"}
-          </span>
         </div>
         {editing ? (
           <button type="button" className={s.editBtn} onClick={saveEdit}>
@@ -158,77 +118,51 @@ export default function ProfilePage() {
         )}
       </div>
 
-      <div className={s.pro}>
-        <Sparkle size={24} />
-        <div className={s.pt}>
-          <b>Upgrade to Pro</b>
-          <span>Unlimited mock interviews & CV reviews</span>
-        </div>
-        <button type="button" className={s.go}>
-          Upgrade
+      <div className={s.panel}>
+        <Link className={s.row} href="/cv/upload">
+          <span className={s.mi}>
+            <FileText size={18} />
+          </span>
+          <span className={s.lbl}>
+            {MASTER_CV.exists
+              ? `Replace CV · ${MASTER_CV.fileName}`
+              : "Upload your CV"}
+          </span>
+          <ChevronRight size={18} className={s.chev} />
+        </Link>
+        {authEmail ? (
+          <button type="button" className={s.row} onClick={handleSync}>
+            <span className={s.mi}>
+              <Sparkle size={18} />
+            </span>
+            <span className={s.lbl}>Sync with cloud</span>
+            <ChevronRight size={18} className={s.chev} />
+          </button>
+        ) : (
+          <Link className={s.row} href="/login">
+            <span className={s.mi}>
+              <Sparkle size={18} />
+            </span>
+            <span className={s.lbl}>Sign in</span>
+            <ChevronRight size={18} className={s.chev} />
+          </Link>
+        )}
+        <button type="button" className={s.row} onClick={() => resetToDemo()}>
+          <span className={s.mi}>
+            <Sparkle size={18} />
+          </span>
+          <span className={s.lbl}>Load demo data</span>
+          <ChevronRight size={18} className={s.chev} />
+        </button>
+        <button type="button" className={s.row} onClick={handleRestartFresh}>
+          <span className={s.mi}>
+            <Shield size={18} />
+          </span>
+          <span className={s.lbl}>Clear & restart onboarding</span>
+          <ChevronRight size={18} className={s.chev} />
         </button>
       </div>
-
-      <PageSection title="Account">
-        <Menu items={ACCOUNT} />
-      </PageSection>
-
-      <PageSection title="Preferences">
-        <Menu items={PREFS} />
-      </PageSection>
-
-      <PageSection title="Support">
-        <Menu items={SUPPORT} />
-      </PageSection>
-
-      <PageSection title="Data">
-        <div className={`card ${s.menu}`}>
-          {authEmail ? (
-            <button type="button" className={s.item} onClick={handleSync}>
-              <span className={s.mi}>
-                <Sparkle size={19} />
-              </span>
-              <span className={s.lbl}>Sync with cloud</span>
-              <ChevronRight size={19} className={s.chev} />
-            </button>
-          ) : (
-            <Link className={s.item} href="/login">
-              <span className={s.mi}>
-                <Sparkle size={19} />
-              </span>
-              <span className={s.lbl}>Sign in to sync</span>
-              <ChevronRight size={19} className={s.chev} />
-            </Link>
-          )}
-          <button
-            type="button"
-            className={s.item}
-            onClick={() => resetToDemo()}
-          >
-            <span className={s.mi}>
-              <Sparkle size={19} />
-            </span>
-            <span className={s.lbl}>Reset to demo data</span>
-            <ChevronRight size={19} className={s.chev} />
-          </button>
-          <button
-            type="button"
-            className={s.item}
-            onClick={handleRestartFresh}
-          >
-            <span className={s.mi}>
-              <Shield size={19} />
-            </span>
-            <span className={s.lbl}>Clear &amp; restart onboarding</span>
-            <ChevronRight size={19} className={s.chev} />
-          </button>
-        </div>
-        {syncMsg ? (
-          <p className="page-sub" style={{ marginTop: 8, textAlign: "center" }}>
-            {syncMsg}
-          </p>
-        ) : null}
-      </PageSection>
+      {syncMsg ? <p className={s.syncMsg}>{syncMsg}</p> : null}
 
       <button type="button" className={s.logout} onClick={handleLogout}>
         <LogOut size={18} /> Log out

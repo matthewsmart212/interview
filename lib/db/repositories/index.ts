@@ -1,10 +1,9 @@
 import type {
   AppState,
-  CvHistoryEntry,
   Interview,
+  InterviewPrep,
   MasterCV,
   MockSession,
-  TailoredCV,
   UserProfile,
 } from "../types";
 import { getState, setState } from "../store";
@@ -21,6 +20,10 @@ import {
 import type { InterviewType } from "../../onboarding-store";
 import type { InterviewAnswer, InterviewFeedbackResult } from "../../types";
 import type { MockSetupConfig } from "../../mock-setup";
+import {
+  calculateInterviewReadiness,
+  normalizePrep,
+} from "../../readiness";
 
 /* ---------------- user ---------------- */
 
@@ -35,32 +38,22 @@ export function updateUser(patch: Partial<UserProfile>): UserProfile {
   })).user;
 }
 
-/* ---------------- CV ---------------- */
+/* ---------------- CV (single permanent file) ---------------- */
 
 export function getMasterCv(): MasterCV {
   return getState().masterCv;
 }
 
-export function getCvHistory(): CvHistoryEntry[] {
-  return getState().cvHistory;
+export function setMasterCv(cv: MasterCV): MasterCV {
+  return setState((s) => ({ ...s, masterCv: cv })).masterCv;
 }
 
-export function setMasterCv(cv: MasterCV, historyEntry?: CvHistoryEntry): MasterCV {
-  return setState((s) => {
-    const history = historyEntry
-      ? [
-          { ...historyEntry, current: true },
-          ...s.cvHistory.map((h) => ({ ...h, current: false })),
-        ]
-      : s.cvHistory;
-    return { ...s, masterCv: cv, cvHistory: history };
-  }).masterCv;
-}
-
+/** Replace the one permanent CV (no version history). */
 export function uploadMasterCv(input: {
   fileName: string;
   summary?: string;
   score?: number;
+  text?: string;
   sections?: MasterCV["sections"];
 }): MasterCV {
   const updatedAt = formatDisplayDate();
@@ -74,21 +67,15 @@ export function uploadMasterCv(input: {
     score,
     summary:
       input.summary ??
-      "Uploaded CV ready for scoring, tailoring and mock interview practice.",
+      "Your CV — used to personalise mock questions and feedback.",
+    text: input.text,
     sections: input.sections ?? {
       experience: [],
       education: [],
       skills: [],
     },
   };
-  const entry: CvHistoryEntry = {
-    id: createId("cv"),
-    fileName: input.fileName,
-    uploadedAt: updatedAt,
-    score,
-    current: true,
-  };
-  return setMasterCv(cv, entry);
+  return setMasterCv(cv);
 }
 
 export function createMasterCvFromForm(input: {
@@ -100,7 +87,7 @@ export function createMasterCvFromForm(input: {
   const updatedAt = formatDisplayDate();
   const fileName = `${(getUser().name || "My").replace(/\s+/g, "-")}-CV.pdf`;
   const score = Math.min(88, 55 + input.skills.length * 3 + input.jobs.length * 5);
-  const cv: MasterCV = {
+  return setMasterCv({
     id: "master-cv",
     exists: true,
     source: "create",
@@ -118,29 +105,7 @@ export function createMasterCvFromForm(input: {
       education: [],
       skills: input.skills,
     },
-  };
-  const entry: CvHistoryEntry = {
-    id: createId("cv"),
-    fileName,
-    uploadedAt: updatedAt,
-    score,
-    current: true,
-  };
-  return setMasterCv(cv, entry);
-}
-
-export function bumpMasterCvScore(delta = 6): MasterCV {
-  return setState((s) => {
-    const score = Math.min(98, s.masterCv.score + delta);
-    const updatedAt = formatDisplayDate();
-    return {
-      ...s,
-      masterCv: { ...s.masterCv, score, updatedAt },
-      cvHistory: s.cvHistory.map((h) =>
-        h.current ? { ...h, score, uploadedAt: updatedAt } : h
-      ),
-    };
-  }).masterCv;
+  });
 }
 
 /* ---------------- interviews ---------------- */
@@ -156,8 +121,19 @@ export function getInterview(id: string): Interview | null {
 
 function refreshInterviewDerived(iv: Interview): Interview {
   const daysAway = daysAwayFrom(iv.date);
-  const status = daysAway < 0 ? "past" : "upcoming";
-  return { ...iv, daysAway, status: iv.status === "past" ? "past" : status };
+  const derivedStatus: Interview["status"] =
+    iv.status === "past" || daysAway < 0 ? "past" : "upcoming";
+  const prep = normalizePrep(iv.prep);
+  const withPrep: Interview = {
+    ...iv,
+    prep,
+    daysAway,
+    status: derivedStatus,
+  };
+  return {
+    ...withPrep,
+    readiness: calculateInterviewReadiness(withPrep),
+  };
 }
 
 export function createInterview(input: {
@@ -183,11 +159,11 @@ export function createInterview(input: {
     dateChip: dateChipFrom(date),
     daysAway: daysAwayFrom(date),
     status: "upcoming",
-    readiness: hasJD ? 28 : 12,
+    readiness: 0,
     hasJD,
     jd: hasJD ? input.jd!.trim() : null,
     jdHighlights: hasJD ? extractJdHighlights(input.jd!) : [],
-    tailoredCv: { exists: false },
+    prep: normalizePrep(null),
     mockIds: [],
     createdAt: t,
     updatedAt: t,
@@ -226,55 +202,19 @@ export function saveInterviewJd(id: string, jd: string): Interview | null {
     hasJD: Boolean(trimmed),
     jd: trimmed || null,
     jdHighlights: trimmed ? extractJdHighlights(trimmed) : [],
-    readiness: Math.max(getInterview(id)?.readiness ?? 0, trimmed ? 40 : 12),
   });
 }
 
-export function saveTailoredCv(
-  interviewId: string,
-  input?: { score?: number; changes?: string[] }
-): TailoredCV | null {
-  const iv = getInterview(interviewId);
+/** Mark or toggle a prep checklist flag. Readiness is recalculated on read. */
+export function updateInterviewPrep(
+  id: string,
+  patch: Partial<InterviewPrep>
+): Interview | null {
+  const iv = getInterview(id);
   if (!iv) return null;
-  const master = getMasterCv();
-  const score = input?.score ?? Math.min(96, (master.score || 70) + 8);
-  const updatedAt = formatDisplayDate();
-  const changes =
-    input?.changes ??
-    [
-      `Summary rewritten to match ${iv.company} language`,
-      "Most relevant experience moved to the top",
-      "Skills aligned to the job description",
-    ];
-
-  const tailored: TailoredCV = {
-    id: `tailored-${interviewId}`,
-    interviewId,
-    score,
-    updatedAt,
-    changes,
-  };
-
-  setState((s) => ({
-    ...s,
-    tailoredCvs: { ...s.tailoredCvs, [interviewId]: tailored },
-    interviews: s.interviews.map((row) =>
-      row.id === interviewId
-        ? {
-            ...row,
-            tailoredCv: { exists: true, score, updatedAt, changes },
-            readiness: Math.max(row.readiness, 55),
-            updatedAt: Date.now(),
-          }
-        : row
-    ),
-  }));
-
-  return tailored;
-}
-
-export function getTailoredCv(interviewId: string): TailoredCV | null {
-  return getState().tailoredCvs[interviewId] ?? null;
+  return updateInterview(id, {
+    prep: { ...normalizePrep(iv.prep), ...patch },
+  });
 }
 
 /* ---------------- mock sessions / history ---------------- */
@@ -342,9 +282,8 @@ export function recordMockSession(input: {
     mockSessions: [session, ...s.mockSessions],
     interviews: s.interviews.map((iv) => {
       if (!interviewId || iv.id !== interviewId) return iv;
-      const mockIds = [session.id, ...iv.mockIds.filter((id) => id !== session.id)];
-      const readiness = Math.min(98, Math.max(iv.readiness, session.score - 5));
-      return { ...iv, mockIds, readiness, updatedAt: Date.now() };
+      const mockIds = [session.id, ...iv.mockIds.filter((mid) => mid !== session.id)];
+      return { ...iv, mockIds, updatedAt: Date.now() };
     }),
     user: {
       ...s.user,

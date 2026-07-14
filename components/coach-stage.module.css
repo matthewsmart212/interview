@@ -1,0 +1,274 @@
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  --coach-top: calc(48px + env(safe-area-inset-top));
+  --coach-w: min(70vw, 268px);
+  --coach-h: min(38vh, 300px);
+  --speech-top: calc(var(--coach-top) + min(30vh, 240px));
+  --sheet-max: min(56vh, 500px);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #4a3d78;
+  background-image: url("/backgrounds/room.png");
+  background-size: cover;
+  background-position: center top;
+}
+
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 36, 0.12) 0%,
+    rgba(18, 14, 36, 0) 28%,
+    rgba(18, 14, 36, 0.35) 58%,
+    rgba(18, 14, 36, 0.92) 100%
+  );
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 36, 0.2) 0%,
+    rgba(18, 14, 36, 0) 22%,
+    rgba(18, 14, 36, 0.15) 45%,
+    rgba(18, 14, 36, 0.88) 78%,
+    rgba(18, 14, 36, 0.98) 100%
+  );
+}
+
+.coach {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: var(--coach-top);
+  transform: translateX(-50%);
+  width: var(--coach-w);
+  height: var(--coach-h);
+  pointer-events: none;
+  animation: coachEnter 0.55s ease-out both;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 16px 28px rgba(8, 4, 24, 0.45));
+}
+
+/* --- Hero variants --- */
+
+.hero_large {
+  --coach-w: min(72vw, 280px);
+  --coach-h: min(40vh, 320px);
+  --speech-top: calc(var(--coach-top) + min(32vh, 255px));
+  --sheet-max: min(52vh, 480px);
+}
+
+/* Home-only: ~12% shorter hero, speech closer, sheet starts higher */
+.hero_home {
+  --pad-x: 20px;
+  --coach-w: min(66vw, 252px);
+  --coach-h: min(34vh, 272px);
+  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
+  --sheet-max: min(62vh, 560px);
+}
+
+.hero_home .speechWrap {
+  left: 20px;
+  right: 20px;
+}
+
+.hero_home .sheetInner {
+  padding-top: 16px;
+  padding-bottom: 14px;
+}
+
+.hero_medium {
+  --coach-w: min(56vw, 210px);
+  --coach-h: min(28vh, 220px);
+  --speech-top: calc(var(--coach-top) + min(22vh, 175px));
+  --sheet-max: min(62vh, 560px);
+}
+
+.hero_compact {
+  --coach-w: min(48vw, 180px);
+  --coach-h: min(22vh, 170px);
+  --speech-top: calc(var(--coach-top) + min(18vh, 140px));
+  --sheet-max: min(68vh, 600px);
+}
+
+.hero_pointing {
+  --coach-w: min(58vw, 220px);
+  --coach-h: min(30vh, 240px);
+  --sheet-max: min(64vh, 580px);
+}
+
+.hero_pointing .coach {
+  left: 28%;
+  transform: translateX(-50%);
+}
+
+.hero_celebration {
+  --coach-w: min(64vw, 240px);
+  --coach-h: min(32vh, 260px);
+  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
+  --sheet-max: min(58vh, 520px);
+}
+
+.noMessage {
+  --sheet-max: min(66vh, 600px);
+}
+
+.noMessage.hero_large {
+  --sheet-max: min(60vh, 540px);
+}
+
+.speechWrap {
+  position: absolute;
+  z-index: 3;
+  left: 18px;
+  right: 18px;
+  top: var(--speech-top);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  animation: speechEnter 0.45s ease-out 0.12s both;
+}
+
+.hero_medium .speechWrap,
+.hero_compact .speechWrap {
+  left: 28px;
+  right: 28px;
+}
+
+.sheet {
+  position: relative;
+  z-index: 4;
+  margin-top: auto;
+  max-height: var(--sheet-max);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  animation: sheetEnter 0.5s ease-out 0.08s both;
+}
+
+.sheet_fullHeight {
+  --sheet-max: min(72vh, 640px);
+}
+
+.sheet_elevated .sheetInner {
+  box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.42);
+}
+
+.sheetInner {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 18px var(--pad-x) 12px;
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 24, 52, 0.78) 0%,
+    rgba(19, 15, 34, 0.95) 26%,
+    rgba(19, 15, 34, 0.98) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+  border-top-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* When used without a top app header (welcome / auth / onboarding) */
+.noHeader {
+  --coach-top: calc(18px + env(safe-area-inset-top));
+}
+
+@keyframes coachEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.hero_pointing .coach {
+  animation-name: coachEnterPointing;
+}
+
+@keyframes coachEnterPointing {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes speechEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheetEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-height: 700px) {
+  .hero_large {
+    --coach-h: min(32vh, 230px);
+    --speech-top: calc(var(--coach-top) + min(24vh, 185px));
+    --sheet-max: min(58vh, 480px);
+  }
+
+  .hero_home {
+    --coach-h: min(28vh, 210px);
+    --speech-top: calc(var(--coach-top) + min(21vh, 165px));
+    --sheet-max: min(64vh, 540px);
+  }
+
+  .hero_medium {
+    --coach-h: min(24vh, 180px);
+    --speech-top: calc(var(--coach-top) + min(18vh, 145px));
+    --sheet-max: min(64vh, 520px);
+  }
+
+  .noMessage {
+    --sheet-max: min(68vh, 560px);
+  }
+}

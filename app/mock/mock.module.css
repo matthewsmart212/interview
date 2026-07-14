@@ -1,7 +1,59 @@
-/* ---------- Mock hub — coach-led, app-aligned ---------- */
-
 .shell {
   overflow-x: clip;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sheetHeadCopy {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.sheetSub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+  max-width: 280px;
+}
+
+.sheetBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 0 0 12px;
+  font-family: inherit;
+}
+
+.coachTipPanel {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ---------- coach scene: avatar left, speech card right ---------- */
@@ -159,6 +211,7 @@
   align-items: center;
   gap: 14px;
   width: 100%;
+  text-decoration: none;
   text-align: left;
   overflow: hidden;
   background:
@@ -187,11 +240,11 @@
 }
 
 .bigChoicePrimary {
-  padding: 22px 18px;
-  margin-bottom: 14px;
-  background: var(--gradient-primary);
-  border-color: rgba(196, 181, 253, 0.42);
-  box-shadow: var(--glow-purple-sm), 0 0 24px rgba(124, 92, 255, 0.22);
+  padding: 18px 16px;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
+  border-color: rgba(196, 181, 253, 0.35);
+  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.28);
 }
 
 .bigChoicePrimary .bigChoiceTitle {
@@ -285,6 +338,14 @@
   margin-top: 7px;
   font-size: 11.5px;
   font-weight: 600;
+  color: #c4b5fd;
+}
+
+.bigChoiceCta {
+  display: inline-flex;
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
   color: #c4b5fd;
 }
 

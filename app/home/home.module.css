@@ -1,36 +1,248 @@
-/* Home screen layout — iPhone 13/14/15 (~390px) tuned */
-
 .home {
   overflow-x: clip;
   max-width: 100%;
 }
 
-.choiceDivider {
-  border: none;
-  height: 1px;
-  margin: 33px 0 29px;
-  background: var(--divider);
-}
-
-.choiceGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: stretch;
-  grid-auto-rows: 1fr;
-}
-
-.quickSection {
-  margin-top: 32px;
-  padding-bottom: 8px;
-}
-
-.quickTitle {
-  composes: sectionTitle from "../../components/home/home-shared.module.css";
-}
-
-.quickStack {
+.stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.primaryCard {
+  padding: 14px;
+}
+
+.nextCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.nextCard:hover,
+.nextCard:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+  outline: none;
+}
+
+.nextCard:active {
+  transform: scale(0.99);
+}
+
+.nextMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.nextLabel {
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.nextRole {
+  font-size: 15px;
+  font-weight: 650;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.015em;
+}
+
+.nextCompany {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nextMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dot {
+  opacity: 0.55;
+}
+
+.nextChev {
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+/* Quieter secondary action */
+.secondaryCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.secondaryCard:hover,
+.secondaryCard:focus-visible {
+  border-color: rgba(255, 255, 255, 0.18);
+  outline: none;
+}
+
+.secondaryCard:active {
+  transform: scale(0.99);
+}
+
+.secondaryIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.secondaryBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.secondaryTitle {
+  font-size: 14.5px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.secondarySub {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.35;
+}
+
+.secondaryChev {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: auto;
+}
+
+/* Compact tertiary text action */
+.tertiaryLink {
+  display: block;
+  text-align: center;
+  padding: 6px 8px 2px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+  text-decoration: none;
+}
+
+.tertiaryLink:hover,
+.tertiaryLink:focus-visible {
+  color: rgba(255, 255, 255, 0.88);
+  outline: none;
+}
+
+.recent {
+  margin-top: 14px;
+}
+
+.sectionLabel {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.recentRow:active {
+  opacity: 0.85;
+}
+
+.recentRow:focus-visible {
+  outline: 2px solid rgba(196, 181, 253, 0.55);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+.recentScore {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.recentBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recentTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recentMeta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.recentAction {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 650;
+  color: #c4b5fd;
 }

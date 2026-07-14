@@ -1,3 +1,11 @@
+.sheetTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
 .qcard {
   display: flex;
   gap: 12px;

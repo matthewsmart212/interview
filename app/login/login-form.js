@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import Phone from "../../components/Phone";
+import CoachStage from "../../components/CoachStage";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./auth.module.css";
 
@@ -89,79 +91,85 @@ export default function LoginForm() {
     router.push(next.startsWith("/") ? next : "/home");
   }
 
+  const coachSpeech =
+    mode === "sent"
+      ? "I've sent the link — open your email and you'll be back here with me."
+      : "Sign in and I'll keep your CV, interviews, and progress with your account.";
+
   return (
-    <main className={styles.page}>
-      <div className={styles.card}>
-        <p className={styles.brand}>Interview Coach</p>
-        <h1 className={styles.title}>Sign in to continue</h1>
-        <p className={styles.sub}>
-          Magic link or Google. Your CV, interviews, and progress sync to your account.
-        </p>
+    <Phone immersive>
+      <div className={`screen ${styles.coachScreen}`}>
+        <CoachStage
+          pose={mode === "sent" ? "thumbsup" : "welcoming"}
+          title={mode === "sent" ? "Check your inbox" : "Welcome back"}
+          speech={coachSpeech}
+          noHeader
+        >
+          {error ? <p className={styles.error}>{error}</p> : null}
+          {message ? <p className={styles.success}>{message}</p> : null}
 
-        {error ? <p className={styles.error}>{error}</p> : null}
-        {message ? <p className={styles.success}>{message}</p> : null}
+          {mode !== "sent" ? (
+            <>
+              <form className={styles.form} onSubmit={sendMagicLink}>
+                <label className={styles.label} htmlFor="email">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  className={styles.input}
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={busy}
+                />
+                <button
+                  type="submit"
+                  className={`btn btn-primary ${styles.primary}`}
+                  disabled={busy}
+                >
+                  {busy && mode === "magic" ? "Sending…" : "Email me a magic link"}
+                </button>
+              </form>
 
-        {mode !== "sent" ? (
-          <>
-            <form className={styles.form} onSubmit={sendMagicLink}>
-              <label className={styles.label} htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                className={styles.input}
-                type="email"
-                autoComplete="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={busy}
-              />
+              <div className={styles.divider}>
+                <span>or</span>
+              </div>
+
               <button
-                type="submit"
-                className={`btn btn-primary ${styles.primary}`}
+                type="button"
+                className={styles.google}
+                onClick={signInWithGoogle}
                 disabled={busy}
               >
-                {busy && mode === "magic" ? "Sending…" : "Email me a magic link"}
+                {busy && mode === "google" ? "Redirecting…" : "Continue with Google"}
               </button>
-            </form>
-
-            <div className={styles.divider}>
-              <span>or</span>
-            </div>
-
+            </>
+          ) : (
             <button
               type="button"
-              className={styles.google}
-              onClick={signInWithGoogle}
-              disabled={busy}
+              className={`btn btn-primary ${styles.primary}`}
+              onClick={() => {
+                setMode("idle");
+                setMessage("");
+              }}
             >
-              {busy && mode === "google" ? "Redirecting…" : "Continue with Google"}
+              Use a different email
             </button>
-          </>
-        ) : (
-          <button
-            type="button"
-            className={`btn btn-primary ${styles.primary}`}
-            onClick={() => {
-              setMode("idle");
-              setMessage("");
-            }}
-          >
-            Use a different email
-          </button>
-        )}
+          )}
 
-        <div className={styles.footer}>
-          <button type="button" className={styles.linkish} onClick={continueLocal}>
-            Continue without account (local only)
-          </button>
-          <div>
-            New here?{" "}
-            <Link href="/welcome">Start onboarding</Link>
+          <div className={styles.footer}>
+            <button type="button" className={styles.linkish} onClick={continueLocal}>
+              Continue without account (local only)
+            </button>
+            <div>
+              New here?{" "}
+              <Link href="/">Get started</Link>
+            </div>
           </div>
-        </div>
+        </CoachStage>
       </div>
-    </main>
+    </Phone>
   );
 }

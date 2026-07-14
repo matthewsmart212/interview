@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "../../components/Avatar";
-import PageHeader from "../../components/PageHeader";
 import { AppShell, PageSection } from "../../components/ui";
 import {
   Mic,
@@ -15,13 +14,12 @@ import {
   ChevronRight,
   Clock,
   Lightbulb,
-  Upload,
   Check,
-  Sparkle,
   Play,
+  ChevronLeft,
 } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
-import { uploadMasterCv } from "../../lib/db";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import {
   saveMockSetup,
   buildInterviewHref,
@@ -31,7 +29,6 @@ import { clearSession, clearResult } from "../../lib/interview-session";
 import { MOCK_DURATION_LABEL } from "../../lib/config/product";
 import s from "./mock.module.css";
 
-const JD_MIN_CHARS = 80;
 const DURATION_LABEL = MOCK_DURATION_LABEL;
 
 const PREP_CHECKLIST = [
@@ -53,15 +50,9 @@ function haptic(ms = 8) {
   }
 }
 
-function friendlyCvName(opt) {
-  if (!opt || opt.id === "none") return "Quick practice";
-  return opt.label.replace(/\.[^.]+$/, "").replace(/-/g, " ");
-}
-
-function cvSubtitle(opt) {
-  if (!opt || opt.id === "none") return "Generic feedback only";
-  if (opt.badge === "Default") return "Default Resume";
-  return opt.badge || opt.meta;
+function friendlyCvName(fileName) {
+  if (!fileName) return "No CV yet";
+  return fileName.replace(/\.[^.]+$/, "").replace(/-/g, " ");
 }
 
 function TimeBadge({ className = "" }) {
@@ -83,42 +74,24 @@ function StepDots({ step, total = 2 }) {
   );
 }
 
-function CoachBubble({ pose = "welcoming", title, children, tips }) {
-  return (
-    <div className={s.coachScene}>
-      <div className={s.coachSceneAvatar} aria-hidden>
-        <Avatar pose={pose} alt="" className={s.coachSceneImg} />
-      </div>
-      <div className={s.coachBubble}>
-        {title ? <p className={s.coachBubbleTitle}>{title}</p> : null}
-        <div className={s.coachBubbleText}>{children}</div>
-        {tips?.length ? (
-          <ul className={s.coachTips}>
-            {tips.map((tip) => (
-              <li key={tip}>{tip}</li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    </div>
-  );
+function CoachTip({ children }) {
+  return <div className={s.coachTipPanel}>{children}</div>;
 }
 
-function BigChoice({
+function ChoiceCard({
   icon: Icon,
   title,
   sub,
   onClick,
+  href,
   primary = false,
   accent = "mic",
   meta,
+  ctaLabel,
 }) {
-  return (
-    <button
-      type="button"
-      className={`${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`}
-      onClick={onClick}
-    >
+  const className = `${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`;
+  const body = (
+    <>
       <span className={s.bigChoiceIcon} aria-hidden>
         <Icon size={primary ? 26 : 22} />
       </span>
@@ -126,8 +99,23 @@ function BigChoice({
         <span className={s.bigChoiceTitle}>{title}</span>
         <span className={s.bigChoiceSub}>{sub}</span>
         {meta ? <span className={s.bigChoiceMeta}>{meta}</span> : null}
+        {ctaLabel ? <span className={s.bigChoiceCta}>{ctaLabel}</span> : null}
       </span>
       <ChevronRight size={18} className={s.bigChoiceChev} aria-hidden />
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {body}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" className={className} onClick={onClick}>
+      {body}
     </button>
   );
 }
@@ -137,7 +125,9 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
     return (
       <div className={s.emptyState}>
         <p className={s.emptyTitle}>No interviews yet</p>
-        <p className={s.emptySub}>Add one and we&apos;ll tailor your mock to it.</p>
+        <p className={s.emptySub}>
+          Add one and we&apos;ll practice against that role and job description.
+        </p>
         <Link href="/interviews/new" className={`btn btn-primary btn-pill ${s.emptyCta}`}>
           <Plus size={14} /> Add your first interview
         </Link>
@@ -188,13 +178,7 @@ function InterviewPicker({ interviews, selectedId, onSelect }) {
   );
 }
 
-function MissionCard({
-  title,
-  subtitle,
-  focusAreas,
-  cv,
-  onChangeCv,
-}) {
+function MissionCard({ title, subtitle, focusAreas, cvLabel, hasCv }) {
   return (
     <div className={s.missionCard}>
       <div className={s.missionHead}>
@@ -220,112 +204,49 @@ function MissionCard({
         </div>
       ) : null}
 
-      <button type="button" className={s.missionCv} onClick={onChangeCv}>
+      <div className={s.missionCv}>
         <span className={s.missionCvThumb} aria-hidden>
           <FileText size={18} />
         </span>
         <span className={s.missionCvBody}>
           <span className={s.missionCvLabel}>CV</span>
-          <span className={s.missionCvName}>{friendlyCvName(cv)}</span>
+          <span className={s.missionCvName}>{friendlyCvName(hasCv ? cvLabel : null)}</span>
           <span className={s.missionCvSub}>
-            {cvSubtitle(cv)}
-            {cv.score != null ? ` · AI Match ${cv.score}%` : ""}
+            {hasCv ? "Your permanent CV" : "Optional — upload for richer feedback"}
           </span>
         </span>
-        <span className={s.missionCvChange}>Change</span>
-      </button>
+        {!hasCv ? (
+          <Link href="/cv/upload" className={s.missionCvChange}>
+            Upload
+          </Link>
+        ) : (
+          <Link href="/cv/upload" className={s.missionCvChange}>
+            View
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
 
-function CvBottomSheet({ open, onClose, options, selectedId, onSelect, onUpload }) {
-  useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
+function CvNudge() {
   return (
-    <AnimatePresence>
-      {open ? (
-        <>
-          <motion.button
-            type="button"
-            className={s.sheetBackdrop}
-            aria-label="Close CV picker"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          <motion.div
-            className={s.sheetPanel}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Choose a CV"
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ type: "spring", damping: 34, stiffness: 400 }}
-          >
-            <div className={s.sheetHandle} aria-hidden />
-            <h3 className={s.sheetTitle}>Choose a CV</h3>
-            <div className={s.sheetList} role="listbox">
-              {options.map((opt) => {
-                const selected = selectedId === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    role="option"
-                    aria-selected={selected}
-                    className={`${s.sheetCvRow} ${selected ? s.sheetCvRowSelected : ""}`}
-                    onClick={() => {
-                      onSelect(opt.id);
-                      onClose();
-                    }}
-                  >
-                    <span className={s.sheetCvThumb} aria-hidden>
-                      <FileText size={16} />
-                    </span>
-                    <span className={s.sheetCvBody}>
-                      <span className={s.sheetCvName}>{friendlyCvName(opt)}</span>
-                      <span className={s.sheetCvMeta}>{cvSubtitle(opt)}</span>
-                      {opt.score != null ? (
-                        <span className={s.sheetCvScore}>
-                          <Sparkle size={9} /> AI Match {opt.score}%
-                        </span>
-                      ) : null}
-                    </span>
-                    {selected ? (
-                      <span className={s.sheetCvCheck} aria-hidden>
-                        <Check size={12} stroke={3} />
-                      </span>
-                    ) : null}
-                  </button>
-                );
-              })}
-            </div>
-            <button type="button" className={s.sheetUploadBtn} onClick={onUpload}>
-              <Upload size={16} />
-              Upload another CV
-            </button>
-          </motion.div>
-        </>
-      ) : null}
-    </AnimatePresence>
+    <p className={s.flowLinks}>
+      No CV yet —{" "}
+      <Link href="/cv/upload" className="link-btn">
+        upload one
+      </Link>{" "}
+      for richer, experience-aware feedback. You can still practice without it.
+    </p>
   );
 }
 
 function ThinkingPrep({ lines, done }) {
   const progress = (done / lines.length) * 100;
   const allDone = done >= lines.length;
-  const speech =
-    allDone
-      ? "Perfect — I'm ready when you are."
-      : lines[Math.min(done, lines.length - 1)]?.speech;
+  const speech = allDone
+    ? "Perfect — I'm ready when you are."
+    : lines[Math.min(done, lines.length - 1)]?.speech;
 
   return (
     <div className={s.thinkingPrep}>
@@ -449,102 +370,35 @@ function LaunchOverlay({ beat, onDone }) {
 
 export default function MockHubPage() {
   const router = useRouter();
-  const fileRef = useRef(null);
-  const cvUploadRef = useRef(null);
-  const { INTERVIEWS, MASTER_CV, CV_HISTORY, USER } = useAppDb();
+  const db = useAppDb();
+  const { MASTER_CV } = db;
+  const journey = journeyStateFromDb(db);
+  const upcoming = journey.upcoming;
 
-  // home | interview | jd | ready | checking
+  // home | context | ready | checking
   const [screen, setScreen] = useState("home");
   const [contextMode, setContextMode] = useState(null);
   const [selectedInterviewId, setSelectedInterviewId] = useState(null);
-  const [jdText, setJdText] = useState("");
-  const [jdFileName, setJdFileName] = useState(null);
-  const [jdTab, setJdTab] = useState("paste");
-  const [jdProcessing, setJdProcessing] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
-  const [selectedCvId, setSelectedCvId] = useState("master");
-  const [cvSheetOpen, setCvSheetOpen] = useState(false);
   const [reviewDone, setReviewDone] = useState(0);
   const [phase, setPhase] = useState("wizard"); // wizard | launching
   const [launchBeat, setLaunchBeat] = useState(0);
 
-  const upcoming = useMemo(
-    () =>
-      INTERVIEWS.filter((i) => i.status === "upcoming").sort(
-        (a, b) => a.daysAway - b.daysAway
-      ),
-    [INTERVIEWS]
-  );
-
-  const cvOptions = useMemo(() => {
-    const recent = CV_HISTORY[0];
-    const options = [];
-    if (MASTER_CV?.exists) {
-      options.push({
-        id: "master",
-        type: "master",
-        label: MASTER_CV.fileName,
-        edited: MASTER_CV.updatedAt,
-        score: MASTER_CV.score,
-        meta: `Master CV · score ${MASTER_CV.score}`,
-        badge: "Default",
-        badgeCls: "ready",
-      });
-    }
-    options.push(
-      ...CV_HISTORY.filter((c) => !c.current).map((c) => ({
-        id: c.id,
-        type: "upload",
-        label: c.fileName,
-        edited: c.uploadedAt,
-        score: c.score,
-        meta: `Uploaded ${c.uploadedAt}`,
-        badge: recent?.id === c.id ? "Most recent" : null,
-        badgeCls: "upcoming",
-      })),
-      ...INTERVIEWS.filter((iv) => iv.tailoredCv?.exists).map((iv) => ({
-        id: `tailored-${iv.id}`,
-        type: "tailored",
-        label: `${iv.company} — tailored`,
-        edited: iv.tailoredCv.updatedAt,
-        score: iv.tailoredCv.score,
-        meta: iv.role,
-        badge: "Tailored",
-        badgeCls: "upcoming",
-      })),
-      {
-        id: "none",
-        type: "none",
-        label: "Quick practice — no CV",
-        edited: null,
-        score: null,
-        meta: "Generic feedback only",
-        badge: null,
-        badgeCls: "",
-      }
-    );
-    return options;
-  }, [INTERVIEWS, MASTER_CV, CV_HISTORY]);
-
   const selectedInterview = upcoming.find((i) => i.id === selectedInterviewId);
-  const selectedCv = cvOptions.find((c) => c.id === selectedCvId) ?? cvOptions[0];
+  const hasCv = Boolean(MASTER_CV?.exists);
+  const cvLabel = MASTER_CV?.fileName || "No CV yet";
 
   const contextLabel = useCallback(() => {
-    if (contextMode === "generic") return "Generic Practice";
     if (contextMode === "interview" && selectedInterview) {
       return selectedInterview.role;
     }
-    if (contextMode === "jd") {
-      return jdFileName ? jdFileName.replace(/\.[^.]+$/, "") : "Job Description Practice";
-    }
+    if (contextMode === "generic") return "Generic Practice";
     return "Mock Practice";
-  }, [contextMode, selectedInterview, jdFileName]);
+  }, [contextMode, selectedInterview]);
 
   const missionSubtitle = useMemo(() => {
     if (contextMode === "interview" && selectedInterview) {
       return selectedInterview.company;
     }
-    if (contextMode === "jd") return "From your job description";
     return "AI Coach · behavioural practice";
   }, [contextMode, selectedInterview]);
 
@@ -552,16 +406,8 @@ export default function MockHubPage() {
     if (contextMode === "interview" && selectedInterview) {
       return ["Role-specific", "Behavioural", "Communication", "Confidence"];
     }
-    if (contextMode === "jd") {
-      return ["Role fit", "Behavioural", "Communication", "Confidence"];
-    }
     return ["Behavioural", "Communication", "Customer service", "Confidence"];
   }, [contextMode, selectedInterview]);
-
-  const cvLabel =
-    selectedCvId === "none"
-      ? "No CV"
-      : selectedCv?.label ?? MASTER_CV?.fileName ?? "CV";
 
   const reviewComplete = reviewDone >= PREP_CHECKLIST.length;
 
@@ -575,12 +421,6 @@ export default function MockHubPage() {
     return () => window.clearTimeout(t);
   }, [screen, reviewDone, reviewComplete]);
 
-  function canContinueJd() {
-    if (jdProcessing) return false;
-    if (jdTab === "paste") return jdText.trim().length >= JD_MIN_CHARS;
-    return Boolean(jdFileName && jdText.trim());
-  }
-
   function selectGeneric() {
     haptic();
     setContextMode("generic");
@@ -591,13 +431,7 @@ export default function MockHubPage() {
     haptic();
     setContextMode("interview");
     if (!selectedInterviewId && upcoming[0]) setSelectedInterviewId(upcoming[0].id);
-    setScreen("interview");
-  }
-
-  function openJd() {
-    haptic();
-    setContextMode("jd");
-    setScreen("jd");
+    setScreen("context");
   }
 
   function handleInterviewSelect(id) {
@@ -605,35 +439,10 @@ export default function MockHubPage() {
     setSelectedInterviewId(id);
   }
 
-  function continueFromInterview() {
+  function continueFromContext() {
     if (!selectedInterviewId) return;
     haptic();
     setScreen("ready");
-  }
-
-  function continueFromJd() {
-    if (!canContinueJd()) return;
-    haptic();
-    setScreen("ready");
-  }
-
-  function handleCvSelect(id) {
-    haptic();
-    setSelectedCvId(id);
-  }
-
-  function handleJdFile(file) {
-    if (!file) return;
-    setJdProcessing(true);
-    setJdFileName(null);
-    setJdText("");
-    window.setTimeout(() => {
-      setJdFileName(file.name);
-      setJdText(
-        `Role requirements extracted from ${file.name}.\n\nWe're looking for a friendly, reliable team member who communicates clearly and stays calm under pressure.`
-      );
-      setJdProcessing(false);
-    }, 1200);
   }
 
   function goBack() {
@@ -643,12 +452,21 @@ export default function MockHubPage() {
       return;
     }
     if (screen === "ready") {
-      if (contextMode === "interview") setScreen("interview");
-      else if (contextMode === "jd") setScreen("jd");
+      if (contextMode === "interview") setScreen("context");
       else setScreen("home");
       return;
     }
     setScreen("home");
+  }
+
+  function buildConfig() {
+    return {
+      contextMode,
+      contextLabel: contextLabel(),
+      interviewId: contextMode === "interview" ? selectedInterviewId : undefined,
+      hasCv,
+      cvLabel,
+    };
   }
 
   function beginChecking() {
@@ -668,30 +486,15 @@ export default function MockHubPage() {
     setPhase("launching");
   }
 
-  function buildConfig() {
-    return {
-      contextMode,
-      contextLabel: contextLabel(),
-      interviewId: contextMode === "interview" ? selectedInterviewId : undefined,
-      jdText: contextMode === "jd" ? jdText : undefined,
-      jdFileName: contextMode === "jd" ? jdFileName ?? undefined : undefined,
-      cvId: selectedCvId,
-      cvType: selectedCv?.type ?? "master",
-      cvLabel,
-    };
-  }
-
   function finishLaunch(nextBeat) {
     if (nextBeat < 0) {
-      router.push(buildInterviewHref({ ...buildConfig(), version: 1 }));
+      router.push(buildInterviewHref({ ...buildConfig(), version: 2 }));
       return;
     }
     setLaunchBeat(nextBeat);
   }
 
   const headerMeta = useMemo(() => {
-    const showSteps = contextMode === "interview" || contextMode === "jd";
-
     if (screen === "home") {
       return {
         title: "Mock interview",
@@ -700,18 +503,10 @@ export default function MockHubPage() {
         step: null,
       };
     }
-    if (screen === "interview") {
+    if (screen === "context") {
       return {
         title: "Mock interview",
         description: "Choose an upcoming interview",
-        back: true,
-        step: 1,
-      };
-    }
-    if (screen === "jd") {
-      return {
-        title: "Mock interview",
-        description: "Add a job description",
         back: true,
         step: 1,
       };
@@ -721,58 +516,84 @@ export default function MockHubPage() {
         title: "Mock interview",
         description: "Your interview is ready",
         back: true,
-        step: showSteps ? 2 : null,
+        step: contextMode === "interview" ? 2 : null,
       };
     }
     return {
       title: "Mock interview",
       description: "Your coach is preparing",
       back: true,
-      step: showSteps ? 2 : null,
+      step: contextMode === "interview" ? 2 : null,
     };
   }, [screen, contextMode]);
 
   function renderHome() {
+    const nearest = journey.nearestUpcoming;
+    const preferInterview = journey.hasUpcoming && Boolean(nearest);
+
     return (
       <div className="anim-fade-up">
-        <CoachBubble pose="welcoming" title={`Ready for an interview, ${USER.name}?`}>
-          <p>
-            I&apos;ll ask realistic questions and give you clear feedback after
-            every session — just like a real interviewer.
-          </p>
-          <TimeBadge className={s.timeBadgeInBubble} />
-        </CoachBubble>
-
-        <h1 className="page-h1">How do you want to practice?</h1>
-        <p className="page-sub">Pick a focus and I&apos;ll set up your session.</p>
+        <div className={s.sheetHead}>
+          <div className={s.sheetHeadCopy}>
+            <h1 className={s.sheetTitle}>How do you want to practise?</h1>
+            <p className={s.sheetSub}>
+              {preferInterview
+                ? "Choose a quick general mock or practise for a saved interview."
+                : "Start with a general mock, or add an interview for tailored practice."}
+            </p>
+          </div>
+          <TimeBadge />
+        </div>
 
         <div className={s.choiceStack}>
-          <BigChoice
-            icon={Mic}
-            title="Generic practice"
-            sub="Great for any interview."
-            meta={`⏱ ${DURATION_LABEL}`}
-            onClick={selectGeneric}
-            primary
-            accent="mic"
-          />
-          <BigChoice
-            icon={Calendar}
-            title="Upcoming interview"
-            sub="Tailored to a role you've already saved."
-            meta={`⏱ ${DURATION_LABEL}`}
-            onClick={openInterview}
-            accent="calendar"
-          />
-          <BigChoice
-            icon={FileText}
-            title="Job description"
-            sub="Paste a job description for tailored questions."
-            meta={`⏱ ${DURATION_LABEL}`}
-            onClick={openJd}
-            accent="file"
-          />
+          {preferInterview ? (
+            <>
+              <ChoiceCard
+                icon={Calendar}
+                title="Upcoming interview"
+                sub={`${nearest.role} at ${nearest.company}`}
+                meta={
+                  journey.nearestReadiness != null
+                    ? `Readiness ${journey.nearestReadiness}% · ${DURATION_LABEL}`
+                    : DURATION_LABEL
+                }
+                onClick={openInterview}
+                primary
+                accent="calendar"
+              />
+              <ChoiceCard
+                icon={Mic}
+                title="Generic practice"
+                sub="Build confidence with common interview questions."
+                meta={DURATION_LABEL}
+                onClick={selectGeneric}
+                accent="mic"
+              />
+            </>
+          ) : (
+            <>
+              <ChoiceCard
+                icon={Mic}
+                title="Generic practice"
+                sub="Build confidence with common interview questions."
+                meta={DURATION_LABEL}
+                onClick={selectGeneric}
+                primary
+                accent="mic"
+              />
+              <ChoiceCard
+                icon={Plus}
+                title="Practise for an interview"
+                sub="Add an upcoming interview to get tailored questions."
+                ctaLabel="Add interview"
+                href="/interviews/new"
+                accent="calendar"
+              />
+            </>
+          )}
         </div>
+
+        {!hasCv ? <CvNudge /> : null}
 
         <PageSection title="More" className={s.moreSection}>
           <div className="stack">
@@ -802,13 +623,16 @@ export default function MockHubPage() {
     );
   }
 
-  function renderInterview() {
+  function renderContext() {
     return (
       <div className="anim-fade-up">
+        <button type="button" className={s.sheetBack} onClick={goBack}>
+          <ChevronLeft size={18} /> Back
+        </button>
         <StepDots step={1} />
-        <CoachBubble pose="presenting" title="Which interview should we prep for?">
-          <p>I&apos;ll tailor questions to this role and company.</p>
-        </CoachBubble>
+        <CoachTip>
+          I&apos;ll use that role and job description to shape the questions.
+        </CoachTip>
         <InterviewPicker
           interviews={upcoming}
           selectedId={selectedInterviewId}
@@ -826,7 +650,7 @@ export default function MockHubPage() {
             type="button"
             className={`btn btn-primary ${s.primaryCta}`}
             disabled={!selectedInterviewId}
-            onClick={continueFromInterview}
+            onClick={continueFromContext}
           >
             Continue <ChevronRight size={16} />
           </button>
@@ -835,131 +659,32 @@ export default function MockHubPage() {
     );
   }
 
-  function renderJd() {
-    const pasteHint =
-      jdTab === "paste" &&
-      jdText.trim().length > 0 &&
-      jdText.trim().length < JD_MIN_CHARS;
-
-    return (
-      <div className="anim-fade-up">
-        <StepDots step={1} />
-        <CoachBubble pose="thinking" title="Share the job description">
-          <p>Paste the posting or upload a file — I&apos;ll build questions from it.</p>
-        </CoachBubble>
-
-        <div className={s.jdTabs} role="tablist">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={jdTab === "paste"}
-            className={`${s.jdTab} ${jdTab === "paste" ? s.jdTabActive : ""}`}
-            onClick={() => setJdTab("paste")}
-          >
-            Paste text
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={jdTab === "upload"}
-            className={`${s.jdTab} ${jdTab === "upload" ? s.jdTabActive : ""}`}
-            onClick={() => setJdTab("upload")}
-          >
-            Upload file
-          </button>
-        </div>
-
-        {jdTab === "paste" ? (
-          <div className={s.jdArea}>
-            <textarea
-              className="textarea"
-              rows={5}
-              value={jdText}
-              onChange={(e) => setJdText(e.target.value)}
-              placeholder="Paste the job description…"
-            />
-            {pasteHint ? <p className={s.jdHint}>A little more detail needed</p> : null}
-          </div>
-        ) : (
-          <div className={s.jdUploadWrap}>
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".pdf,.doc,.docx,.txt"
-              className={s.fileInput}
-              onChange={(e) => handleJdFile(e.target.files?.[0])}
-            />
-            <button
-              type="button"
-              className={`${s.dropzone} ${dragOver ? s.dropzoneOver : ""} ${jdFileName ? s.dropzoneDone : ""} ${jdProcessing ? s.dropzoneBusy : ""}`}
-              onClick={() => !jdProcessing && fileRef.current?.click()}
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={(e) => {
-                e.preventDefault();
-                setDragOver(false);
-                handleJdFile(e.dataTransfer?.files?.[0]);
-              }}
-              disabled={jdProcessing}
-            >
-              <span className={s.dropIcon} aria-hidden>
-                {jdProcessing ? (
-                  <span className={s.dropSpinner} />
-                ) : jdFileName ? (
-                  <Check size={22} />
-                ) : (
-                  <Upload size={22} />
-                )}
-              </span>
-              <span className={s.dropTitle}>
-                {jdProcessing
-                  ? "Reading file…"
-                  : jdFileName || "Choose a job description file"}
-              </span>
-              <span className={s.dropSub}>PDF, DOCX or TXT</span>
-            </button>
-          </div>
-        )}
-
-        <button
-          type="button"
-          className={`btn btn-primary ${s.primaryCta}`}
-          disabled={!canContinueJd()}
-          onClick={continueFromJd}
-        >
-          Continue <ChevronRight size={16} />
-        </button>
-      </div>
-    );
-  }
-
   function renderReady() {
-    const showSteps = contextMode === "interview" || contextMode === "jd";
+    const showSteps = contextMode === "interview";
     return (
       <div className="anim-fade-up">
+        {headerMeta.back ? (
+          <button type="button" className={s.sheetBack} onClick={goBack}>
+            <ChevronLeft size={18} /> Back
+          </button>
+        ) : null}
         {showSteps ? <StepDots step={2} /> : null}
 
-        <CoachBubble
-          pose="thumbsup"
-          title="Great choice."
-          tips={["Speak naturally", "It's okay to pause", "We'll review everything afterwards"]}
-        >
-          <p>
-            I&apos;ve reviewed your CV and I&apos;m going to challenge you just like
-            a real interviewer would.
-          </p>
-        </CoachBubble>
+        <CoachTip>
+          {hasCv
+            ? "I've reviewed your CV — speak naturally, pause if you need to, and we'll review everything afterwards."
+            : "Speak naturally and pause if you need to. Upload a CV anytime for richer feedback."}
+        </CoachTip>
 
         <MissionCard
           title={contextLabel()}
           subtitle={missionSubtitle}
           focusAreas={focusAreas}
-          cv={selectedCv}
-          onChangeCv={() => setCvSheetOpen(true)}
+          cvLabel={cvLabel}
+          hasCv={hasCv}
         />
+
+        {!hasCv ? <CvNudge /> : null}
 
         <button
           type="button"
@@ -969,31 +694,6 @@ export default function MockHubPage() {
           <Play size={15} /> Begin Interview
         </button>
         <p className={s.reassurance}>You can leave at any time.</p>
-
-        <input
-          ref={cvUploadRef}
-          type="file"
-          accept=".pdf,.doc,.docx"
-          className={s.fileInput}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            uploadMasterCv({ fileName: file.name });
-            setSelectedCvId("master");
-            e.target.value = "";
-          }}
-        />
-        <CvBottomSheet
-          open={cvSheetOpen}
-          onClose={() => setCvSheetOpen(false)}
-          options={cvOptions}
-          selectedId={selectedCvId}
-          onSelect={handleCvSelect}
-          onUpload={() => {
-            setCvSheetOpen(false);
-            cvUploadRef.current?.click();
-          }}
-        />
       </div>
     );
   }
@@ -1022,26 +722,53 @@ export default function MockHubPage() {
     );
   }
 
+  const coachByScreen = {
+    home: {
+      pose: "welcoming",
+      title: undefined,
+      speech: undefined,
+      heroVariant: "large",
+      messageVariant: "none",
+    },
+    context: {
+      pose: "presenting",
+      title: "Which interview?",
+      speech: "Pick one and I'll shape the questions around that role.",
+      heroVariant: "medium",
+      messageVariant: "compact",
+    },
+    ready: {
+      pose: "thumbsup",
+      title: "Great choice.",
+      speech: "I'm ready when you are. Let's begin when you tap below.",
+      heroVariant: "medium",
+      messageVariant: "compact",
+    },
+    checking: {
+      pose: "thinking",
+      title: "Give me a moment…",
+      speech: "I'm reviewing your CV and calibrating the session.",
+      heroVariant: "medium",
+      messageVariant: "compact",
+    },
+  };
+  const coach = coachByScreen[screen] || coachByScreen.home;
+
   return (
-    <AppShell navActive="mock" className={s.shell}>
+    <AppShell
+      navActive="mock"
+      className={s.shell}
+      coachPose={coach.pose}
+      coachTitle={coach.title}
+      coachSpeech={coach.speech}
+      heroVariant={coach.heroVariant}
+      messageVariant={coach.messageVariant}
+      sheetVariant={screen === "home" ? "elevated" : "standard"}
+    >
       {phase === "wizard" ? (
         <>
-          <PageHeader
-            icon="mic"
-            title={headerMeta.title}
-            description={headerMeta.description}
-            back={headerMeta.back}
-            onBack={headerMeta.back ? goBack : undefined}
-            right={
-              headerMeta.step ? (
-                <span className="step-count">Step {headerMeta.step} of 2</span>
-              ) : null
-            }
-          />
-
           {screen === "home" ? renderHome() : null}
-          {screen === "interview" ? renderInterview() : null}
-          {screen === "jd" ? renderJd() : null}
+          {screen === "context" ? renderContext() : null}
           {screen === "ready" ? renderReady() : null}
           {screen === "checking" ? renderChecking() : null}
         </>
