@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "../../components/Avatar";
-import { AppShell } from "../../components/ui";
+import { AppShell, SheetPageTitle } from "../../components/ui";
 import {
   Mic,
   Calendar,
@@ -560,9 +560,8 @@ export default function MockHubPage() {
 
     return (
       <div className={`anim-fade-up ${s.homeSheet}`}>
-        <div className={s.sheetHead}>
-          <h1 className={s.sheetTitle}>How do you want to practise?</h1>
-        </div>
+        <SheetPageTitle>Mock</SheetPageTitle>
+        <p className={s.sheetLead}>How do you want to practise?</p>
 
         <div className={s.choiceStack}>
           {preferInterview ? (

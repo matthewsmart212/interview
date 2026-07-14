@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AppShell } from "../../components/ui";
+import { AppShell, SheetPageTitle } from "../../components/ui";
 import {
   Edit,
   Sparkle,
@@ -87,6 +87,8 @@ export default function ProfilePage() {
       heroVariant="medium"
       messageVariant="compact"
     >
+      <SheetPageTitle>Profile</SheetPageTitle>
+
       <div className={s.hero}>
         <div className={s.heroText}>
           {editing ? (

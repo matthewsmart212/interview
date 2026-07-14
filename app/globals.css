@@ -215,6 +215,29 @@ body:has(.interview-route),
   min-height: 0;
 }
 
+/* Page title at the top of every coach content panel */
+.sheet-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+  min-height: 32px;
+}
+.sheet-page-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.sheet-page-action {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
 /*
   Bottom content spacer = nav height + safe-area + 20px.
   On flat screens this spacer sits in the scroll flow.

@@ -5,6 +5,7 @@ import {
   AppShell,
   EmptyProgressState,
   ReadinessRing,
+  SheetPageTitle,
 } from "../../components/ui";
 import { ChevronRight } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
@@ -53,6 +54,8 @@ export default function ProgressPage() {
       sheetVariant="elevated"
       messageClampLines={2}
     >
+      <SheetPageTitle>Progress</SheetPageTitle>
+
       {!hasMocks ? (
         <EmptyProgressState />
       ) : (

@@ -38,6 +38,15 @@
   max-width: 280px;
 }
 
+.sheetLead {
+  margin: -6px 0 14px;
+  font-size: 14.5px;
+  font-weight: 550;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+}
+
 .sheetBack {
   display: inline-flex;
   align-items: center;

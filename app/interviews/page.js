@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   AppShell,
   InterviewCard,
+  SheetPageTitle,
 } from "../../components/ui";
 import { Plus } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
@@ -36,12 +37,15 @@ export default function InterviewsPage() {
       sheetVariant="elevated"
       messageClampLines={2}
     >
-      <div className={s.sheetHead}>
-        <p className={s.sheetTitle}>Interviews</p>
-        <Link href="/interviews/new" className={s.addBtn}>
-          <Plus size={15} stroke={2.6} /> Add
-        </Link>
-      </div>
+      <SheetPageTitle
+        action={
+          <Link href="/interviews/new" className={s.addBtn}>
+            <Plus size={15} stroke={2.6} /> Add
+          </Link>
+        }
+      >
+        Interviews
+      </SheetPageTitle>
 
       <section className={s.block}>
         <p className={s.sectionLabel}>Upcoming</p>

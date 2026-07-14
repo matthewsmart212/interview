@@ -1,5 +1,6 @@
 export { default as AppShell } from "./AppShell";
 export { default as MobilePageLayout } from "./MobilePageLayout";
+export { default as SheetPageTitle } from "./SheetPageTitle";
 export { default as TopHeader } from "./TopHeader";
 export { default as BottomNav } from "../BottomNav";
 export { default as SheetBack } from "../SheetBack";

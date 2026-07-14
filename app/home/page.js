@@ -6,6 +6,7 @@ import {
   AppShell,
   PrimaryActionCard,
   ReadinessRing,
+  SheetPageTitle,
 } from "../../components/ui";
 import { Mic, Calendar, ChevronRight } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
@@ -86,6 +87,8 @@ export default function HomePage() {
       sheetVariant="standard"
       messageClampLines={2}
     >
+      <SheetPageTitle>Home</SheetPageTitle>
+
       {hasUpcoming ? (
         <>
           <Link href={`/interviews/${next.id}`} className={styles.nextCard}>
