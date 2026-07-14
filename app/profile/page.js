@@ -76,6 +76,7 @@ export default function ProfilePage() {
 
   return (
     <AppShell
+      navActive="profile"
       coachPose="idle"
       coachTitle={displayName}
       coachSpeech={

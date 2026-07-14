@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, BarChart, Mic } from "./Icons";
+import { Home, Calendar, BarChart, Mic, User } from "./Icons";
 
 const ITEMS = [
   { href: "/home", label: "Home", Icon: Home, key: "home" },
   { href: "/interviews", label: "Interviews", Icon: Calendar, key: "interviews" },
   { href: "/mock", label: "Mock", Icon: Mic, key: "mock", center: true },
   { href: "/progress", label: "Progress", Icon: BarChart, key: "progress" },
+  { href: "/profile", label: "Profile", Icon: User, key: "profile" },
 ];
 
 export default function BottomNav({ active }) {

@@ -51,19 +51,21 @@ export default function CoachStage({
         />
       </div>
 
-      {showMessage ? (
-        <div className={styles.speechWrap}>
-          <CoachMessage
-            title={title}
-            speech={speech}
-            variant={messageVariant === "compact" ? "compact" : "default"}
-            clampLines={messageClampLines}
-          />
-        </div>
-      ) : null}
+      <div className={styles.content}>
+        {showMessage ? (
+          <div className={styles.speechWrap}>
+            <CoachMessage
+              title={title}
+              speech={speech}
+              variant={messageVariant === "compact" ? "compact" : "default"}
+              clampLines={messageClampLines}
+            />
+          </div>
+        ) : null}
 
-      <div className={styles.sheet}>
-        <div className={styles.sheetInner}>{children}</div>
+        <div className={styles.sheet}>
+          <div className={styles.sheetInner}>{children}</div>
+        </div>
       </div>
     </div>
   );

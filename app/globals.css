@@ -174,7 +174,12 @@ body:has(.interview-route),
 }
 .phone.immersive-shell {
   background: transparent;
+  /* Lock to the dynamic viewport so browser UI never adds document scroll
+     (only the sheet scrolls). Fixes content overlapping the coach/greeting. */
+  height: 100dvh;
   min-height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
 }
 
 .screen {
@@ -251,7 +256,8 @@ body:has(.coach-route) .app-header {
 }
 
 body:has(.coach-route) {
-  background: var(--interview-room) !important;
+  /* Dark shell behind the room image — no purple bleed in status/safe areas */
+  background: #141026 !important;
 }
 
 body:has(.coach-route) .app-shell {

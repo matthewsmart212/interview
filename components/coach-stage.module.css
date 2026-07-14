@@ -88,11 +88,6 @@
   --sheet-max: min(62dvh, 560px);
 }
 
-.hero_home .speechWrap {
-  left: 20px;
-  right: 20px;
-}
-
 .hero_home .sheetInner {
   padding-top: 16px;
 }
@@ -112,11 +107,6 @@
   --coach-h: min(34dvh, 268px);
   --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
   --sheet-max: min(56dvh, 500px);
-}
-
-.hero_progress .speechWrap {
-  left: 22px;
-  right: 22px;
 }
 
 .hero_progress .sheetInner {
@@ -156,11 +146,6 @@
   animation-name: coachEnterPointing;
 }
 
-.hero_interviews .speechWrap {
-  left: 20px;
-  right: 20px;
-}
-
 .hero_interviews .sheetInner {
   padding-top: 14px;
 }
@@ -197,28 +182,32 @@
   padding-top: 14px;
 }
 
-.speechWrap {
-  position: absolute;
+/* Speech + sheet share one flow column pinned to the bottom of the stage,
+   so the sheet can never scroll over / cover the coach greeting. */
+.content {
+  position: relative;
   z-index: 3;
-  left: 18px;
-  right: 18px;
-  top: var(--speech-top);
+  flex: 1;
+  min-height: 0;
   display: flex;
-  justify-content: center;
-  pointer-events: none;
-  animation: speechEnter 0.45s ease-out 0.12s both;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
-.hero_medium .speechWrap,
-.hero_compact .speechWrap {
-  left: 28px;
-  right: 28px;
+.speechWrap {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0 var(--pad-x) 12px;
+  pointer-events: none;
+  animation: speechEnter 0.45s ease-out 0.12s both;
 }
 
 .sheet {
   position: relative;
   z-index: 4;
-  margin-top: auto;
   max-height: var(--sheet-max);
   display: flex;
   flex-direction: column;
