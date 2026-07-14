@@ -190,7 +190,7 @@ body:has(.interview-route),
   -webkit-overflow-scrolling: touch;
 }
 
-/* Nav clearance comes from .bottom-content-spacer inside MobilePageLayout —
+/* Nav clearance comes from MobilePageLayout / coach-route tokens —
    do not add per-page padding-bottom for the fixed bar. */
 .has-nav {
   padding-bottom: 0;
@@ -204,11 +204,22 @@ body:has(.interview-route),
   min-height: 0;
 }
 
+/*
+  Bottom content spacer = nav height + safe-area + 20px.
+  On flat screens this spacer sits in the scroll flow.
+  On coach routes the same token insets the stage so the sheet
+  (and its scrollport) end above the fixed nav — content never
+  paints beneath the bar, and the raised Mock FAB sits in the gap.
+*/
 .bottom-content-spacer {
   flex-shrink: 0;
   width: 100%;
   height: var(--bottom-content-spacer);
   pointer-events: none;
+}
+
+.coach-route.has-nav .bottom-content-spacer {
+  display: none;
 }
 
 /* ------- App header — overlays coach stage like interview top bar ------- */
@@ -253,12 +264,13 @@ body:has(.coach-route) .app-shell {
   display: flex;
   flex-direction: column;
   background: transparent;
-  /* Fixed nav overlays the bottom; MobilePageLayout spacer clears content */
   padding: 0;
 }
 
 .coach-route.has-nav {
-  padding-bottom: 0;
+  /* Same clearance token as .bottom-content-spacer: keeps sheet + scrollport
+     above the fixed nav without per-page padding. */
+  padding-bottom: var(--bottom-content-spacer);
 }
 .app-header .icon-btn {
   color: #fff;
@@ -903,7 +915,7 @@ body:has(.coach-route) .app-shell {
   background: var(--interview-bar-theme);
   backdrop-filter: none;
   /* Thin low-opacity edge — quieter than a bright divider */
-  border-top: 1px solid rgba(139, 108, 245, 0.06);
+  border-top: 1px solid rgba(167, 139, 250, 0.08);
   display: flex;
   align-items: flex-end;
   justify-content: space-around;

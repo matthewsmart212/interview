@@ -1,10 +1,13 @@
 /**
  * Shared mobile page layout.
  *
- * Scrollable page content ends with a bottom spacer so it never sits
- * beneath the fixed bottom navigation (nav height + safe-area + 20px).
- * Used by AppShell across coach and flat routes — do not add per-page
- * bottom nav padding elsewhere.
+ * Applies the global bottom clearance token:
+ *   nav height + safe-area-inset-bottom + 20px
+ *
+ * Flat routes render that as an in-flow spacer. Coach routes use the
+ * same token on `.coach-route.has-nav` so the sheet scrollport ends
+ * above the fixed nav (spacer is hidden there). Do not add per-page
+ * bottom-nav padding elsewhere.
  */
 export default function MobilePageLayout({
   children,
