@@ -79,9 +79,9 @@
   --nav-height: 74px;
   /* Clearance below scrollable content: nav + safe-area + 20px */
   --nav-content-gap: 20px;
-  --bottom-content-spacer: calc(
-    var(--nav-height) + env(safe-area-inset-bottom, 0px) + var(--nav-content-gap)
-  );
+  /* Fixed nav footprint (height + device inset) — surfaces sit flush to this */
+  --nav-safe: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  --bottom-content-spacer: calc(var(--nav-safe) + var(--nav-content-gap));
   --app-header-bar: 52px;
 
   --font-sans: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -268,9 +268,9 @@ body:has(.coach-route) .app-shell {
 }
 
 .coach-route.has-nav {
-  /* Same clearance token as .bottom-content-spacer: keeps sheet + scrollport
-     above the fixed nav without per-page padding. */
-  padding-bottom: var(--bottom-content-spacer);
+  /* Sheet sits flush against the fixed nav (no room strip). The 20px content
+     breathing room lives inside the sheet scrollport instead. */
+  padding-bottom: var(--nav-safe);
 }
 .app-header .icon-btn {
   color: #fff;
@@ -905,21 +905,23 @@ body:has(.coach-route) .app-shell {
   color: var(--brand);
 }
 
-/* ------- Bottom nav (fixed; does not affect document flow) ------- */
+/* ------- Bottom nav (fixed; blends into the frosted sheet) ------- */
 .bottom-nav {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
-  background: var(--interview-bar-theme);
-  backdrop-filter: none;
-  /* Thin low-opacity edge — quieter than a bright divider */
-  border-top: 1px solid rgba(167, 139, 250, 0.08);
+  /* Match the sheet-bottom tone exactly so nav + sheet read as one surface */
+  background: rgba(19, 15, 34, 0.98);
+  backdrop-filter: blur(22px) saturate(118%);
+  -webkit-backdrop-filter: blur(22px) saturate(118%);
+  /* Barely-there hairline instead of a bright divider */
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
-  padding: 0 8px calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 0 6px calc(10px + env(safe-area-inset-bottom, 0px));
   z-index: 20;
   overflow: visible;
 }
@@ -928,26 +930,28 @@ body:has(.coach-route) .app-shell {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
   flex: 1;
-  height: 58px;
+  height: 56px;
   padding: 0 2px;
   border: none;
   background: none;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.46);
   font-weight: 500;
   text-decoration: none;
   overflow: visible;
   position: relative;
+  transition: color 0.18s ease;
 }
 .nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
+  transition: transform 0.18s ease;
 }
 .nav-label {
   display: block;
@@ -955,9 +959,9 @@ body:has(.coach-route) .app-shell {
   width: 100%;
   height: 12px;
   text-align: center;
-  font-size: 10.5px;
+  font-size: 10px;
   line-height: 12px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -977,32 +981,37 @@ body:has(.coach-route) .app-shell {
 /* Center standout mock tab — FAB rises; label stays on the shared baseline */
 .nav-item-mock .nav-icon {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 }
 .nav-mock-btn {
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: 52px;
-  height: 52px;
-  margin-left: -26px;
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
   border-radius: 50%;
-  background: linear-gradient(150deg, #7d5cf0 0%, #5b3ad6 100%);
+  background: linear-gradient(150deg, #8b6cf5 0%, #6a48e0 100%);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(30, 16, 84, 0.2);
-  border: 3px solid var(--interview-bar-theme);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  transform: translateY(-14px);
+  /* Soft grounded shadow + faint purple glow — no heavy dark blob */
+  box-shadow:
+    0 6px 16px rgba(91, 58, 214, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.14) inset;
+  border: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transform: translateY(-16px);
 }
 .nav-item-mock.active .nav-mock-btn {
-  box-shadow: 0 5px 12px rgba(91, 58, 214, 0.26);
+  box-shadow:
+    0 8px 20px rgba(123, 92, 240, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.18) inset;
 }
 .nav-item-mock:active .nav-mock-btn {
-  transform: translateY(-14px) scale(0.94);
+  transform: translateY(-16px) scale(0.94);
 }
 .nav-item-mock:focus-visible .nav-mock-btn {
   outline: 2px solid rgba(196, 181, 253, 0.7);
@@ -1012,7 +1021,7 @@ body:has(.coach-route) .app-shell {
   font-weight: 600;
 }
 .nav-item-mock:not(.active) {
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.46);
 }
 .nav-item-mock.active {
   color: #fff;

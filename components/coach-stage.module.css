@@ -95,7 +95,6 @@
 
 .hero_home .sheetInner {
   padding-top: 16px;
-  padding-bottom: 0;
 }
 
 .hero_medium {
@@ -122,7 +121,6 @@
 
 .hero_progress .sheetInner {
   padding-top: 14px;
-  padding-bottom: 0;
 }
 
 .hero_compact {
@@ -165,7 +163,6 @@
 
 .hero_interviews .sheetInner {
   padding-top: 14px;
-  padding-bottom: 0;
 }
 
 .hero_celebration {
@@ -198,7 +195,6 @@
 
 .hero_mock .sheetInner {
   padding-top: 14px;
-  padding-bottom: 0;
 }
 
 .speechWrap {
@@ -243,8 +239,8 @@
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  /* Bottom clearance comes from MobilePageLayout spacer — not page padding */
-  padding: 18px var(--pad-x) 0;
+  /* Sheet is flush to the nav; keep 20px breathing room above it, inside scroll */
+  padding: 18px var(--pad-x) var(--nav-content-gap);
   border-radius: 24px 24px 0 0;
   background: linear-gradient(
     180deg,
