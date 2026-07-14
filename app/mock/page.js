@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "../../components/Avatar";
-import { AppShell, PageSection } from "../../components/ui";
+import { AppShell } from "../../components/ui";
 import {
   Mic,
   Calendar,
@@ -78,6 +78,12 @@ function CoachTip({ children }) {
   return <div className={s.coachTipPanel}>{children}</div>;
 }
 
+function countdownLabel(daysAway) {
+  if (daysAway === 0) return "Today";
+  if (daysAway === 1) return "Tomorrow";
+  return `in ${daysAway} days`;
+}
+
 function ChoiceCard({
   icon: Icon,
   title,
@@ -88,20 +94,29 @@ function ChoiceCard({
   accent = "mic",
   meta,
   ctaLabel,
+  eyebrow,
 }) {
-  const className = `${s.bigChoice} ${primary ? s.bigChoicePrimary : ""} ${s[`accent_${accent}`] || ""}`;
+  const className = [
+    s.bigChoice,
+    primary ? s.bigChoicePrimary : s.bigChoiceSecondary,
+    s[`accent_${accent}`] || "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   const body = (
     <>
       <span className={s.bigChoiceIcon} aria-hidden>
-        <Icon size={primary ? 26 : 22} />
+        <Icon size={primary ? 24 : 20} />
       </span>
       <span className={s.bigChoiceBody}>
+        {eyebrow ? <span className={s.bigChoiceEyebrow}>{eyebrow}</span> : null}
         <span className={s.bigChoiceTitle}>{title}</span>
-        <span className={s.bigChoiceSub}>{sub}</span>
+        {sub ? <span className={s.bigChoiceSub}>{sub}</span> : null}
         {meta ? <span className={s.bigChoiceMeta}>{meta}</span> : null}
         {ctaLabel ? <span className={s.bigChoiceCta}>{ctaLabel}</span> : null}
       </span>
-      <ChevronRight size={18} className={s.bigChoiceChev} aria-hidden />
+      <ChevronRight size={17} className={s.bigChoiceChev} aria-hidden />
     </>
   );
 
@@ -530,19 +545,23 @@ export default function MockHubPage() {
   function renderHome() {
     const nearest = journey.nearestUpcoming;
     const preferInterview = journey.hasUpcoming && Boolean(nearest);
+    const latestForNearest = preferInterview
+      ? journey.mocks.find((m) => m.interviewId === nearest.id)
+      : null;
+
+    let interviewMeta = DURATION_LABEL;
+    if (preferInterview) {
+      if (typeof journey.nearestReadiness === "number") {
+        interviewMeta = `${DURATION_LABEL} · Readiness ${journey.nearestReadiness}%`;
+      } else if (typeof latestForNearest?.score === "number") {
+        interviewMeta = `${DURATION_LABEL} · Latest score ${latestForNearest.score}`;
+      }
+    }
 
     return (
-      <div className="anim-fade-up">
+      <div className={`anim-fade-up ${s.homeSheet}`}>
         <div className={s.sheetHead}>
-          <div className={s.sheetHeadCopy}>
-            <h1 className={s.sheetTitle}>How do you want to practise?</h1>
-            <p className={s.sheetSub}>
-              {preferInterview
-                ? "Choose a quick general mock or practise for a saved interview."
-                : "Start with a general mock, or add an interview for tailored practice."}
-            </p>
-          </div>
-          <TimeBadge />
+          <h1 className={s.sheetTitle}>How do you want to practise?</h1>
         </div>
 
         <div className={s.choiceStack}>
@@ -550,13 +569,10 @@ export default function MockHubPage() {
             <>
               <ChoiceCard
                 icon={Calendar}
-                title="Upcoming interview"
-                sub={`${nearest.role} at ${nearest.company}`}
-                meta={
-                  journey.nearestReadiness != null
-                    ? `Readiness ${journey.nearestReadiness}% · ${DURATION_LABEL}`
-                    : DURATION_LABEL
-                }
+                eyebrow="Recommended"
+                title={`Practise for ${nearest.company}`}
+                sub={`${nearest.role} · ${countdownLabel(nearest.daysAway)}`}
+                meta={interviewMeta}
                 onClick={openInterview}
                 primary
                 accent="calendar"
@@ -584,7 +600,7 @@ export default function MockHubPage() {
               <ChoiceCard
                 icon={Plus}
                 title="Practise for an interview"
-                sub="Add an upcoming interview to get tailored questions."
+                sub="Add an upcoming interview for tailored questions."
                 ctaLabel="Add interview"
                 href="/interviews/new"
                 accent="calendar"
@@ -595,30 +611,28 @@ export default function MockHubPage() {
 
         {!hasCv ? <CvNudge /> : null}
 
-        <PageSection title="More" className={s.moreSection}>
-          <div className="stack">
-            <Link href="/history" className="action-row">
-              <span className="ar-icon">
-                <Clock size={20} />
-              </span>
-              <span className="ar-body">
-                <span className="ar-title">Previous mocks</span>
-                <span className="ar-sub">Review scores and feedback</span>
-              </span>
-              <ChevronRight size={18} className="chev" />
-            </Link>
-            <Link href="/questions" className="action-row">
-              <span className="ar-icon">
-                <Lightbulb size={20} />
-              </span>
-              <span className="ar-body">
-                <span className="ar-title">Practice tips</span>
-                <span className="ar-sub">Common questions and advice</span>
-              </span>
-              <ChevronRight size={18} className="chev" />
-            </Link>
-          </div>
-        </PageSection>
+        <div className={s.navRows}>
+          <Link href="/history" className={s.navRow}>
+            <span className={s.navIcon} aria-hidden>
+              <Clock size={17} />
+            </span>
+            <span className={s.navBody}>
+              <span className={s.navTitle}>Previous mocks</span>
+              <span className={s.navSub}>Review scores and feedback</span>
+            </span>
+            <ChevronRight size={16} className={s.navChev} aria-hidden />
+          </Link>
+          <Link href="/questions" className={s.navRow}>
+            <span className={s.navIcon} aria-hidden>
+              <Lightbulb size={17} />
+            </span>
+            <span className={s.navBody}>
+              <span className={s.navTitle}>Practice tips</span>
+              <span className={s.navSub}>Common questions and advice</span>
+            </span>
+            <ChevronRight size={16} className={s.navChev} aria-hidden />
+          </Link>
+        </div>
       </div>
     );
   }
@@ -727,7 +741,7 @@ export default function MockHubPage() {
       pose: "welcoming",
       title: undefined,
       speech: undefined,
-      heroVariant: "large",
+      heroVariant: "mock",
       messageVariant: "none",
     },
     context: {

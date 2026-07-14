@@ -163,6 +163,24 @@
   --sheet-max: min(60vh, 540px);
 }
 
+/* Mock hub home: show shoulders above the sheet, keep sheet scannable */
+.hero_mock {
+  --pad-x: 20px;
+  --coach-top: calc(40px + env(safe-area-inset-top));
+  --coach-w: min(70vw, 268px);
+  --coach-h: min(44vh, 330px);
+  --sheet-max: min(54vh, 470px);
+}
+
+.noMessage.hero_mock {
+  --sheet-max: min(56vh, 490px);
+}
+
+.hero_mock .sheetInner {
+  padding-top: 14px;
+  padding-bottom: 16px;
+}
+
 .speechWrap {
   position: absolute;
   z-index: 3;
@@ -279,6 +297,15 @@
     --coach-h: min(32vh, 230px);
     --speech-top: calc(var(--coach-top) + min(24vh, 185px));
     --sheet-max: min(58vh, 480px);
+  }
+
+  .hero_mock {
+    --coach-h: min(36vh, 260px);
+    --sheet-max: min(58vh, 500px);
+  }
+
+  .noMessage.hero_mock {
+    --sheet-max: min(60vh, 520px);
   }
 
   .hero_home {
