@@ -9,7 +9,6 @@ import CircularProgress from "../../../components/CircularProgress";
 import {
   Calendar,
   Clock,
-  FileText,
   Mic,
   MessageCircle,
   Check,
@@ -60,20 +59,11 @@ export default function InterviewPrepPage() {
 
   const checklist = [
     {
-      done: iv.tailoredCv.exists,
-      title: iv.tailoredCv.exists ? "CV tailored for this role" : "Tailor your CV",
-      sub: iv.tailoredCv.exists
-        ? `Match score ${iv.tailoredCv.score}% · your original is safe`
-        : "Boost your match score for this exact job",
-      href: `/interviews/${iv.id}/cv`,
-      cta: iv.tailoredCv.exists ? "View" : "Tailor",
-    },
-    {
       done: iv.hasJD,
       title: iv.hasJD ? "Job description added" : "Add the job description",
       sub: iv.hasJD
-        ? "Questions & CV tips are tailored to this employer"
-        : "Without it we'll use generic role questions — still great practice",
+        ? "Mocks will use this JD with your CV"
+        : "Paste the JD so questions match the role",
       href: `/interviews/${iv.id}/jd`,
       cta: iv.hasJD ? "View" : "Add",
     },
@@ -86,8 +76,8 @@ export default function InterviewPrepPage() {
       sub:
         mocks.length > 0
           ? `Latest score ${mocks[0].score}/100 — keep practising`
-          : "10 minutes with your AI interviewer",
-      href: `/interview?for=${iv.id}`,
+          : "About 8–10 minutes with your AI interviewer",
+      href: `/mock`,
       cta: "Practise",
     },
   ];
@@ -163,7 +153,7 @@ export default function InterviewPrepPage() {
           Practise
         </p>
         <div className="stack">
-          <Link href={`/interview?for=${iv.id}`} className="action-row">
+          <Link href="/mock" className="action-row">
             <span className="ar-icon">
               <Mic size={22} />
             </span>
@@ -171,8 +161,8 @@ export default function InterviewPrepPage() {
               <span className="ar-title">Start AI mock interview</span>
               <span className="ar-sub">
                 {iv.hasJD
-                  ? "Questions tailored to this job description"
-                  : `Generic ${iv.role} questions`}
+                  ? "Questions from this job description + your CV"
+                  : `Generic ${iv.role} questions — add a JD for better prep`}
               </span>
             </span>
             <ChevronRight size={20} className="chev" />
@@ -184,22 +174,6 @@ export default function InterviewPrepPage() {
             <span className="ar-body">
               <span className="ar-title">Browse likely questions</span>
               <span className="ar-sub">Read model answers for this role</span>
-            </span>
-            <ChevronRight size={20} className="chev" />
-          </Link>
-          <Link href={`/interviews/${iv.id}/cv`} className="action-row">
-            <span className="ar-icon">
-              <FileText size={22} />
-            </span>
-            <span className="ar-body">
-              <span className="ar-title">
-                {iv.tailoredCv.exists ? "View tailored CV" : "Tailor my CV"}
-              </span>
-              <span className="ar-sub">
-                {iv.tailoredCv.exists
-                  ? `${iv.tailoredCv.score}% match for this role`
-                  : "Create a version aimed at this job"}
-              </span>
             </span>
             <ChevronRight size={20} className="chev" />
           </Link>

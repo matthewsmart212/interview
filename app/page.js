@@ -6,9 +6,9 @@ import { FileText, Mic, Volume, BarChart } from "../components/Icons";
 import styles from "./welcome.module.css";
 
 const FEATURES = [
-  { Icon: FileText, text: "AI CV builder & optimiser" },
   { Icon: Mic, text: "Realistic AI mock interviews" },
   { Icon: Volume, text: "Practice with voice & get feedback" },
+  { Icon: FileText, text: "Personalised questions from your CV" },
   { Icon: BarChart, text: "Track progress & improve" },
 ];
 

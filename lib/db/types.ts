@@ -1,13 +1,13 @@
 /**
- * Domain types for the app data layer.
- * Shapes mirror what a future Supabase/Neon schema would store.
+ * Domain types — mock interview prep focused.
+ * One permanent CV per user. Multiple interviews with JDs. Mock history.
  */
 
 import type { InterviewType, UserGoal } from "../onboarding-store";
 import type { InterviewFeedbackResult, InterviewAnswer } from "../types";
-import type { MockContextMode, MockCvType } from "../mock-setup";
+import type { MockContextMode } from "../mock-setup";
 
-export type { InterviewType, UserGoal, MockContextMode, MockCvType };
+export type { InterviewType, UserGoal, MockContextMode };
 
 export interface UserPreferences {
   interviewFormat: InterviewType;
@@ -38,34 +38,23 @@ export interface CvEducation {
   period: string;
 }
 
+/** Single permanent CV used to personalise every mock. */
 export interface MasterCV {
   id: string;
   exists: boolean;
   source: "upload" | "create" | "seed" | null;
   fileName: string;
   updatedAt: string;
+  /** Internal parse quality signal — not a role "match score". */
   score: number;
   summary: string;
+  /** Raw extracted text for AI question/feedback context. */
+  text?: string;
   sections: {
     experience: CvExperience[];
     education: CvEducation[];
     skills: string[];
   };
-}
-
-export interface CvHistoryEntry {
-  id: string;
-  fileName: string;
-  uploadedAt: string;
-  score: number;
-  current: boolean;
-}
-
-export interface TailoredCvSummary {
-  exists: boolean;
-  score?: number;
-  updatedAt?: string;
-  changes?: string[];
 }
 
 export interface Interview {
@@ -84,18 +73,9 @@ export interface Interview {
   hasJD: boolean;
   jd: string | null;
   jdHighlights: string[];
-  tailoredCv: TailoredCvSummary;
   mockIds: string[];
   createdAt: number;
   updatedAt: number;
-}
-
-export interface TailoredCV {
-  id: string;
-  interviewId: string;
-  score: number;
-  updatedAt: string;
-  changes: string[];
 }
 
 export interface MockSession {
@@ -115,22 +95,20 @@ export interface MockSession {
   weakest: string;
   skills: { name: string; value: number }[];
   completedAt: number;
-  /** Full feedback payload when available from a live mock. */
   feedback?: InterviewFeedbackResult;
   answers?: Record<number, InterviewAnswer>;
 }
 
 export interface AppState {
-  version: 1;
+  version: 2;
   seededAt: number | null;
   user: UserProfile;
   masterCv: MasterCV;
-  cvHistory: CvHistoryEntry[];
   interviews: Interview[];
-  tailoredCvs: Record<string, TailoredCV>;
   mockSessions: MockSession[];
   savedQuestionIds: string[];
 }
 
 export const APP_STATE_KEY = "ic.app.v1";
-export const APP_STATE_VERSION = 1 as const;
+/** Bumped when tailored CV / history fields were removed. */
+export const APP_STATE_VERSION = 2 as const;

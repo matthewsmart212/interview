@@ -1,16 +1,10 @@
 /**
- * Demo seed data — used on first launch so the app feels populated.
- * Later this becomes optional; fresh users start empty after onboarding.
+ * Demo seed data for the mock-prep product.
  */
 
 import type { AppState, Interview, MasterCV, MockSession, UserProfile } from "./types";
-import {
-  USER,
-  MASTER_CV,
-  CV_HISTORY,
-  INTERVIEWS,
-  MOCK_HISTORY,
-} from "../app-data";
+import { APP_STATE_VERSION } from "./types";
+import { USER, MASTER_CV, INTERVIEWS, MOCK_HISTORY } from "../app-data";
 
 function now() {
   return Date.now();
@@ -21,7 +15,7 @@ export function buildSeedUser(name = USER.name): UserProfile {
   return {
     id: "user-local",
     name,
-    goal: "both",
+    goal: "interview",
     preferences: {
       interviewFormat: "In-person",
       voicePractice: true,
@@ -78,11 +72,12 @@ export function buildEmptyMasterCv(): MasterCV {
 
 export function buildSeedInterviews(): Interview[] {
   const t = now();
-  return INTERVIEWS.map((iv) => ({
-    ...structuredClone(iv),
-    createdAt: t,
-    updatedAt: t,
-  })) as Interview[];
+  return INTERVIEWS.map((iv) => {
+    const { tailoredCv: _removed, ...rest } = structuredClone(iv) as Interview & {
+      tailoredCv?: unknown;
+    };
+    return { ...rest, createdAt: t, updatedAt: t };
+  }) as Interview[];
 }
 
 export function buildSeedMockSessions(): MockSession[] {
@@ -96,27 +91,11 @@ export function buildSeedMockSessions(): MockSession[] {
 
 export function buildDemoState(): AppState {
   return {
-    version: 1,
+    version: APP_STATE_VERSION,
     seededAt: now(),
     user: buildSeedUser(),
     masterCv: buildSeedMasterCv(),
-    cvHistory: structuredClone(CV_HISTORY).map((h) => ({
-      ...h,
-      current: Boolean(h.current),
-    })),
     interviews: buildSeedInterviews(),
-    tailoredCvs: Object.fromEntries(
-      INTERVIEWS.filter((iv) => iv.tailoredCv?.exists).map((iv) => [
-        iv.id,
-        {
-          id: `tailored-${iv.id}`,
-          interviewId: iv.id,
-          score: iv.tailoredCv.score ?? 0,
-          updatedAt: iv.tailoredCv.updatedAt ?? "",
-          changes: iv.tailoredCv.changes ?? [],
-        },
-      ])
-    ),
     mockSessions: buildSeedMockSessions(),
     savedQuestionIds: [],
   };
@@ -124,13 +103,11 @@ export function buildDemoState(): AppState {
 
 export function buildEmptyState(): AppState {
   return {
-    version: 1,
+    version: APP_STATE_VERSION,
     seededAt: now(),
     user: buildEmptyUser(),
     masterCv: buildEmptyMasterCv(),
-    cvHistory: [],
     interviews: [],
-    tailoredCvs: {},
     mockSessions: [],
     savedQuestionIds: [],
   };
