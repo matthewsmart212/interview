@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../components/PageHeader";
-import { AppShell, PageSection } from "../../components/ui";
-import Avatar from "../../components/Avatar";
+import { AppShell } from "../../components/ui";
 import {
   Edit,
   Sparkle,
@@ -77,11 +75,16 @@ export default function ProfilePage() {
   };
 
   return (
-    <AppShell>
-      <PageHeader title="Profile" description="Your account and CV" />
-
+    <AppShell
+      coachPose="idle"
+      coachTitle={displayName}
+      coachSpeech={
+        MASTER_CV.exists
+          ? "Your CV is ready. Replace it anytime — I'll use it in every mock."
+          : "Upload your CV so I can personalise questions and feedback."
+      }
+    >
       <div className={s.hero}>
-        <Avatar pose="idle" round alt="Your profile photo" className={s.pic} />
         <div className={s.heroText}>
           {editing ? (
             <input
@@ -113,58 +116,51 @@ export default function ProfilePage() {
         )}
       </div>
 
-      <PageSection title="CV">
-        <div className={s.panel}>
-          <Link className={s.row} href="/cv/upload">
-            <span className={s.mi}>
-              <FileText size={18} />
-            </span>
-            <span className={s.lbl}>
-              {MASTER_CV.exists
-                ? `Replace CV · ${MASTER_CV.fileName}`
-                : "Upload your CV"}
-            </span>
-            <ChevronRight size={18} className={s.chev} />
-          </Link>
-        </div>
-      </PageSection>
-
-      <PageSection title="Account">
-        <div className={s.panel}>
-          {authEmail ? (
-            <button type="button" className={s.row} onClick={handleSync}>
-              <span className={s.mi}>
-                <Sparkle size={18} />
-              </span>
-              <span className={s.lbl}>Sync with cloud</span>
-              <ChevronRight size={18} className={s.chev} />
-            </button>
-          ) : (
-            <Link className={s.row} href="/login">
-              <span className={s.mi}>
-                <Sparkle size={18} />
-              </span>
-              <span className={s.lbl}>Sign in</span>
-              <ChevronRight size={18} className={s.chev} />
-            </Link>
-          )}
-          <button type="button" className={s.row} onClick={() => resetToDemo()}>
+      <div className={s.panel}>
+        <Link className={s.row} href="/cv/upload">
+          <span className={s.mi}>
+            <FileText size={18} />
+          </span>
+          <span className={s.lbl}>
+            {MASTER_CV.exists
+              ? `Replace CV · ${MASTER_CV.fileName}`
+              : "Upload your CV"}
+          </span>
+          <ChevronRight size={18} className={s.chev} />
+        </Link>
+        {authEmail ? (
+          <button type="button" className={s.row} onClick={handleSync}>
             <span className={s.mi}>
               <Sparkle size={18} />
             </span>
-            <span className={s.lbl}>Load demo data</span>
+            <span className={s.lbl}>Sync with cloud</span>
             <ChevronRight size={18} className={s.chev} />
           </button>
-          <button type="button" className={s.row} onClick={handleRestartFresh}>
+        ) : (
+          <Link className={s.row} href="/login">
             <span className={s.mi}>
-              <Shield size={18} />
+              <Sparkle size={18} />
             </span>
-            <span className={s.lbl}>Clear & restart onboarding</span>
+            <span className={s.lbl}>Sign in</span>
             <ChevronRight size={18} className={s.chev} />
-          </button>
-        </div>
-        {syncMsg ? <p className={s.syncMsg}>{syncMsg}</p> : null}
-      </PageSection>
+          </Link>
+        )}
+        <button type="button" className={s.row} onClick={() => resetToDemo()}>
+          <span className={s.mi}>
+            <Sparkle size={18} />
+          </span>
+          <span className={s.lbl}>Load demo data</span>
+          <ChevronRight size={18} className={s.chev} />
+        </button>
+        <button type="button" className={s.row} onClick={handleRestartFresh}>
+          <span className={s.mi}>
+            <Shield size={18} />
+          </span>
+          <span className={s.lbl}>Clear & restart onboarding</span>
+          <ChevronRight size={18} className={s.chev} />
+        </button>
+      </div>
+      {syncMsg ? <p className={s.syncMsg}>{syncMsg}</p> : null}
 
       <button type="button" className={s.logout} onClick={handleLogout}>
         <LogOut size={18} /> Log out

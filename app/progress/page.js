@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import PageHeader from "../../components/PageHeader";
-import { AppShell, PageSection } from "../../components/ui";
+import { AppShell } from "../../components/ui";
 import { ChevronRight } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import styles from "./progress.module.css";
@@ -18,13 +17,18 @@ export default function ProgressPage() {
   const best = scores.length ? Math.max(...scores) : null;
   const count = MOCK_HISTORY.length;
 
-  return (
-    <AppShell navActive="progress">
-      <PageHeader
-        title="Progress"
-        description="Your mock scores over time"
-      />
+  const speech =
+    count === 0
+      ? "Run your first mock and I'll track how you're improving."
+      : `You've done ${count} mock${count === 1 ? "" : "s"}. Average score ${avg}. Keep going.`;
 
+  return (
+    <AppShell
+      navActive="progress"
+      coachPose="thumbsup"
+      coachTitle="Your progress"
+      coachSpeech={speech}
+    >
       <div className={styles.strip}>
         <div className={styles.stripItem}>
           <span className={styles.stripNum}>{count}</span>
@@ -40,16 +44,16 @@ export default function ProgressPage() {
         </div>
       </div>
 
-      <PageSection
-        title="Recent mocks"
-        action={
-          MOCK_HISTORY.length > 0 ? (
+      <div className={styles.block}>
+        <div className={styles.blockHead}>
+          <p className="section-title">Recent mocks</p>
+          {MOCK_HISTORY.length > 0 ? (
             <Link href="/history" className="link-btn">
               See all
             </Link>
-          ) : null
-        }
-      >
+          ) : null}
+        </div>
+
         {recent.length === 0 ? (
           <div className={styles.empty}>
             <p className={styles.emptyTitle}>No mocks yet</p>
@@ -88,7 +92,7 @@ export default function ProgressPage() {
             ))}
           </div>
         )}
-      </PageSection>
+      </div>
     </AppShell>
   );
 }

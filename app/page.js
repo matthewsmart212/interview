@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Phone from "../components/Phone";
-import Avatar from "../components/Avatar";
-import Logo from "../components/Logo";
+import CoachStage from "../components/CoachStage";
 import { FileText, Mic, Volume, BarChart } from "../components/Icons";
 import styles from "./welcome.module.css";
 
@@ -14,37 +13,24 @@ const FEATURES = [
 
 export default function WelcomePage() {
   return (
-    <Phone>
-      <div className="screen">
-        <div className={styles.wrap}>
-          <div className={styles.hero}>
-            <div className={styles.heroText}>
-              <h1 className={styles.title}>
-                <Logo size="hero" priority className={styles.logo} />
-              </h1>
-              <p className={styles.sub}>
-                Mock interviews that prepare you for the real thing.
-              </p>
-            </div>
-            <Avatar
-              pose="waving"
-              alt="AI coach waving"
-              className={styles.avatar}
-            />
-          </div>
-
-          <div className={`card ${styles.features}`}>
+    <Phone immersive>
+      <div className={`screen ${styles.welcomeScreen}`}>
+        <CoachStage
+          pose="waving"
+          title="I'm your interview coach"
+          speech="I'll help you practise, get feedback, and walk into the real thing with confidence."
+          noHeader
+        >
+          <div className={styles.features}>
             {FEATURES.map(({ Icon, text }) => (
               <div className={styles.feature} key={text}>
                 <span className={styles.fIcon}>
-                  <Icon size={20} />
+                  <Icon size={18} />
                 </span>
                 <span className={styles.fText}>{text}</span>
               </div>
             ))}
           </div>
-
-          <div className="grow" />
 
           <div className={styles.actions}>
             <Link href="/onboarding" className="btn btn-primary">
@@ -54,7 +40,7 @@ export default function WelcomePage() {
               I already have an account
             </Link>
           </div>
-        </div>
+        </CoachStage>
       </div>
     </Phone>
   );

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import Avatar from "../../components/Avatar";
-import PageHeader from "../../components/PageHeader";
 import { AppShell, PageSection } from "../../components/ui";
 import {
   Mic,
@@ -17,6 +16,7 @@ import {
   Lightbulb,
   Check,
   Play,
+  ChevronLeft,
 } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import {
@@ -73,25 +73,8 @@ function StepDots({ step, total = 2 }) {
   );
 }
 
-function CoachBubble({ pose = "welcoming", title, children, tips }) {
-  return (
-    <div className={s.coachScene}>
-      <div className={s.coachSceneAvatar} aria-hidden>
-        <Avatar pose={pose} alt="" className={s.coachSceneImg} />
-      </div>
-      <div className={s.coachBubble}>
-        {title ? <p className={s.coachBubbleTitle}>{title}</p> : null}
-        <div className={s.coachBubbleText}>{children}</div>
-        {tips?.length ? (
-          <ul className={s.coachTips}>
-            {tips.map((tip) => (
-              <li key={tip}>{tip}</li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    </div>
-  );
+function CoachTip({ children }) {
+  return <div className={s.coachTipPanel}>{children}</div>;
 }
 
 function ChoiceCard({
@@ -537,16 +520,10 @@ export default function MockHubPage() {
   function renderHome() {
     return (
       <div className="anim-fade-up">
-        <CoachBubble pose="welcoming" title={`Ready for an interview, ${USER.name}?`}>
-          <p>
-            I&apos;ll ask realistic questions and give you clear feedback after
-            every session — just like a real interviewer.
-          </p>
-          <TimeBadge className={s.timeBadgeInBubble} />
-        </CoachBubble>
-
-        <h1 className="page-h1">How do you want to practice?</h1>
-        <p className="page-sub">Pick a focus and I&apos;ll set up your session.</p>
+        <div className={s.sheetHead}>
+          <h1 className={s.sheetTitle}>How do you want to practice?</h1>
+          <TimeBadge />
+        </div>
 
         <div className={s.choiceStack}>
           <ChoiceCard
@@ -601,10 +578,13 @@ export default function MockHubPage() {
   function renderContext() {
     return (
       <div className="anim-fade-up">
+        <button type="button" className={s.sheetBack} onClick={goBack}>
+          <ChevronLeft size={18} /> Back
+        </button>
         <StepDots step={1} />
-        <CoachBubble pose="presenting" title="Which interview should we prep for?">
-          <p>I&apos;ll use that role and job description to shape the questions.</p>
-        </CoachBubble>
+        <CoachTip>
+          I&apos;ll use that role and job description to shape the questions.
+        </CoachTip>
         <InterviewPicker
           interviews={upcoming}
           selectedId={selectedInterviewId}
@@ -635,19 +615,18 @@ export default function MockHubPage() {
     const showSteps = contextMode === "interview";
     return (
       <div className="anim-fade-up">
+        {headerMeta.back ? (
+          <button type="button" className={s.sheetBack} onClick={goBack}>
+            <ChevronLeft size={18} /> Back
+          </button>
+        ) : null}
         {showSteps ? <StepDots step={2} /> : null}
 
-        <CoachBubble
-          pose="thumbsup"
-          title="Great choice."
-          tips={["Speak naturally", "It's okay to pause", "We'll review everything afterwards"]}
-        >
-          <p>
-            {hasCv
-              ? "I've reviewed your CV and I'm going to challenge you just like a real interviewer would."
-              : "I'm ready to practice with you. Upload a CV anytime for richer, experience-aware feedback."}
-          </p>
-        </CoachBubble>
+        <CoachTip>
+          {hasCv
+            ? "I've reviewed your CV — speak naturally, pause if you need to, and we'll review everything afterwards."
+            : "Speak naturally and pause if you need to. Upload a CV anytime for richer feedback."}
+        </CoachTip>
 
         <MissionCard
           title={contextLabel()}
@@ -695,23 +674,41 @@ export default function MockHubPage() {
     );
   }
 
+  const coachByScreen = {
+    home: {
+      pose: "welcoming",
+      title: `Ready for an interview, ${USER.name}?`,
+      speech:
+        "I'll ask realistic questions and give you clear feedback — just like a real interviewer.",
+    },
+    context: {
+      pose: "presenting",
+      title: "Which interview should we prep for?",
+      speech: "Pick one and I'll shape the questions around that role.",
+    },
+    ready: {
+      pose: "thumbsup",
+      title: "Great choice.",
+      speech: "I'm ready when you are. Let's begin when you tap below.",
+    },
+    checking: {
+      pose: "thinking",
+      title: "Give me a moment…",
+      speech: "I'm reviewing your CV and calibrating the session.",
+    },
+  };
+  const coach = coachByScreen[screen] || coachByScreen.home;
+
   return (
-    <AppShell navActive="mock" className={s.shell}>
+    <AppShell
+      navActive="mock"
+      className={s.shell}
+      coachPose={coach.pose}
+      coachTitle={coach.title}
+      coachSpeech={coach.speech}
+    >
       {phase === "wizard" ? (
         <>
-          <PageHeader
-            icon="mic"
-            title={headerMeta.title}
-            description={headerMeta.description}
-            back={headerMeta.back}
-            onBack={headerMeta.back ? goBack : undefined}
-            right={
-              headerMeta.step ? (
-                <span className="step-count">Step {headerMeta.step} of 2</span>
-              ) : null
-            }
-          />
-
           {screen === "home" ? renderHome() : null}
           {screen === "context" ? renderContext() : null}
           {screen === "ready" ? renderReady() : null}

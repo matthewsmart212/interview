@@ -25,6 +25,30 @@
   box-shadow: none;
 }
 
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.block {
+  margin-top: 8px;
+}
+
+.block + .block {
+  margin-top: 18px;
+}
+
 .interviewStack {
   gap: 12px;
 }

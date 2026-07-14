@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Avatar from "../../components/Avatar";
 import { AppShell } from "../../components/ui";
 import { Mic, Plus, ChevronRight, Calendar } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
@@ -40,25 +39,18 @@ export default function HomePage() {
   )[0];
   const lastMock = MOCK_HISTORY[0];
 
-  return (
-    <AppShell navActive="home" className={styles.home}>
-      <div className={styles.coachIntro}>
-        <div className={styles.coachCopy}>
-          <p className={styles.eyebrow}>Your coach</p>
-          <h1 className={styles.greeting}>Hi {firstName}.</h1>
-          <p className={styles.lead}>
-            {next
-              ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Let's practise.`
-              : "Add an interview, then run a mock. That's the whole loop."}
-          </p>
-        </div>
-        <Avatar
-          pose="waving"
-          alt="AI coach"
-          className={styles.coachAvatar}
-        />
-      </div>
+  const speech = next
+    ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Pick a mock and we'll practise together.`
+    : "Add an interview, then run a mock. I'll guide you the whole way.";
 
+  return (
+    <AppShell
+      navActive="home"
+      className={styles.home}
+      coachPose="waving"
+      coachTitle={`Hi ${firstName}`}
+      coachSpeech={speech}
+    >
       {next ? (
         <Link href={`/interviews/${next.id}`} className={styles.nextCard}>
           <span className={styles.nextIcon}>
