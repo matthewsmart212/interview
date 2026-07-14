@@ -2,12 +2,15 @@
 
 Keys live in `.env.local` (gitignored). Copy from `.env.example`.
 
-## 1. Run the database migration
+## 1. Run the database migrations
 
 1. Open [Supabase SQL Editor](https://supabase.com/dashboard/project/qxybmhzwnykahvtuvmkq/sql/new)
-2. Paste and run `supabase/migrations/001_init.sql`
-3. Confirm tables: `profiles`, `master_cvs`, `cv_history`, `interviews`, `tailored_cvs`, `mock_sessions`, `saved_questions`
-4. Confirm storage bucket `cvs` exists (created by the migration)
+2. Run `supabase/migrations/001_init.sql` (if not already)
+3. Run `supabase/migrations/002_mock_prep_focus.sql` — drops CV history + tailored CV tables
+4. Confirm remaining tables: `profiles`, `master_cvs`, `interviews`, `mock_sessions`, `saved_questions`
+5. Confirm storage bucket `cvs` exists
+
+**Product model:** one permanent CV per user; interviews hold the JD; mocks link to interviews.
 
 ## 2. Auth — magic link + Google
 
@@ -69,7 +72,8 @@ See `lib/config/product.js`:
 
 - New installs hydrate **empty** local state
 - Onboarding welcome has **Seed demo data & skip to dashboard** for Matthew
-- Profile → Reset to demo / Clear all data
+- Profile → **Clear & restart onboarding** (full local wipe)
+- Profile → Replace CV (single file, no versions)
 
 ## 7. Local ↔ cloud
 
@@ -77,6 +81,6 @@ While signed in, Profile → **Sync with cloud** pushes/pulls via `lib/supabase/
 
 ## Still deferred
 
-- Live mock interview still uses local/hardcoded questions until generate-questions + TTS are wired into `/interview`
+- Live `/interview` still uses local/hardcoded questions until generate-questions + TTS are wired into the live loop
 - Payments / Stripe
 - Google OAuth will fail until provider is configured in the dashboard
