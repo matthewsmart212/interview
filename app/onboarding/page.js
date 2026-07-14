@@ -11,7 +11,6 @@ import {
   FileText,
   Sparkle,
   Upload,
-  Edit,
   Check,
   Volume,
   Target,
@@ -36,46 +35,40 @@ const GOALS = [
   {
     id: "interview",
     title: "Interview coming up",
-    sub: "I have a date booked and want to nail it",
+    sub: "I have a date booked — prepare me with mocks",
     Icon: Calendar,
-  },
-  {
-    id: "apply",
-    title: "Applying for jobs",
-    sub: "Build & tailor my CV for roles I'm going for",
-    Icon: FileText,
   },
   {
     id: "practice",
     title: "Just practising",
-    sub: "Mock interviews to build confidence",
+    sub: "Build confidence with mock interviews anytime",
     Icon: Mic,
   },
   {
     id: "both",
-    title: "All of the above",
-    sub: "Interview prep plus CV & applications",
+    title: "Prep and practise",
+    sub: "Upcoming interview plus ongoing mock practice",
     Icon: Target,
   },
-];
-
-const SKILL_OPTIONS = [
-  "Customer service",
-  "Teamwork",
-  "Communication",
-  "Working under pressure",
-  "Problem solving",
-  "Time management",
-  "Leadership",
-  "Cash handling",
 ];
 
 const PARSED_ITEMS = [
   "Experience & job history",
   "Skills & strengths",
   "Education captured",
-  "Ready to tailor for roles",
+  "Ready to personalise your mocks",
 ];
+
+/** Normalise legacy draft fields from older onboarding shapes. */
+function normaliseDraft(saved) {
+  if (!saved) return null;
+  const next = { ...saved };
+  if (next.goal === "apply") next.goal = "practice";
+  if (next.cv?.source === "create") {
+    next.cv = { ...next.cv, source: "skip" };
+  }
+  return next;
+}
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -83,9 +76,8 @@ export default function OnboardingPage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [hydrated, setHydrated] = useState(false);
 
-  const [cvStage, setCvStage] = useState("pick"); // pick | upload | parsing | uploaded | create
+  const [cvStage, setCvStage] = useState("pick"); // pick | upload | parsing | uploaded
   const [jdChoice, setJdChoice] = useState(null); // paste | skip
-  const [applyJdChoice, setApplyJdChoice] = useState(null);
 
   const steps = useMemo(
     () => getStepsForGoal(profile.goal),
@@ -96,9 +88,10 @@ export default function OnboardingPage() {
   const displayStep = Math.min(stepIndex + 1, totalSteps);
 
   useEffect(() => {
-    const saved = loadProfile();
+    const saved = normaliseDraft(loadProfile());
     if (saved) {
       setProfile(saved);
+      saveProfile(saved);
       if (saved.completedAt) {
         router.replace("/home");
         return;
@@ -111,8 +104,6 @@ export default function OnboardingPage() {
     if (currentStep !== "cv") return;
     if (profile.cv.source === "upload") {
       setCvStage(profile.cv.fileName ? "uploaded" : "upload");
-    } else if (profile.cv.source === "create") {
-      setCvStage("create");
     } else {
       setCvStage("pick");
     }
@@ -145,13 +136,6 @@ export default function OnboardingPage() {
       return next;
     });
 
-  const updateApply = (patch) =>
-    setProfile((prev) => {
-      const next = { ...prev, apply: { ...prev.apply, ...patch } };
-      saveProfile(next);
-      return next;
-    });
-
   const updatePrefs = (patch) =>
     setProfile((prev) => {
       const next = {
@@ -170,28 +154,7 @@ export default function OnboardingPage() {
 
   const handleCvContinue = () => {
     if (profile.cv.source === "upload" && cvStage === "uploaded") goNext();
-    else if (profile.cv.source === "create") goNext();
     else if (profile.cv.source === "skip") goNext();
-  };
-
-  const canContinueCv = () => {
-    if (profile.cv.source === "skip") return true;
-    if (profile.cv.source === "upload") return cvStage === "uploaded";
-    if (profile.cv.source === "create") {
-      return (
-        profile.cv.targetRole?.trim() &&
-        profile.cv.jobs?.[0]?.role?.trim()
-      );
-    }
-    return false;
-  };
-
-  const toggleSkill = (sk) => {
-    const current = profile.cv.skills ?? [];
-    const next = current.includes(sk)
-      ? current.filter((x) => x !== sk)
-      : [...current, sk];
-    updateCv({ skills: next });
   };
 
   const finishOnboarding = () => {
@@ -254,7 +217,7 @@ export default function OnboardingPage() {
               </span>
               <h1 className="page-h1">Hi there! I&apos;m your coach.</h1>
               <p className="page-sub">
-                First, what should I call you? I&apos;ll use this across your CV,
+                First, what should I call you? I&apos;ll use this across your
                 mocks and dashboard.
               </p>
             </div>
@@ -304,7 +267,8 @@ export default function OnboardingPage() {
             What brings you here, {firstName}?
           </h1>
           <p className="page-sub">
-            Pick what matters most right now — you can do everything else later.
+            Pick what matters most — we&apos;ll set up your mock interview prep
+            around it.
           </p>
 
           <div className={s.goalGrid}>
@@ -342,10 +306,10 @@ export default function OnboardingPage() {
         <div className="anim-fade-up">
           {cvStage === "pick" && (
             <>
-              <h1 className="page-h1">Do you have a CV?</h1>
+              <h1 className="page-h1">Got a CV to upload?</h1>
               <p className="page-sub">
-                Your CV powers tailored questions, match scores and role-specific
-                tips — the more we know, the better your prep.
+                One permanent CV powers every mock — we use it to personalise
+                questions and feedback to your experience.
               </p>
 
               <div style={{ marginTop: 22 }}>
@@ -363,34 +327,7 @@ export default function OnboardingPage() {
                   <span>
                     <span className={i.choiceTitle}>Yes — upload it</span>
                     <span className={i.choiceSub}>
-                      PDF or Word. We&apos;ll read and score it in seconds.
-                    </span>
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  className={`${i.choiceCard}${profile.cv.source === "create" ? ` ${i.active}` : ""}`}
-                  onClick={() => {
-                    updateCv({
-                      source: "create",
-                      targetRole: profile.cv.targetRole ?? "",
-                      about: profile.cv.about ?? "",
-                      jobs: profile.cv.jobs ?? [
-                        { role: "", company: "", period: "" },
-                      ],
-                      skills: profile.cv.skills ?? ["Customer service"],
-                    });
-                    setCvStage("create");
-                  }}
-                >
-                  <span className={i.choiceIcon}>
-                    <Edit size={20} />
-                  </span>
-                  <span>
-                    <span className={i.choiceTitle}>No — build one now</span>
-                    <span className={i.choiceSub}>
-                      Quick questions and we&apos;ll draft your CV.
+                      PDF or Word. One CV for all your mocks.
                     </span>
                   </span>
                 </button>
@@ -413,8 +350,8 @@ export default function OnboardingPage() {
             <>
               <h1 className="page-h1">Upload your CV</h1>
               <p className="page-sub">
-                Tap below to choose a file. We&apos;ll extract your experience
-                automatically.
+                Tap below to choose a file. We&apos;ll use it to personalise
+                every mock interview.
               </p>
               <button
                 type="button"
@@ -447,7 +384,7 @@ export default function OnboardingPage() {
                   updateCv({ source: null });
                 }}
               >
-                Choose a different option
+                Back
               </button>
             </>
           )}
@@ -477,7 +414,7 @@ export default function OnboardingPage() {
                 </span>
                 <h1 className="page-h1">CV ready!</h1>
                 <p className="page-sub" style={{ marginTop: 8 }}>
-                  {profile.cv.fileName} · scored and ready to tailor.
+                  {profile.cv.fileName} · ready to personalise your mocks.
                 </p>
               </div>
               <ul className={s.parsedList}>
@@ -493,118 +430,6 @@ export default function OnboardingPage() {
               </PrimaryButton>
             </>
           )}
-
-          {cvStage === "create" && (
-            <>
-              <h1 className="page-h1">Quick CV builder</h1>
-              <p className="page-sub">
-                Just the essentials — you can refine everything in your CV hub.
-              </p>
-
-              <div className="field" style={{ marginTop: 22 }}>
-                <label>What kind of work are you looking for?</label>
-                <input
-                  className="input"
-                  value={profile.cv.targetRole ?? ""}
-                  onChange={(e) => updateCv({ targetRole: e.target.value })}
-                  placeholder="e.g. Customer service roles"
-                />
-              </div>
-
-              <div className="field">
-                <label>
-                  A line about you{" "}
-                  <span className="opt">(we&apos;ll polish it)</span>
-                </label>
-                <textarea
-                  className="textarea"
-                  value={profile.cv.about ?? ""}
-                  onChange={(e) => updateCv({ about: e.target.value })}
-                  placeholder="Friendly, reliable, great with people..."
-                  rows={3}
-                />
-              </div>
-
-              <div className="field">
-                <label>Most recent job</label>
-                <input
-                  className="input"
-                  value={profile.cv.jobs?.[0]?.role ?? ""}
-                  onChange={(e) =>
-                    updateCv({
-                      jobs: [
-                        {
-                          ...(profile.cv.jobs?.[0] ?? {
-                            role: "",
-                            company: "",
-                            period: "",
-                          }),
-                          role: e.target.value,
-                        },
-                      ],
-                    })
-                  }
-                  placeholder="Job title"
-                />
-                <input
-                  className="input"
-                  style={{ marginTop: 8 }}
-                  value={profile.cv.jobs?.[0]?.company ?? ""}
-                  onChange={(e) =>
-                    updateCv({
-                      jobs: [
-                        {
-                          ...(profile.cv.jobs?.[0] ?? {
-                            role: "",
-                            company: "",
-                            period: "",
-                          }),
-                          company: e.target.value,
-                        },
-                      ],
-                    })
-                  }
-                  placeholder="Company"
-                />
-              </div>
-
-              <div className="field">
-                <label>Your strengths</label>
-                <div className={s.skillRow}>
-                  {SKILL_OPTIONS.map((sk) => (
-                    <button
-                      key={sk}
-                      type="button"
-                      className={`${s.skillChip}${
-                        (profile.cv.skills ?? []).includes(sk) ? ` ${s.on}` : ""
-                      }`}
-                      onClick={() => toggleSkill(sk)}
-                    >
-                      {sk}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <PrimaryButton
-                style={{ marginTop: 8 }}
-                disabled={!canContinueCv()}
-                onClick={handleCvContinue}
-              >
-                Save &amp; continue
-              </PrimaryButton>
-              <button
-                type="button"
-                className={s.skipCv}
-                onClick={() => {
-                  updateCv({ source: "skip" });
-                  goNext();
-                }}
-              >
-                Skip for now
-              </button>
-            </>
-          )}
         </div>
       )}
 
@@ -613,7 +438,7 @@ export default function OnboardingPage() {
         <div className="anim-fade-up">
           <h1 className="page-h1">Tell us about the interview</h1>
           <p className="page-sub">
-            We&apos;ll build your prep plan, countdown and tailored mock
+            We&apos;ll build your prep plan, countdown and personalised mock
             questions around it.
           </p>
 
@@ -692,8 +517,8 @@ export default function OnboardingPage() {
         <div className="anim-fade-up">
           <h1 className="page-h1">Got the job description?</h1>
           <p className="page-sub">
-            With it we can tailor your CV, mock questions and keyword tips to
-            what this employer actually wants.
+            With it we can personalise your mock questions to what this employer
+            actually asks about.
           </p>
 
           <div style={{ marginTop: 22 }}>
@@ -711,7 +536,7 @@ export default function OnboardingPage() {
               <span>
                 <span className={i.choiceTitle}>Yes, paste it in</span>
                 <span className={i.choiceSub}>
-                  Tailored questions, CV matching &amp; keyword tips
+                  Personalised mock questions for this role
                 </span>
               </span>
             </button>
@@ -775,95 +600,6 @@ export default function OnboardingPage() {
               page.
             </p>
           )}
-        </div>
-      )}
-
-      {/* ---- Step: Apply focus ---- */}
-      {currentStep === "apply" && (
-        <div className="anim-fade-up">
-          <h1 className="page-h1">What are you applying for?</h1>
-          <p className="page-sub">
-            Tell us the kind of role so we can tailor your CV and suggestions.
-          </p>
-
-          <div className="field" style={{ marginTop: 22 }}>
-            <label>Target role or industry</label>
-            <input
-              className="input"
-              value={profile.apply.targetRole}
-              onChange={(e) => updateApply({ targetRole: e.target.value })}
-              placeholder="e.g. Retail customer service"
-            />
-          </div>
-
-          <p className="form-h" style={{ marginTop: 20 }}>
-            Have a job description to match against?
-          </p>
-
-          <button
-            type="button"
-            className={`${i.choiceCard}${applyJdChoice === "paste" ? ` ${i.active}` : ""}`}
-            onClick={() => {
-              setApplyJdChoice("paste");
-              updateApply({ hasJd: true });
-            }}
-          >
-            <span className={i.choiceIcon}>
-              <FileText size={20} />
-            </span>
-            <span>
-              <span className={i.choiceTitle}>Yes — paste a job ad</span>
-              <span className={i.choiceSub}>
-                Tailor your CV keywords &amp; match score to it
-              </span>
-            </span>
-          </button>
-
-          <button
-            type="button"
-            className={`${i.choiceCard}${applyJdChoice === "skip" ? ` ${i.active}` : ""}`}
-            onClick={() => {
-              setApplyJdChoice("skip");
-              updateApply({ hasJd: false, jd: "" });
-            }}
-          >
-            <span className={i.choiceIcon}>
-              <Sparkle size={20} />
-            </span>
-            <span>
-              <span className={i.choiceTitle}>Not yet</span>
-              <span className={i.choiceSub}>
-                We&apos;ll optimise for your target role instead
-              </span>
-            </span>
-          </button>
-
-          {applyJdChoice === "paste" && (
-            <div className="field anim-fade-up" style={{ marginTop: 6 }}>
-              <label>Job description</label>
-              <textarea
-                className="textarea"
-                value={profile.apply.jd}
-                onChange={(e) => updateApply({ jd: e.target.value })}
-                placeholder="Paste the job ad here..."
-                rows={5}
-              />
-            </div>
-          )}
-
-          <PrimaryButton
-            style={{ marginTop: 14 }}
-            disabled={
-              !profile.apply.targetRole.trim() ||
-              !(
-                applyJdChoice === "skip" ||
-                (applyJdChoice === "paste" && profile.apply.jd.trim())
-              )
-            }
-            onClick={goNext}
-          >
-            Continue
-          </PrimaryButton>
         </div>
       )}
 
@@ -953,7 +689,7 @@ export default function OnboardingPage() {
               </span>
             </div>
 
-            {profile.cv.source && profile.cv.source !== "skip" && (
+            {profile.cv.source === "upload" && (
               <div className={s.summaryRow}>
                 <span className={s.summaryIcon}>
                   <FileText size={16} />
@@ -961,9 +697,7 @@ export default function OnboardingPage() {
                 <span>
                   <span className={s.summaryLabel}>CV</span>
                   <span className={s.summaryValue}>
-                    {profile.cv.source === "upload"
-                      ? profile.cv.fileName ?? "Uploaded"
-                      : profile.cv.targetRole ?? "Created"}
+                    {profile.cv.fileName ?? "Uploaded"}
                   </span>
                 </span>
               </div>
@@ -989,20 +723,6 @@ export default function OnboardingPage() {
                   </span>
                 </div>
               )}
-
-            {profile.goal === "apply" && profile.apply.targetRole && (
-              <div className={s.summaryRow}>
-                <span className={s.summaryIcon}>
-                  <FileText size={16} />
-                </span>
-                <span>
-                  <span className={s.summaryLabel}>Applying for</span>
-                  <span className={s.summaryValue}>
-                    {profile.apply.targetRole}
-                  </span>
-                </span>
-              </div>
-            )}
 
             {profile.preferences.voicePractice && (
               <div className={s.summaryRow}>

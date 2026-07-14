@@ -139,8 +139,8 @@ export default function NewInterviewPage() {
           <div className="anim-fade-up">
             <h1 className="page-h1">Got the job description?</h1>
             <p className="page-sub">
-              With it we can tailor your CV and ask questions this employer
-              would actually ask.
+              With it we can personalise your mock questions to what this
+              employer would actually ask.
             </p>
 
             <div style={{ marginTop: 22 }}>
@@ -154,7 +154,7 @@ export default function NewInterviewPage() {
                 <span>
                   <span className={s.choiceTitle}>Yes, paste it in</span>
                   <span className={s.choiceSub}>
-                    Tailored questions, CV matching & keyword tips
+                    Personalised mock questions for this role
                   </span>
                 </span>
               </button>

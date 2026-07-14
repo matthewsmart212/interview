@@ -51,7 +51,7 @@ export default function JobDescriptionPage() {
           <PageHeader
             icon="fileText"
             title="Job Description"
-            description="What your questions and CV tips are based on"
+            description="What your mock questions are based on"
             back
             backHref={`/interviews/${iv.id}`}
           />
@@ -59,7 +59,7 @@ export default function JobDescriptionPage() {
             {iv.role} at {iv.company}
           </h1>
           <p className="page-sub">
-            This is what your questions and CV tips are based on.
+            This is what your mock questions are based on.
           </p>
 
           <p className="section-title" style={{ marginTop: 22 }}>
@@ -104,8 +104,8 @@ export default function JobDescriptionPage() {
           <>
             <h1 className="page-h1">Add the job description</h1>
             <p className="page-sub">
-              Paste it below and we&apos;ll tailor your mock questions and CV
-              for {iv.company}.
+              Paste it below and we&apos;ll personalise your mock questions for{" "}
+              {iv.company}.
             </p>
 
             <div className="field" style={{ marginTop: 22 }}>
@@ -149,8 +149,8 @@ export default function JobDescriptionPage() {
             </span>
             <h1 className="page-h1">Job description analysed!</h1>
             <p className="page-sub" style={{ margin: "10px auto 26px", maxWidth: 280 }}>
-              Your questions and CV tips for {iv.company} are now tailored to
-              this exact role.
+              Your mock questions for {iv.company} are now personalised to this
+              exact role.
             </p>
             <button
               className="btn btn-primary"

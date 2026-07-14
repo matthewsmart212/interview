@@ -35,7 +35,7 @@ import {
 import s from "./profile.module.css";
 
 const ACCOUNT = [
-  { Icon: FileText, label: "My CV", href: "/cv" },
+  { Icon: FileText, label: "Replace CV", href: "/cv/upload" },
   { Icon: Bookmark, label: "Saved Questions", href: "/questions" },
   { Icon: CreditCard, label: "Subscription", href: "/profile" },
 ];
@@ -67,7 +67,7 @@ function Menu({ items }) {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, USER } = useAppDb();
+  const { user, USER, MASTER_CV } = useAppDb();
   const [editing, setEditing] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [authEmail, setAuthEmail] = useState("");
@@ -168,6 +168,25 @@ export default function ProfilePage() {
           Upgrade
         </button>
       </div>
+
+      <PageSection title="Your CV">
+        <div className={`card ${s.menu}`}>
+          <Link className={s.item} href="/cv/upload">
+            <span className={s.mi}>
+              <FileText size={19} />
+            </span>
+            <span className={s.lbl}>
+              {MASTER_CV.exists
+                ? `Replace CV (${MASTER_CV.fileName})`
+                : "Upload your CV"}
+            </span>
+            <ChevronRight size={19} className={s.chev} />
+          </Link>
+        </div>
+        <p className="page-sub" style={{ marginTop: 8 }}>
+          One CV powers every mock. Interviews carry the job description.
+        </p>
+      </PageSection>
 
       <PageSection title="Account">
         <Menu items={ACCOUNT} />

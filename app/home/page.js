@@ -7,7 +7,7 @@ import NextInterviewCard from "../../components/home/NextInterviewCard";
 import StatPillRow, { StatPill } from "../../components/home/StatPillRow";
 import QuickActionRow from "../../components/home/QuickActionRow";
 import { AppShell, PageSection } from "../../components/ui";
-import { FileText, Mic, MessageCircle, Calendar } from "../../components/Icons";
+import { Mic, MessageCircle, Calendar, Plus } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import { getSessionUser, pullSupabaseToLocal } from "../../lib/supabase/sync";
 import styles from "./home.module.css";
@@ -20,10 +20,10 @@ const QUICK_ACTIONS = [
     subtitle: "Practice with your AI interviewer",
   },
   {
-    href: "/cv",
-    icon: FileText,
-    title: "My CV",
-    subtitle: "Improve, tailor and download",
+    href: "/interviews/new",
+    icon: Plus,
+    title: "Add interview",
+    subtitle: "Role, date and job description",
   },
   {
     href: "/questions",
@@ -43,7 +43,6 @@ export default function HomePage() {
     (async () => {
       const sessionUser = await getSessionUser();
       if (!sessionUser) return;
-      // Prefer cloud when local is still a blank fresh user
       if (!user?.onboardingCompletedAt && !MASTER_CV.exists && INTERVIEWS.length === 0) {
         await pullSupabaseToLocal();
       }
@@ -63,7 +62,7 @@ export default function HomePage() {
         description={
           next
             ? `Your ${next.company} interview is in ${next.daysAway} days.`
-            : undefined
+            : "Add an interview, then run a mock — that's the loop."
         }
       />
 
@@ -72,9 +71,6 @@ export default function HomePage() {
       <StatPillRow>
         <StatPill href="/interviews" icon={Calendar}>
           {upcomingCount} upcoming
-        </StatPill>
-        <StatPill href="/cv" icon={FileText}>
-          CV score {MASTER_CV.score}
         </StatPill>
         {lastMock ? (
           <StatPill href={`/history/${lastMock.id}`} icon={Mic}>
@@ -85,6 +81,9 @@ export default function HomePage() {
             Start mock
           </StatPill>
         )}
+        <StatPill href="/progress" icon={Calendar}>
+          {MOCK_HISTORY.length} mocks
+        </StatPill>
       </StatPillRow>
 
       <hr className={styles.choiceDivider} aria-hidden />
@@ -97,22 +96,22 @@ export default function HomePage() {
           title="Prepare for interview"
           subtitle={
             next
-              ? `Mock practice & prep for ${next.company}`
-              : "AI mock interviews & role prep"
+              ? `Mock practice for ${next.company}`
+              : "AI mock interviews with feedback"
           }
           cta="Start practice"
           avatarPose="presenting"
           avatarAlt="AI coach ready to mock interview"
         />
         <HomeChoiceCard
-          href="/cv"
+          href="/interviews/new"
           variant="apply"
-          eyebrow="I'm applying"
-          title="Get ready to apply"
-          subtitle="Improve & tailor your CV for roles"
-          cta="Improve CV"
+          eyebrow="New opportunity"
+          title="Add an interview"
+          subtitle="Save the role and job description"
+          cta="Add interview"
           avatarPose="thinking"
-          avatarAlt="AI coach helping with your CV"
+          avatarAlt="AI coach helping you add an interview"
         />
       </div>
 
