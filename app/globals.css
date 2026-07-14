@@ -77,6 +77,11 @@
   --shadow-lg: 0 18px 45px rgba(10, 6, 28, 0.34);
 
   --nav-height: 74px;
+  /* Clearance below scrollable content: nav + safe-area + 20px */
+  --nav-content-gap: 20px;
+  --bottom-content-spacer: calc(
+    var(--nav-height) + env(safe-area-inset-bottom, 0px) + var(--nav-content-gap)
+  );
   --app-header-bar: 52px;
 
   --font-sans: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -147,7 +152,6 @@ body:has(.interview-route),
 
 .interview-route {
   min-height: 100dvh;
-  min-height: 100svh;
   background: var(--interview-room);
 }
 
@@ -171,7 +175,6 @@ body:has(.interview-route),
 .phone.immersive-shell {
   background: transparent;
   min-height: 100dvh;
-  min-height: 100svh;
 }
 
 .screen {
@@ -182,11 +185,30 @@ body:has(.interview-route),
 }
 
 .screen-pad {
-  padding: 18px var(--pad-x) calc(48px + env(safe-area-inset-bottom));
+  padding: 18px var(--pad-x) 18px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
+/* Nav clearance comes from .bottom-content-spacer inside MobilePageLayout —
+   do not add per-page padding-bottom for the fixed bar. */
 .has-nav {
-  padding-bottom: calc(var(--nav-height) + 72px + env(safe-area-inset-bottom));
+  padding-bottom: 0;
+}
+
+/* Shared mobile page layout (used by AppShell on every route) */
+.mobile-page-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+
+.bottom-content-spacer {
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--bottom-content-spacer);
+  pointer-events: none;
 }
 
 /* ------- App header — overlays coach stage like interview top bar ------- */
@@ -231,13 +253,12 @@ body:has(.coach-route) .app-shell {
   display: flex;
   flex-direction: column;
   background: transparent;
-  /* bottom nav clearance handled on sheet scroll area */
+  /* Fixed nav overlays the bottom; MobilePageLayout spacer clears content */
   padding: 0;
 }
 
 .coach-route.has-nav {
-  /* Keep sheet content clear of the fixed bottom nav + centre FAB */
-  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px);
+  padding-bottom: 0;
 }
 .app-header .icon-btn {
   color: #fff;
@@ -872,39 +893,59 @@ body:has(.coach-route) .app-shell {
   color: var(--brand);
 }
 
-/* ------- Bottom nav ------- */
+/* ------- Bottom nav (fixed; does not affect document flow) ------- */
 .bottom-nav {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
   background: var(--interview-bar-theme);
   backdrop-filter: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  /* Thin low-opacity edge — quieter than a bright divider */
+  border-top: 1px solid rgba(139, 108, 245, 0.18);
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-around;
-  padding: 8px 8px calc(6px + env(safe-area-inset-bottom));
+  padding: 0 8px calc(8px + env(safe-area-inset-bottom, 0px));
   z-index: 20;
+  /* Avoid layout shift when fonts/icons settle */
+  contain: layout style;
 }
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 500;
+  justify-content: flex-end;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  height: 58px;
+  padding: 0 2px;
   border: none;
   background: none;
-  flex: 1;
+  color: rgba(255, 255, 255, 0.42);
+  font-weight: 500;
+  text-decoration: none;
 }
-.nav-item > svg {
-  transform: translateY(8px);
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
 }
-.nav-item > span:last-child {
-  transform: translateY(8px);
+.nav-label {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 10.5px;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .nav-item.active {
   color: #fff;
@@ -914,15 +955,18 @@ body:has(.coach-route) .app-shell {
   outline-offset: 2px;
   border-radius: 10px;
 }
-.nav-item.active > svg {
+.nav-item.active .nav-icon {
   color: #fff;
 }
 
-/* center standout mock tab */
+/* Center standout mock tab — raised, but labels share the same baseline */
 .nav-item-mock {
   position: relative;
-  margin-top: -22px;
-  gap: 4px;
+}
+.nav-item-mock .nav-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: -2px;
 }
 .nav-mock-btn {
   width: 52px;
@@ -933,27 +977,30 @@ body:has(.coach-route) .app-shell {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px rgba(30, 16, 84, 0.35);
+  box-shadow: 0 6px 14px rgba(30, 16, 84, 0.28);
   border: 3px solid var(--interview-bar-theme);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  transform: translateY(8px);
+  /* Raise the FAB above the bar without shifting sibling labels */
+  transform: translateY(-18px);
 }
 .nav-item-mock.active .nav-mock-btn {
-  box-shadow: 0 10px 22px rgba(91, 58, 214, 0.45);
+  box-shadow: 0 7px 16px rgba(91, 58, 214, 0.34);
 }
 .nav-item-mock:active .nav-mock-btn {
-  transform: translateY(8px) scale(0.94);
+  transform: translateY(-18px) scale(0.94);
 }
 .nav-item-mock:focus-visible .nav-mock-btn {
   outline: 2px solid rgba(196, 181, 253, 0.7);
   outline-offset: 2px;
 }
-.nav-item-mock span:last-child {
+.nav-item-mock .nav-label {
   font-weight: 600;
-  color: #fff;
 }
-.nav-item-mock:not(.active) span:last-child {
-  color: rgba(255, 255, 255, 0.62);
+.nav-item-mock:not(.active) {
+  color: rgba(255, 255, 255, 0.42);
+}
+.nav-item-mock.active {
+  color: #fff;
 }
 
 /* ------- Avatar / placeholder ------- */

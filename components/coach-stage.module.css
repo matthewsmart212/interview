@@ -7,9 +7,9 @@
   overflow: hidden;
   --coach-top: calc(48px + env(safe-area-inset-top));
   --coach-w: min(70vw, 268px);
-  --coach-h: min(38vh, 300px);
-  --speech-top: calc(var(--coach-top) + min(30vh, 240px));
-  --sheet-max: min(56vh, 500px);
+  --coach-h: min(38dvh, 300px);
+  --speech-top: calc(var(--coach-top) + min(30dvh, 240px));
+  --sheet-max: min(56dvh, 500px);
 }
 
 .bg {
@@ -74,18 +74,18 @@
 
 .hero_large {
   --coach-w: min(72vw, 280px);
-  --coach-h: min(40vh, 320px);
-  --speech-top: calc(var(--coach-top) + min(32vh, 255px));
-  --sheet-max: min(52vh, 480px);
+  --coach-h: min(40dvh, 320px);
+  --speech-top: calc(var(--coach-top) + min(32dvh, 255px));
+  --sheet-max: min(52dvh, 480px);
 }
 
 /* Home-only: ~12% shorter hero, speech closer, sheet starts higher */
 .hero_home {
   --pad-x: 20px;
   --coach-w: min(66vw, 252px);
-  --coach-h: min(34vh, 272px);
-  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
-  --sheet-max: min(62vh, 560px);
+  --coach-h: min(34dvh, 272px);
+  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
+  --sheet-max: min(62dvh, 560px);
 }
 
 .hero_home .speechWrap {
@@ -95,14 +95,14 @@
 
 .hero_home .sheetInner {
   padding-top: 16px;
-  padding-bottom: 14px;
+  padding-bottom: 0;
 }
 
 .hero_medium {
   --coach-w: min(56vw, 210px);
-  --coach-h: min(28vh, 220px);
-  --speech-top: calc(var(--coach-top) + min(22vh, 175px));
-  --sheet-max: min(62vh, 560px);
+  --coach-h: min(28dvh, 220px);
+  --speech-top: calc(var(--coach-top) + min(22dvh, 175px));
+  --sheet-max: min(62dvh, 560px);
 }
 
 /* Progress: show more of the thumbs-up pose; sheet sits lower */
@@ -110,9 +110,9 @@
   --pad-x: 20px;
   --coach-top: calc(42px + env(safe-area-inset-top));
   --coach-w: min(60vw, 230px);
-  --coach-h: min(34vh, 268px);
-  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
-  --sheet-max: min(56vh, 500px);
+  --coach-h: min(34dvh, 268px);
+  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
+  --sheet-max: min(56dvh, 500px);
 }
 
 .hero_progress .speechWrap {
@@ -122,20 +122,20 @@
 
 .hero_progress .sheetInner {
   padding-top: 14px;
-  padding-bottom: 20px;
+  padding-bottom: 0;
 }
 
 .hero_compact {
   --coach-w: min(48vw, 180px);
-  --coach-h: min(22vh, 170px);
-  --speech-top: calc(var(--coach-top) + min(18vh, 140px));
-  --sheet-max: min(68vh, 600px);
+  --coach-h: min(22dvh, 170px);
+  --speech-top: calc(var(--coach-top) + min(18dvh, 140px));
+  --sheet-max: min(68dvh, 600px);
 }
 
 .hero_pointing {
   --coach-w: min(58vw, 220px);
-  --coach-h: min(30vh, 240px);
-  --sheet-max: min(64vh, 580px);
+  --coach-h: min(30dvh, 240px);
+  --sheet-max: min(64dvh, 580px);
 }
 
 .hero_pointing .coach {
@@ -147,9 +147,9 @@
 .hero_interviews {
   --pad-x: 20px;
   --coach-w: min(46vw, 176px);
-  --coach-h: min(24vh, 192px);
-  --speech-top: calc(var(--coach-top) + min(17vh, 138px));
-  --sheet-max: min(72vh, 640px);
+  --coach-h: min(24dvh, 192px);
+  --speech-top: calc(var(--coach-top) + min(17dvh, 138px));
+  --sheet-max: min(72dvh, 640px);
 }
 
 .hero_interviews .coach {
@@ -165,22 +165,22 @@
 
 .hero_interviews .sheetInner {
   padding-top: 14px;
-  padding-bottom: 20px;
+  padding-bottom: 0;
 }
 
 .hero_celebration {
   --coach-w: min(64vw, 240px);
-  --coach-h: min(32vh, 260px);
-  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
-  --sheet-max: min(58vh, 520px);
+  --coach-h: min(32dvh, 260px);
+  --speech-top: calc(var(--coach-top) + min(26dvh, 205px));
+  --sheet-max: min(58dvh, 520px);
 }
 
 .noMessage {
-  --sheet-max: min(66vh, 600px);
+  --sheet-max: min(66dvh, 600px);
 }
 
 .noMessage.hero_large {
-  --sheet-max: min(60vh, 540px);
+  --sheet-max: min(60dvh, 540px);
 }
 
 /* Mock hub home: show shoulders above the sheet, keep sheet scannable */
@@ -188,17 +188,17 @@
   --pad-x: 20px;
   --coach-top: calc(40px + env(safe-area-inset-top));
   --coach-w: min(70vw, 268px);
-  --coach-h: min(44vh, 330px);
-  --sheet-max: min(54vh, 470px);
+  --coach-h: min(44dvh, 330px);
+  --sheet-max: min(54dvh, 470px);
 }
 
 .noMessage.hero_mock {
-  --sheet-max: min(56vh, 490px);
+  --sheet-max: min(56dvh, 490px);
 }
 
 .hero_mock .sheetInner {
   padding-top: 14px;
-  padding-bottom: 16px;
+  padding-bottom: 0;
 }
 
 .speechWrap {
@@ -231,7 +231,7 @@
 }
 
 .sheet_fullHeight {
-  --sheet-max: min(72vh, 640px);
+  --sheet-max: min(72dvh, 640px);
 }
 
 .sheet_elevated .sheetInner {
@@ -243,7 +243,8 @@
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 18px var(--pad-x) 12px;
+  /* Bottom clearance comes from MobilePageLayout spacer — not page padding */
+  padding: 18px var(--pad-x) 0;
   border-radius: 24px 24px 0 0;
   background: linear-gradient(
     180deg,
@@ -314,45 +315,45 @@
 
 @media (max-height: 700px) {
   .hero_large {
-    --coach-h: min(32vh, 230px);
-    --speech-top: calc(var(--coach-top) + min(24vh, 185px));
-    --sheet-max: min(58vh, 480px);
+    --coach-h: min(32dvh, 230px);
+    --speech-top: calc(var(--coach-top) + min(24dvh, 185px));
+    --sheet-max: min(58dvh, 480px);
   }
 
   .hero_mock {
-    --coach-h: min(36vh, 260px);
-    --sheet-max: min(58vh, 500px);
+    --coach-h: min(36dvh, 260px);
+    --sheet-max: min(58dvh, 500px);
   }
 
   .noMessage.hero_mock {
-    --sheet-max: min(60vh, 520px);
+    --sheet-max: min(60dvh, 520px);
   }
 
   .hero_home {
-    --coach-h: min(28vh, 210px);
-    --speech-top: calc(var(--coach-top) + min(21vh, 165px));
-    --sheet-max: min(64vh, 540px);
+    --coach-h: min(28dvh, 210px);
+    --speech-top: calc(var(--coach-top) + min(21dvh, 165px));
+    --sheet-max: min(64dvh, 540px);
   }
 
   .hero_interviews {
-    --coach-h: min(20vh, 160px);
-    --speech-top: calc(var(--coach-top) + min(14vh, 115px));
-    --sheet-max: min(74vh, 600px);
+    --coach-h: min(20dvh, 160px);
+    --speech-top: calc(var(--coach-top) + min(14dvh, 115px));
+    --sheet-max: min(74dvh, 600px);
   }
 
   .hero_medium {
-    --coach-h: min(24vh, 180px);
-    --speech-top: calc(var(--coach-top) + min(18vh, 145px));
-    --sheet-max: min(64vh, 520px);
+    --coach-h: min(24dvh, 180px);
+    --speech-top: calc(var(--coach-top) + min(18dvh, 145px));
+    --sheet-max: min(64dvh, 520px);
   }
 
   .hero_progress {
-    --coach-h: min(28vh, 210px);
-    --speech-top: calc(var(--coach-top) + min(21vh, 165px));
-    --sheet-max: min(60vh, 520px);
+    --coach-h: min(28dvh, 210px);
+    --speech-top: calc(var(--coach-top) + min(21dvh, 165px));
+    --sheet-max: min(60dvh, 520px);
   }
 
   .noMessage {
-    --sheet-max: min(68vh, 560px);
+    --sheet-max: min(68dvh, 560px);
   }
 }
