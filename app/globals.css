@@ -76,6 +76,12 @@
   --shadow: 0 10px 26px rgba(10, 6, 28, 0.22);
   --shadow-lg: 0 18px 45px rgba(10, 6, 28, 0.34);
 
+  /* Premium primary CTA (purple) — shared across cards & buttons */
+  --cta-gradient: linear-gradient(135deg, #8b6cf5 0%, #6d4ce6 50%, #5a34d6 100%);
+  --cta-shadow: 0 14px 32px rgba(91, 58, 214, 0.42);
+  --cta-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --cta-border: 1px solid rgba(255, 255, 255, 0.12);
+
   --nav-height: 74px;
   /* Clearance below scrollable content: nav + safe-area + 20px */
   --nav-content-gap: 20px;
@@ -502,9 +508,10 @@ body:has(.coach-route) .app-shell {
   transform: translateY(1px);
 }
 .btn-primary {
-  background: var(--gradient-primary);
+  background: var(--cta-gradient);
   color: #fff;
-  box-shadow: var(--glow-purple-sm);
+  border: var(--cta-border);
+  box-shadow: var(--cta-shadow), var(--cta-highlight);
 }
 .btn-primary:active {
   transform: translateY(1px) scale(0.99);

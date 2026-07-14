@@ -243,9 +243,25 @@
   max-height: 168px;
   padding: 16px 14px;
   margin-bottom: 10px;
-  background: linear-gradient(135deg, #7d5cf0 0%, #5b3ad6 100%);
-  border-color: rgba(196, 181, 253, 0.35);
-  box-shadow: 0 10px 24px rgba(91, 58, 214, 0.28);
+  background: var(--cta-gradient);
+  border: var(--cta-border);
+  box-shadow: var(--cta-shadow), var(--cta-highlight);
+}
+
+.bigChoicePrimary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 80% at 15% 0%,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0) 58%
+  );
+  pointer-events: none;
+}
+
+.bigChoicePrimary > * {
+  position: relative;
 }
 
 .bigChoiceSecondary {
