@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import PageHeader from "../../components/PageHeader";
-import { AppShell } from "../../components/ui";
+import { AppShell, SheetBack } from "../../components/ui";
 import { Bookmark } from "../../components/Icons";
 import { toggleSavedQuestion } from "../../lib/db";
 import { useAppDb } from "../../lib/db/use-app-db";
@@ -30,15 +29,15 @@ export default function QuestionsPage() {
       : QUESTIONS.filter((x) => x.cat === filter);
 
   return (
-    <AppShell>
-      <PageHeader
-        title="Questions"
-        description="Practise likely interview questions"
-        back
-        backHref="/home"
-      />
+    <AppShell
+      coachPose="presenting"
+      coachTitle="Likely questions"
+      coachSpeech="Browse these, save favourites, then practise answering out loud with me."
+    >
+      <SheetBack href="/home">Home</SheetBack>
+      <p className={s.sheetTitle}>Questions</p>
 
-      <div className="chips" style={{ marginBottom: 16 }}>
+      <div className="chips" style={{ marginBottom: 14, marginTop: 12 }}>
         {FILTERS.map((f) => (
           <button
             key={f}

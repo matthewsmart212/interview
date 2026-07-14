@@ -1,6 +1,7 @@
 export { default as AppShell } from "./AppShell";
 export { default as TopHeader } from "./TopHeader";
 export { default as BottomNav } from "../BottomNav";
+export { default as SheetBack } from "../SheetBack";
 export { default as PageSection } from "./PageSection";
 export { default as PrimaryButton } from "./PrimaryButton";
 export { default as SecondaryButton } from "./SecondaryButton";

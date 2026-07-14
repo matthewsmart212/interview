@@ -41,6 +41,23 @@
   letter-spacing: -0.02em;
 }
 
+.detailMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.detailMetaText {
+  min-width: 0;
+  flex: 1;
+}
+
+.detailRing {
+  flex-shrink: 0;
+}
+
 .block {
   margin-top: 8px;
 }

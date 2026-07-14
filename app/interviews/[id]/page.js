@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import Phone from "../../../components/Phone";
-import PageHeader from "../../../components/PageHeader";
-import BottomNav from "../../../components/BottomNav";
+import {
+  AppShell,
+  SheetBack,
+  PrimaryButton,
+} from "../../../components/ui";
 import CircularProgress from "../../../components/CircularProgress";
 import {
   Calendar,
@@ -32,25 +34,19 @@ export default function InterviewPrepPage() {
 
   if (!iv) {
     return (
-      <Phone>
-        <div className="screen screen-pad has-nav has-app-header">
-          <PageHeader
-            icon="calendar"
-            title="Interview"
-            description="Interview prep and checklist"
-            back
-            backHref="/interviews"
-          />
-          <div className={s.empty}>
-            <div className={s.emptyTitle}>Interview not found</div>
-            <p className={s.emptySub}>It may have been removed.</p>
-            <Link href="/interviews" className="btn btn-primary">
-              Back to my interviews
-            </Link>
-          </div>
+      <AppShell
+        navActive="interviews"
+        coachPose="idle"
+        coachTitle="Hmm…"
+        coachSpeech="I can't find that interview. It may have been removed."
+      >
+        <SheetBack href="/interviews">Back to interviews</SheetBack>
+        <div className={s.empty}>
+          <div className={s.emptyTitle}>Interview not found</div>
+          <p className={s.emptySub}>It may have been removed.</p>
+          <PrimaryButton href="/interviews">Back to my interviews</PrimaryButton>
         </div>
-        <BottomNav active="interviews" />
-      </Phone>
+      </AppShell>
     );
   }
 
@@ -82,142 +78,142 @@ export default function InterviewPrepPage() {
     },
   ];
 
+  const speech = past
+    ? `How did ${iv.company} go? Review your mocks or practise for the next one.`
+    : iv.hasJD
+      ? `${iv.company} in ${iv.daysAway} day${iv.daysAway === 1 ? "" : "s"}. Run a mock and I'll quiz you on this role.`
+      : `Let's prep for ${iv.company}. Add the job description, then we'll practise.`;
+
   return (
-    <Phone>
-      <div className="screen screen-pad has-nav has-app-header">
-        <PageHeader
-          title="Interview prep"
-          description="Checklist for this role"
-          back
-          backHref="/interviews"
-        />
-        <div className={`${s.hero} anim-fade-up`}>
-          <div className={s.heroBody}>
-            <div className={s.heroLabel}>
-              {past ? "Past interview" : "Preparing for"}
-            </div>
-            <div className={s.heroTitle}>
-              {iv.role} at {iv.company}
-            </div>
-            <div className={s.heroMeta}>
-              <span className={s.heroChip}>
-                <Calendar size={13} /> {iv.date}
-              </span>
-              <span className={s.heroChip}>
-                <Clock size={13} />
-                {past ? iv.outcome ?? "Completed" : `in ${iv.daysAway} days`}
-              </span>
-              <span className={s.heroChip}>{iv.type}</span>
-            </div>
-          </div>
-          <div className={s.heroRing}>
-            <CircularProgress
-              value={iv.readiness}
-              size={72}
-              stroke={8}
-              color="#fff"
-              track="rgba(255,255,255,0.25)"
-            >
-              <span className={s.ringPct}>{iv.readiness}%</span>
-            </CircularProgress>
-            <span className={s.heroRingLab}>Ready</span>
+    <AppShell
+      navActive="interviews"
+      coachPose={past ? "idle" : "presenting"}
+      coachTitle={`${iv.role}`}
+      coachSpeech={speech}
+    >
+      <SheetBack href="/interviews">Interviews</SheetBack>
+
+      <div className={s.detailMeta}>
+        <div className={s.detailMetaText}>
+          <p className={s.sheetTitle}>{iv.company}</p>
+          <div className={s.heroMeta}>
+            <span className={s.heroChip}>
+              <Calendar size={13} /> {iv.date}
+            </span>
+            <span className={s.heroChip}>
+              <Clock size={13} />
+              {past ? iv.outcome ?? "Completed" : `in ${iv.daysAway} days`}
+            </span>
+            <span className={s.heroChip}>{iv.type}</span>
           </div>
         </div>
-
-        <p className="section-title" style={{ marginTop: 24 }}>
-          Your prep checklist
-        </p>
-        <div className="card">
-          {checklist.map((c) => (
-            <div className={s.checkRow} key={c.title}>
-              <span className={`check${c.done ? "" : " todo"}`}>
-                {c.done ? (
-                  <Check size={15} stroke={3} />
-                ) : (
-                  <ChevronRight size={15} stroke={3} />
-                )}
-              </span>
-              <span className={s.checkText}>
-                <span className={s.checkTitle}>{c.title}</span>
-                <span className={s.checkSub}>{c.sub}</span>
-              </span>
-              <Link href={c.href} className={s.checkCta}>
-                {c.cta}
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        <p className="section-title" style={{ marginTop: 24 }}>
-          Practise
-        </p>
-        <div className="stack">
-          <Link href="/mock" className="action-row">
-            <span className="ar-icon">
-              <Mic size={22} />
-            </span>
-            <span className="ar-body">
-              <span className="ar-title">Start AI mock interview</span>
-              <span className="ar-sub">
-                {iv.hasJD
-                  ? "Questions from this job description + your CV"
-                  : `Generic ${iv.role} questions — add a JD for better prep`}
-              </span>
-            </span>
-            <ChevronRight size={20} className="chev" />
-          </Link>
-          <Link href="/questions" className="action-row">
-            <span className="ar-icon">
-              <MessageCircle size={22} />
-            </span>
-            <span className="ar-body">
-              <span className="ar-title">Browse likely questions</span>
-              <span className="ar-sub">Read model answers for this role</span>
-            </span>
-            <ChevronRight size={20} className="chev" />
-          </Link>
-        </div>
-
-        {mocks.length > 0 && (
-          <>
-            <div className={s.headRow} style={{ marginTop: 24, marginBottom: 0 }}>
-              <p className="section-title" style={{ marginBottom: 12 }}>
-                Mock history for this interview
-              </p>
-              <Link href="/history" className="link-btn">
-                See all
-              </Link>
-            </div>
-            <div className="card">
-              {mocks.map((mk) => (
-                <Link href={`/history/${mk.id}`} className={s.mockRow} key={mk.id}>
-                  <span className={`${s.mockScore} ${scoreCls(mk.score) ? s[scoreCls(mk.score)] : ""}`}>
-                    {mk.score}
-                  </span>
-                  <span className={s.mockBody}>
-                    <span className={s.mockTitle}>{mk.headline}</span>
-                    <span className={s.mockSub}>
-                      {mk.date} · {mk.questions} questions · {mk.durationMin} min
-                    </span>
-                  </span>
-                  <ChevronRight size={18} className="chev" />
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
-
-        {!iv.hasJD && (
-          <Link
-            href={`/interviews/${iv.id}/jd`}
-            className="btn btn-soft"
-            style={{ marginTop: 20 }}
+        <div className={s.detailRing}>
+          <CircularProgress
+            value={iv.readiness}
+            size={64}
+            stroke={7}
+            color="#fff"
+            track="rgba(255,255,255,0.2)"
           >
-            <Plus size={17} /> Add job description
-          </Link>
-        )}
+            <span className={s.ringPct}>{iv.readiness}%</span>
+          </CircularProgress>
+        </div>
       </div>
-      <BottomNav active="interviews" />
-    </Phone>
+
+      <p className="section-title" style={{ marginTop: 18 }}>
+        Your prep checklist
+      </p>
+      <div className="card">
+        {checklist.map((c) => (
+          <div className={s.checkRow} key={c.title}>
+            <span className={`check${c.done ? "" : " todo"}`}>
+              {c.done ? (
+                <Check size={15} stroke={3} />
+              ) : (
+                <ChevronRight size={15} stroke={3} />
+              )}
+            </span>
+            <span className={s.checkText}>
+              <span className={s.checkTitle}>{c.title}</span>
+              <span className={s.checkSub}>{c.sub}</span>
+            </span>
+            <Link href={c.href} className={s.checkCta}>
+              {c.cta}
+            </Link>
+          </div>
+        ))}
+      </div>
+
+      <p className="section-title" style={{ marginTop: 22 }}>
+        Practise
+      </p>
+      <div className="stack">
+        <Link href="/mock" className="action-row">
+          <span className="ar-icon">
+            <Mic size={22} />
+          </span>
+          <span className="ar-body">
+            <span className="ar-title">Start AI mock interview</span>
+            <span className="ar-sub">
+              {iv.hasJD
+                ? "Questions from this job description + your CV"
+                : `Generic ${iv.role} questions — add a JD for better prep`}
+            </span>
+          </span>
+          <ChevronRight size={20} className="chev" />
+        </Link>
+        <Link href="/questions" className="action-row">
+          <span className="ar-icon">
+            <MessageCircle size={22} />
+          </span>
+          <span className="ar-body">
+            <span className="ar-title">Browse likely questions</span>
+            <span className="ar-sub">Read model answers for this role</span>
+          </span>
+          <ChevronRight size={20} className="chev" />
+        </Link>
+      </div>
+
+      {mocks.length > 0 && (
+        <>
+          <div className={s.headRow} style={{ marginTop: 22, marginBottom: 0 }}>
+            <p className="section-title" style={{ marginBottom: 12 }}>
+              Mock history
+            </p>
+            <Link href="/history" className="link-btn">
+              See all
+            </Link>
+          </div>
+          <div className="card">
+            {mocks.map((mk) => (
+              <Link href={`/history/${mk.id}`} className={s.mockRow} key={mk.id}>
+                <span
+                  className={`${s.mockScore} ${scoreCls(mk.score) ? s[scoreCls(mk.score)] : ""}`}
+                >
+                  {mk.score}
+                </span>
+                <span className={s.mockBody}>
+                  <span className={s.mockTitle}>{mk.headline}</span>
+                  <span className={s.mockSub}>
+                    {mk.date} · {mk.questions} questions · {mk.durationMin} min
+                  </span>
+                </span>
+                <ChevronRight size={18} className="chev" />
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+
+      {!iv.hasJD && (
+        <Link
+          href={`/interviews/${iv.id}/jd`}
+          className="btn btn-soft"
+          style={{ marginTop: 18 }}
+        >
+          <Plus size={17} /> Add job description
+        </Link>
+      )}
+    </AppShell>
   );
 }

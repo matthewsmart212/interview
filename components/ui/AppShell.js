@@ -10,6 +10,7 @@ export default function AppShell({
   children,
   navActive,
   noNav = false,
+  noHeader = false,
   className = "",
   coach = true,
   coachPose = "welcoming",
@@ -20,7 +21,7 @@ export default function AppShell({
     const screenClass = [
       "screen",
       "screen-pad",
-      "has-app-header",
+      !noHeader && "has-app-header",
       !noNav && "has-nav",
       className,
     ]
@@ -51,6 +52,7 @@ export default function AppShell({
           pose={coachPose}
           title={coachTitle}
           speech={coachSpeech}
+          noHeader={noHeader || noNav}
         >
           {children}
         </CoachStage>

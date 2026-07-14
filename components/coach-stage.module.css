@@ -49,11 +49,12 @@
   position: absolute;
   z-index: 2;
   left: 50%;
-  top: calc(52px + env(safe-area-inset-top));
+  top: calc(48px + env(safe-area-inset-top));
   transform: translateX(-50%);
-  width: min(72vw, 280px);
-  height: min(42vh, 340px);
+  width: min(70vw, 268px);
+  height: min(38vh, 300px);
   pointer-events: none;
+  animation: coachEnter 0.55s ease-out both;
 }
 
 .avatar {
@@ -69,10 +70,11 @@
   z-index: 3;
   left: 18px;
   right: 18px;
-  top: calc(52px + env(safe-area-inset-top) + min(34vh, 270px));
+  top: calc(48px + env(safe-area-inset-top) + min(30vh, 240px));
   display: flex;
   justify-content: center;
   pointer-events: none;
+  animation: speechEnter 0.45s ease-out 0.12s both;
 }
 
 .speech {
@@ -107,10 +109,11 @@
   position: relative;
   z-index: 4;
   margin-top: auto;
-  max-height: min(58vh, 520px);
+  max-height: min(56vh, 500px);
   display: flex;
   flex-direction: column;
   min-height: 0;
+  animation: sheetEnter 0.5s ease-out 0.08s both;
 }
 
 .sheetInner {
@@ -118,7 +121,7 @@
   min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 18px var(--pad-x) 8px;
+  padding: 16px var(--pad-x) 10px;
   border-radius: 24px 24px 0 0;
   background: linear-gradient(
     180deg,
@@ -138,5 +141,56 @@
 }
 
 .noHeader .speechWrap {
-  top: calc(18px + env(safe-area-inset-top) + min(34vh, 270px));
+  top: calc(18px + env(safe-area-inset-top) + min(30vh, 240px));
+}
+
+@keyframes coachEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes speechEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheetEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-height: 700px) {
+  .coach {
+    height: min(32vh, 220px);
+  }
+
+  .speechWrap {
+    top: calc(48px + env(safe-area-inset-top) + min(24vh, 180px));
+  }
+
+  .sheet {
+    max-height: min(62vh, 480px);
+  }
+
+  .noHeader .speechWrap {
+    top: calc(18px + env(safe-area-inset-top) + min(24vh, 180px));
+  }
 }

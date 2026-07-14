@@ -2,9 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import PageHeader from "../../components/PageHeader";
-import Avatar from "../../components/Avatar";
-import { AppShell, PrimaryButton } from "../../components/ui";
+import { AppShell, SheetBack, PrimaryButton } from "../../components/ui";
 import {
   Calendar,
   Mic,
@@ -84,8 +82,6 @@ export default function OnboardingPage() {
     [profile.goal]
   );
   const currentStep = steps[stepIndex] ?? "welcome";
-  const totalSteps = steps.length - 1; // exclude done from count
-  const displayStep = Math.min(stepIndex + 1, totalSteps);
 
   useEffect(() => {
     const saved = normaliseDraft(loadProfile());
@@ -172,63 +168,80 @@ export default function OnboardingPage() {
   const firstName = getFirstName(profile);
   const postCta = getPostOnboardingCta(profile);
 
+  const coachByStep = {
+    welcome: {
+      pose: "waving",
+      title: "Hi — I'm your coach",
+      speech: "What should I call you? I'll use it across your mocks and progress.",
+    },
+    goal: {
+      pose: "presenting",
+      title: `Nice to meet you, ${firstName}`,
+      speech: "What brings you here? I'll set up your prep around it.",
+    },
+    cv: {
+      pose: cvStage === "uploaded" ? "thumbsup" : "idle",
+      title:
+        cvStage === "parsing"
+          ? "Reading your CV…"
+          : cvStage === "uploaded"
+            ? "CV ready"
+            : "Your CV",
+      speech:
+        cvStage === "parsing"
+          ? "Hang on — I'm picking out experience for your mocks."
+          : cvStage === "uploaded"
+            ? "I'll use this to personalise every practice session."
+            : "One permanent CV powers every mock. Skip if you don't have it yet.",
+    },
+    interview: {
+      pose: "presenting",
+      title: "Upcoming interview",
+      speech: "Tell me the role — I'll build your prep plan and countdown around it.",
+    },
+    jd: {
+      pose: "idle",
+      title: "Job description?",
+      speech: "With the JD I can ask what this employer would ask. Skip if you don't have it.",
+    },
+    prefs: {
+      pose: "welcoming",
+      title: `Almost there, ${firstName}`,
+      speech: "A couple of quick preferences so practice feels natural.",
+    },
+    done: {
+      pose: "thumbsup",
+      title: `You're all set, ${firstName}`,
+      speech: "Here's your plan — pick a path and I'll guide you from here.",
+    },
+  };
+  const coach = coachByStep[currentStep] || coachByStep.welcome;
+
   return (
-    <AppShell noNav>
-      <PageHeader
-        icon="sparkle"
-        title="Welcome"
-        description={
-          currentStep === "done"
-            ? "You're all set"
-            : "Let's personalise your coach"
-        }
-        back={currentStep !== "done"}
-        onBack={goBack}
-        right={
-          currentStep !== "done" ? (
-            <span className="step-count">
-              {displayStep} of {totalSteps}
-            </span>
-          ) : null
-        }
-      />
+    <AppShell
+      noNav
+      coachPose={coach.pose}
+      coachTitle={coach.title}
+      coachSpeech={coach.speech}
+    >
+      {currentStep !== "done" ? (
+        <SheetBack onClick={goBack}>
+          {stepIndex === 0 ? "Welcome" : "Back"}
+        </SheetBack>
+      ) : null}
 
       {currentStep !== "done" && (
-        <>
-          <p className={s.progressLabel}>
-            {Math.round((displayStep / totalSteps) * 100)}% complete
-          </p>
-          <div className={i.stepDots} aria-hidden>
-            {steps.slice(0, -1).map((id, n) => (
-              <i key={id} className={n <= stepIndex ? "on" : ""} />
-            ))}
-          </div>
-        </>
+        <div className={i.stepDots} aria-hidden>
+          {steps.slice(0, -1).map((id, n) => (
+            <i key={id} className={n <= stepIndex ? "on" : ""} />
+          ))}
+        </div>
       )}
 
       {/* ---- Step: Welcome ---- */}
       {currentStep === "welcome" && (
         <div className="anim-fade-up">
-          <div className={s.heroBlock}>
-            <div className={s.heroCopy}>
-              <span className={s.heroEyebrow}>
-                <span className={s.heroDot} aria-hidden />
-                Fresh start
-              </span>
-              <h1 className="page-h1">Hi there! I&apos;m your coach.</h1>
-              <p className="page-sub">
-                First, what should I call you? I&apos;ll use this across your
-                mocks and dashboard.
-              </p>
-            </div>
-            <Avatar
-              pose="waving"
-              alt="AI coach waving hello"
-              className={s.heroAvatar}
-            />
-          </div>
-
-          <div className="field" style={{ marginTop: 8 }}>
+          <div className="field">
             <label>Your first name</label>
             <input
               className="input"
@@ -263,14 +276,6 @@ export default function OnboardingPage() {
       {/* ---- Step: Goal ---- */}
       {currentStep === "goal" && (
         <div className="anim-fade-up">
-          <h1 className="page-h1">
-            What brings you here, {firstName}?
-          </h1>
-          <p className="page-sub">
-            Pick what matters most — we&apos;ll set up your mock interview prep
-            around it.
-          </p>
-
           <div className={s.goalGrid}>
             {GOALS.map(({ id, title, sub, Icon }) => (
               <button
@@ -306,32 +311,24 @@ export default function OnboardingPage() {
         <div className="anim-fade-up">
           {cvStage === "pick" && (
             <>
-              <h1 className="page-h1">Got a CV to upload?</h1>
-              <p className="page-sub">
-                One permanent CV powers every mock — we use it to personalise
-                questions and feedback to your experience.
-              </p>
-
-              <div style={{ marginTop: 22 }}>
-                <button
-                  type="button"
-                  className={`${i.choiceCard}${profile.cv.source === "upload" ? ` ${i.active}` : ""}`}
-                  onClick={() => {
-                    updateCv({ source: "upload" });
-                    setCvStage("upload");
-                  }}
-                >
-                  <span className={i.choiceIcon}>
-                    <Upload size={20} />
+              <button
+                type="button"
+                className={`${i.choiceCard}${profile.cv.source === "upload" ? ` ${i.active}` : ""}`}
+                onClick={() => {
+                  updateCv({ source: "upload" });
+                  setCvStage("upload");
+                }}
+              >
+                <span className={i.choiceIcon}>
+                  <Upload size={20} />
+                </span>
+                <span>
+                  <span className={i.choiceTitle}>Yes — upload it</span>
+                  <span className={i.choiceSub}>
+                    PDF or Word. One CV for all your mocks.
                   </span>
-                  <span>
-                    <span className={i.choiceTitle}>Yes — upload it</span>
-                    <span className={i.choiceSub}>
-                      PDF or Word. One CV for all your mocks.
-                    </span>
-                  </span>
-                </button>
-              </div>
+                </span>
+              </button>
 
               <button
                 type="button"
@@ -348,11 +345,6 @@ export default function OnboardingPage() {
 
           {cvStage === "upload" && (
             <>
-              <h1 className="page-h1">Upload your CV</h1>
-              <p className="page-sub">
-                Tap below to choose a file. We&apos;ll use it to personalise
-                every mock interview.
-              </p>
               <button
                 type="button"
                 className={s.dropzone}
@@ -392,7 +384,6 @@ export default function OnboardingPage() {
           {cvStage === "parsing" && (
             <div className={s.parseWrap}>
               <div className={s.spinner} aria-hidden />
-              <h1 className="page-h1">Reading your CV...</h1>
               <p className="page-sub" style={{ marginTop: 10 }}>
                 Picking out your experience, skills and achievements.
               </p>
@@ -412,7 +403,6 @@ export default function OnboardingPage() {
                 >
                   <FileText size={26} />
                 </span>
-                <h1 className="page-h1">CV ready!</h1>
                 <p className="page-sub" style={{ marginTop: 8 }}>
                   {profile.cv.fileName} · ready to personalise your mocks.
                 </p>
@@ -436,13 +426,7 @@ export default function OnboardingPage() {
       {/* ---- Step: Interview details ---- */}
       {currentStep === "interview" && (
         <div className="anim-fade-up">
-          <h1 className="page-h1">Tell us about the interview</h1>
-          <p className="page-sub">
-            We&apos;ll build your prep plan, countdown and personalised mock
-            questions around it.
-          </p>
-
-          <div className="field" style={{ marginTop: 22 }}>
+          <div className="field">
             <label>Job role</label>
             <input
               className="input"
@@ -515,51 +499,43 @@ export default function OnboardingPage() {
       {/* ---- Step: Job description (interview path) ---- */}
       {currentStep === "jd" && (
         <div className="anim-fade-up">
-          <h1 className="page-h1">Got the job description?</h1>
-          <p className="page-sub">
-            With it we can personalise your mock questions to what this employer
-            actually asks about.
-          </p>
-
-          <div style={{ marginTop: 22 }}>
-            <button
-              type="button"
-              className={`${i.choiceCard}${jdChoice === "paste" ? ` ${i.active}` : ""}`}
-              onClick={() => {
-                setJdChoice("paste");
-                updateInterview({ hasJd: true });
-              }}
-            >
+          <button
+            type="button"
+            className={`${i.choiceCard}${jdChoice === "paste" ? ` ${i.active}` : ""}`}
+            onClick={() => {
+              setJdChoice("paste");
+              updateInterview({ hasJd: true });
+            }}
+          >
               <span className={i.choiceIcon}>
                 <FileText size={20} />
               </span>
               <span>
-                <span className={i.choiceTitle}>Yes, paste it in</span>
-                <span className={i.choiceSub}>
-                  Personalised mock questions for this role
-                </span>
+              <span className={i.choiceTitle}>Yes, paste it in</span>
+              <span className={i.choiceSub}>
+                Personalised mock questions for this role
               </span>
-            </button>
+            </span>
+          </button>
 
-            <button
-              type="button"
-              className={`${i.choiceCard}${jdChoice === "skip" ? ` ${i.active}` : ""}`}
-              onClick={() => {
-                setJdChoice("skip");
-                updateInterview({ hasJd: false, jd: "" });
-              }}
-            >
-              <span className={i.choiceIcon}>
-                <Sparkle size={20} />
+          <button
+            type="button"
+            className={`${i.choiceCard}${jdChoice === "skip" ? ` ${i.active}` : ""}`}
+            onClick={() => {
+              setJdChoice("skip");
+              updateInterview({ hasJd: false, jd: "" });
+            }}
+          >
+            <span className={i.choiceIcon}>
+              <Sparkle size={20} />
+            </span>
+            <span>
+              <span className={i.choiceTitle}>Not right now</span>
+              <span className={i.choiceSub}>
+                We&apos;ll use great generic questions for this role
               </span>
-              <span>
-                <span className={i.choiceTitle}>Not right now</span>
-                <span className={i.choiceSub}>
-                  We&apos;ll use great generic questions for this role
-                </span>
-              </span>
-            </button>
-          </div>
+            </span>
+          </button>
 
           {jdChoice === "paste" && (
             <div className="field anim-fade-up" style={{ marginTop: 6 }}>
@@ -606,13 +582,7 @@ export default function OnboardingPage() {
       {/* ---- Step: Preferences ---- */}
       {currentStep === "prefs" && (
         <div className="anim-fade-up">
-          <h1 className="page-h1">Almost there, {firstName}!</h1>
-          <p className="page-sub">
-            A couple of quick preferences so your practice feels natural.
-          </p>
-
-          <div style={{ marginTop: 22 }}>
-            <div className={s.prefCard}>
+          <div className={s.prefCard}>
               <span className={s.prefIcon}>
                 <Volume size={20} />
               </span>
@@ -622,36 +592,35 @@ export default function OnboardingPage() {
                   Answer out loud like the real thing — with live transcription
                 </span>
               </span>
-              <button
-                type="button"
-                className={`${s.toggle}${profile.preferences.voicePractice ? ` ${s.on}` : ""}`}
-                onClick={() =>
-                  updatePrefs({
-                    voicePractice: !profile.preferences.voicePractice,
-                  })
-                }
-                aria-pressed={profile.preferences.voicePractice}
-                aria-label="Toggle voice practice"
-              >
-                <span className={s.toggleKnob} />
-              </button>
-            </div>
+            <button
+              type="button"
+              className={`${s.toggle}${profile.preferences.voicePractice ? ` ${s.on}` : ""}`}
+              onClick={() =>
+                updatePrefs({
+                  voicePractice: !profile.preferences.voicePractice,
+                })
+              }
+              aria-pressed={profile.preferences.voicePractice}
+              aria-label="Toggle voice practice"
+            >
+              <span className={s.toggleKnob} />
+            </button>
+          </div>
 
-            <p className="form-h">Preferred interview format</p>
-            <div className="segmented">
-              {["In-person", "Phone", "Video"].map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  className={
-                    profile.preferences.interviewFormat === t ? "active" : ""
-                  }
-                  onClick={() => updatePrefs({ interviewFormat: t })}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
+          <p className="form-h">Preferred interview format</p>
+          <div className="segmented">
+            {["In-person", "Phone", "Video"].map((t) => (
+              <button
+                key={t}
+                type="button"
+                className={
+                  profile.preferences.interviewFormat === t ? "active" : ""
+                }
+                onClick={() => updatePrefs({ interviewFormat: t })}
+              >
+                {t}
+              </button>
+            ))}
           </div>
 
           <PrimaryButton style={{ marginTop: 20 }} onClick={goNext}>
@@ -663,17 +632,6 @@ export default function OnboardingPage() {
       {/* ---- Step: Done ---- */}
       {currentStep === "done" && (
         <div className={`${s.doneHero} anim-fade-up`}>
-          <Avatar
-            pose="thumbsup"
-            alt="AI coach celebrating"
-            className={s.doneAvatar}
-          />
-          <h1 className="page-h1">You&apos;re all set, {firstName}!</h1>
-          <p className="page-sub" style={{ margin: "10px auto 0", maxWidth: 300 }}>
-            Your coach is personalised and ready. Here&apos;s what we&apos;ve set
-            up for you.
-          </p>
-
           <div className={s.summaryCard}>
             <div className={s.summaryTitle}>Your plan</div>
 

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import PageHeader from "../../components/PageHeader";
 import {
   AppShell,
+  SheetBack,
   EmptyStateCard,
   PrimaryButton,
   PageSection,
@@ -22,14 +22,18 @@ export default function HistoryPage() {
   const { MOCK_HISTORY } = useAppDb();
 
   return (
-    <AppShell navActive="progress">
-      <PageHeader
-        icon="mic"
-        title="Mock History"
-        description="Revisit feedback from practice sessions"
-        back
-        backHref="/progress"
-      />
+    <AppShell
+      navActive="progress"
+      coachPose="idle"
+      coachTitle="Mock history"
+      coachSpeech={
+        MOCK_HISTORY.length === 0
+          ? "Complete a mock and I'll keep every session here for you to revisit."
+          : "Tap a session and I'll walk you through what went well — and what to fix."
+      }
+    >
+      <SheetBack href="/progress">Progress</SheetBack>
+      <p className={s.sheetTitle}>Past sessions</p>
 
       {MOCK_HISTORY.length === 0 ? (
         <EmptyStateCard
@@ -41,9 +45,6 @@ export default function HistoryPage() {
         </EmptyStateCard>
       ) : (
         <>
-          <p className="page-sub" style={{ marginBottom: 16 }}>
-            Every mock you&apos;ve completed — tap one to revisit the feedback.
-          </p>
           <PageSection>
             <div className="stack">
               {MOCK_HISTORY.map((mk) => (
@@ -67,7 +68,7 @@ export default function HistoryPage() {
             </div>
           </PageSection>
 
-          <PrimaryButton href="/mock" style={{ marginTop: 24 }}>
+          <PrimaryButton href="/mock" style={{ marginTop: 20 }}>
             <Mic size={18} /> Start a new mock interview
           </PrimaryButton>
         </>
