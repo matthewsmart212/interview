@@ -21,6 +21,7 @@ export default function AppShell({
   heroVariant = "large",
   messageVariant = "default",
   sheetVariant = "standard",
+  messageClampLines,
 }) {
   if (!coach) {
     const screenClass = [
@@ -61,6 +62,7 @@ export default function AppShell({
           heroVariant={heroVariant}
           messageVariant={messageVariant}
           sheetVariant={sheetVariant}
+          messageClampLines={messageClampLines}
         >
           {children}
         </CoachStage>

@@ -21,6 +21,7 @@ export default function CoachStage({
   heroVariant = "large",
   messageVariant = "default",
   sheetVariant = "standard",
+  messageClampLines,
 }) {
   const showMessage =
     messageVariant !== "none" && Boolean(title || speech);
@@ -56,6 +57,7 @@ export default function CoachStage({
             title={title}
             speech={speech}
             variant={messageVariant === "compact" ? "compact" : "default"}
+            clampLines={messageClampLines}
           />
         </div>
       ) : null}

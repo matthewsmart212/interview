@@ -49,6 +49,13 @@
   font-weight: 500;
 }
 
+.clamp2 .text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
 .compact .text {
   font-size: 12.5px;
   line-height: 1.35;

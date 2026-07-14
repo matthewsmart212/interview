@@ -79,6 +79,25 @@
   --sheet-max: min(52vh, 480px);
 }
 
+/* Home-only: ~12% shorter hero, speech closer, sheet starts higher */
+.hero_home {
+  --pad-x: 20px;
+  --coach-w: min(66vw, 252px);
+  --coach-h: min(34vh, 272px);
+  --speech-top: calc(var(--coach-top) + min(26vh, 205px));
+  --sheet-max: min(62vh, 560px);
+}
+
+.hero_home .speechWrap {
+  left: 20px;
+  right: 20px;
+}
+
+.hero_home .sheetInner {
+  padding-top: 16px;
+  padding-bottom: 14px;
+}
+
 .hero_medium {
   --coach-w: min(56vw, 210px);
   --coach-h: min(28vh, 220px);
@@ -235,6 +254,12 @@
     --coach-h: min(32vh, 230px);
     --speech-top: calc(var(--coach-top) + min(24vh, 185px));
     --sheet-max: min(58vh, 480px);
+  }
+
+  .hero_home {
+    --coach-h: min(28vh, 210px);
+    --speech-top: calc(var(--coach-top) + min(21vh, 165px));
+    --sheet-max: min(64vh, 540px);
   }
 
   .hero_medium {
