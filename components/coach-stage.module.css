@@ -124,10 +124,11 @@
 }
 
 .home .hero {
-  min-height: calc(var(--coach-top) + var(--coach-h) - 72px);
+  /* Keep the avatar fully above the panel — no overlap onto cards */
+  min-height: calc(var(--coach-top) + var(--coach-h) + 8px);
   justify-content: flex-end;
-  padding-bottom: 6px;
-  overflow: visible;
+  padding-bottom: 8px;
+  overflow: hidden;
   z-index: 1;
 }
 
