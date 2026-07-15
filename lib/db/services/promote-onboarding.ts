@@ -7,14 +7,12 @@ import { getState, setState, resetToEmpty } from "../store";
 import { buildEmptyMasterCv } from "../seed";
 import {
   createInterview,
-  createMasterCvFromForm,
   uploadMasterCv,
   updateUser,
 } from "../repositories";
 import { formatDisplayDate } from "../ids";
 
 export function promoteOnboarding(profile: OnboardingProfile, options?: {
-  /** Wipe demo seed and start from this user's data only. */
   fresh?: boolean;
 }): void {
   if (options?.fresh) {
@@ -30,30 +28,20 @@ export function promoteOnboarding(profile: OnboardingProfile, options?: {
     onboardingCompletedAt: profile.completedAt ?? Date.now(),
   });
 
-  // CV
   if (profile.cv.source === "upload" && profile.cv.fileName) {
     uploadMasterCv({
       fileName: profile.cv.fileName,
       summary:
-        "Uploaded during onboarding. Improve and tailor it for each interview.",
+        "Uploaded during onboarding. Used to personalise your mock interviews.",
       score: 70,
-    });
-  } else if (profile.cv.source === "create") {
-    createMasterCvFromForm({
-      targetRole: profile.cv.targetRole,
-      about:
-        profile.cv.about?.trim() ||
-        `${name} is building a CV for ${profile.cv.targetRole || "their next role"}.`,
-      jobs: (profile.cv.jobs ?? []).filter((j) => j.role.trim()),
-      skills: profile.cv.skills ?? [],
+      text: profile.cv.text,
     });
   } else if (options?.fresh) {
-    setState((s) => ({ ...s, masterCv: buildEmptyMasterCv(), cvHistory: [] }));
+    setState((s) => ({ ...s, masterCv: buildEmptyMasterCv() }));
   }
 
-  // First interview from onboarding
   if (
-    (profile.goal === "interview" || profile.goal === "both") &&
+    (profile.goal === "interview" || profile.goal === "both" || profile.goal === "practice") &&
     profile.interview.role.trim()
   ) {
     const existing = getState().interviews.find(
@@ -62,7 +50,7 @@ export function promoteOnboarding(profile: OnboardingProfile, options?: {
         iv.company.toLowerCase() ===
           (profile.interview.company.trim() || "company").toLowerCase()
     );
-    if (!existing) {
+    if (!existing && profile.interview.role.trim()) {
       createInterview({
         role: profile.interview.role,
         company: profile.interview.company || undefined,

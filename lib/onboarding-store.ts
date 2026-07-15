@@ -2,12 +2,12 @@ import { promoteOnboarding } from "./db/services/promote-onboarding";
 import { resetToDemo } from "./db/store";
 
 /**
- * Front-end onboarding profile — persisted in localStorage until a backend exists.
+ * Onboarding profile — mock interview prep focused.
  */
 
-export type UserGoal = "interview" | "apply" | "practice" | "both";
+export type UserGoal = "interview" | "practice" | "both";
 
-export type CvSource = "upload" | "create" | "skip";
+export type CvSource = "upload" | "skip";
 
 export type InterviewType = "In-person" | "Phone" | "Video";
 
@@ -20,6 +20,8 @@ export interface CvJob {
 export interface OnboardingCv {
   source: CvSource | null;
   fileName?: string;
+  text?: string;
+  /** Legacy create fields kept optional for old drafts. */
   targetRole?: string;
   about?: string;
   jobs?: CvJob[];
@@ -35,30 +37,23 @@ export interface OnboardingInterview {
   jd: string;
 }
 
-export interface OnboardingApply {
-  targetRole: string;
-  hasJd: boolean;
-  jd: string;
-}
-
 export interface OnboardingPreferences {
   interviewFormat: InterviewType;
   voicePractice: boolean;
 }
 
 export interface OnboardingProfile {
-  version: 1;
+  version: 2;
   completedAt: number | null;
   name: string;
   goal: UserGoal | null;
   cv: OnboardingCv;
   interview: OnboardingInterview;
-  apply: OnboardingApply;
   preferences: OnboardingPreferences;
 }
 
 const STORAGE_KEY = "ic.onboarding.v1";
-const VERSION = 1 as const;
+const VERSION = 2 as const;
 
 export function defaultProfile(): OnboardingProfile {
   return {
@@ -72,11 +67,6 @@ export function defaultProfile(): OnboardingProfile {
       company: "",
       type: "In-person",
       date: "",
-      hasJd: false,
-      jd: "",
-    },
-    apply: {
-      targetRole: "",
       hasJd: false,
       jd: "",
     },
@@ -101,9 +91,24 @@ export function loadProfile(): OnboardingProfile | null {
   try {
     const raw = s.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as OnboardingProfile;
+    const parsed = JSON.parse(raw) as OnboardingProfile & {
+      apply?: unknown;
+      goal?: string;
+      cv?: OnboardingCv & { source?: string | null };
+    };
     if (parsed?.version !== VERSION) return null;
-    return { ...defaultProfile(), ...parsed };
+    const { apply: _a, ...rest } = parsed;
+    const merged: OnboardingProfile = { ...defaultProfile(), ...rest };
+
+    // Legacy drafts: apply goal / create CV are no longer supported.
+    if ((merged.goal as string) === "apply") {
+      merged.goal = "practice";
+    }
+    if ((merged.cv?.source as string) === "create") {
+      merged.cv = { ...merged.cv, source: "skip" };
+    }
+
+    return merged;
   } catch {
     return null;
   }
@@ -131,14 +136,13 @@ export function completeOnboarding(profile: OnboardingProfile): OnboardingProfil
 
 /**
  * Dev shortcut — seed demo data and skip straight to the dashboard.
- * Fresh installs start empty; Matthew uses this on the welcome step.
  */
 export function skipOnboardingForDev(): OnboardingProfile {
   const demo = resetToDemo();
   const profile: OnboardingProfile = {
     ...defaultProfile(),
     name: demo.user.name || "Alex",
-    goal: demo.user.goal || "both",
+    goal: (demo.user.goal as UserGoal) || "interview",
     completedAt: Date.now(),
     cv: {
       source: demo.masterCv.exists ? "upload" : "skip",
@@ -151,11 +155,6 @@ export function skipOnboardingForDev(): OnboardingProfile {
       date: demo.interviews[0]?.date || "24 May 2026",
       hasJd: Boolean(demo.interviews[0]?.hasJD),
       jd: demo.interviews[0]?.jd || "",
-    },
-    apply: {
-      targetRole: "Customer service roles",
-      hasJd: false,
-      jd: "",
     },
     preferences: {
       interviewFormat: demo.user.preferences.interviewFormat,
@@ -172,7 +171,6 @@ export type OnboardingStepId =
   | "cv"
   | "interview"
   | "jd"
-  | "apply"
   | "prefs"
   | "done";
 
@@ -181,8 +179,6 @@ export function getStepsForGoal(goal: UserGoal | null): OnboardingStepId[] {
 
   if (goal === "interview" || goal === "both") {
     steps.push("interview", "jd");
-  } else if (goal === "apply") {
-    steps.push("apply");
   }
 
   steps.push("prefs", "done");
@@ -200,14 +196,10 @@ export function getFirstName(profile: OnboardingProfile | null): string {
   return name.split(/\s+/)[0] ?? name;
 }
 
-/** Where to send the user right after onboarding. */
 export function getPostOnboardingRoute(profile: OnboardingProfile): string {
   switch (profile.goal) {
     case "interview":
     case "both":
-      return "/mock";
-    case "apply":
-      return profile.cv.source === "skip" ? "/cv/start" : "/cv";
     case "practice":
       return "/mock";
     default:
@@ -228,18 +220,6 @@ export function getPostOnboardingCta(profile: OnboardingProfile): {
         href: "/mock",
         secondary: { label: "View my dashboard", href: "/home" },
       };
-    case "apply":
-      return profile.cv.source === "skip"
-        ? {
-            label: "Set up my CV",
-            href: "/cv/start",
-            secondary: { label: "Explore the app", href: "/home" },
-          }
-        : {
-            label: "Improve my CV",
-            href: "/cv",
-            secondary: { label: "View my dashboard", href: "/home" },
-          };
     case "practice":
       return {
         label: "Start practising",

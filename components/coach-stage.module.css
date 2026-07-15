@@ -1,0 +1,274 @@
+/*
+  Coach stage = static room background + scroll container holding a
+  consistent hero (avatar + speech/greeting) and the content panel.
+
+  Avatar sits under the content panel (cards cover it). No parallax —
+  hero and panel scroll together.
+*/
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  --pad-x: 20px;
+  --coach-top: calc(40px + env(safe-area-inset-top));
+  --coach-w: min(56vw, 212px);
+  --coach-h: min(30dvh, 224px);
+}
+
+/* Deepest layer: the room — stays put while everything scrolls over it */
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #4a3d78;
+  background-image: url("/backgrounds/room.png");
+  background-size: cover;
+  background-position: center top;
+}
+
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Soft black overlay over the room image */
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Light top vignette only — card panel owns the bottom fade to black */
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* Home: no full-screen shade fade — the black card panel handles it */
+.home .shade {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+/* The single scroll container (only this scrolls) */
+.scroller {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Consistent header: avatar + speech, same height on every page */
+.hero {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: calc(var(--coach-top) + var(--coach-h) + 14px);
+  padding: 0 var(--pad-x);
+}
+
+.coach {
+  position: absolute;
+  left: 50%;
+  top: var(--coach-top);
+  transform: translateX(-50%);
+  width: var(--coach-w);
+  height: var(--coach-h);
+  pointer-events: none;
+  animation: coachEnter 0.55s ease-out both;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 16px 28px rgba(8, 4, 24, 0.45));
+}
+
+.speechWrap {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  pointer-events: none;
+  animation: speechEnter 0.45s ease-out 0.12s both;
+}
+
+/* When there is no coach message, keep a consistent minimum header height */
+.noMessage .hero {
+  min-height: calc(var(--coach-top) + var(--coach-h) + 10px);
+}
+
+/* Home: asymmetric hero — greeting left, avatar right (matches mockup) */
+.home {
+  --coach-w: min(62vw, 248px);
+  --coach-h: min(38dvh, 290px);
+  --coach-top: calc(32px + env(safe-area-inset-top));
+}
+
+.home .hero {
+  /* Keep the avatar fully above the panel — no overlap onto cards */
+  min-height: calc(var(--coach-top) + var(--coach-h) + 8px);
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.home .coach {
+  left: auto;
+  right: -12px;
+  transform: none;
+  top: var(--coach-top);
+  z-index: 1;
+  animation-name: coachEnterHome;
+}
+
+@keyframes coachEnterHome {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home .avatar {
+  object-position: center bottom;
+}
+
+.home .scroller {
+  overflow-x: clip;
+}
+
+.heroSlot {
+  position: relative;
+  z-index: 3;
+  width: min(62%, 240px);
+  margin-bottom: 4px;
+  animation: speechEnter 0.45s ease-out 0.08s both;
+}
+
+/* Content panel — flush to the fixed nav; sits above the avatar */
+.panel {
+  position: relative;
+  z-index: 4;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 18px var(--pad-x) var(--nav-content-gap);
+  border-radius: 24px 24px 0 0;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+/*
+  Home: dark-purple sheet behind Next Interview + everything below.
+  Matches the mock — not pure black. Fade + fill are dedicated layers
+  so they cannot be overridden by .panel { background: transparent }.
+*/
+.panelHome {
+  --panel-fade: 75px;
+  --sheet: var(--home-sheet, #0d0c14);
+  /* Extra top height so the fade sits above the first card */
+  padding-top: calc(var(--panel-fade) + 4px);
+  padding-bottom: var(--nav-content-gap);
+  background: transparent;
+  /* Grow so the sheet reaches the nav even with short content */
+  flex: 1 0 auto;
+  min-height: min(52dvh, 420px);
+}
+
+.homeSheet {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.homeSheetFade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--panel-fade);
+  background: linear-gradient(
+    180deg,
+    rgba(13, 12, 20, 0) 0%,
+    var(--sheet) 100%
+  );
+}
+
+.homeSheetFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--panel-fade);
+  bottom: 0;
+  background: var(--sheet);
+}
+
+.panelBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
+/* When used without a top app header (welcome / auth / onboarding) */
+.noHeader {
+  --coach-top: calc(18px + env(safe-area-inset-top));
+}
+
+@keyframes coachEnter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes speechEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

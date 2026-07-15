@@ -5,6 +5,7 @@ import AppHeader from "./AppHeader";
 
 function showAppHeader(pathname) {
   if (pathname === "/") return false;
+  if (pathname === "/login" || pathname === "/onboarding") return false;
   if (pathname === "/interview" || pathname.startsWith("/interview/")) {
     return false;
   }

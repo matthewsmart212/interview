@@ -1,36 +1,345 @@
-/* Home screen layout — iPhone 13/14/15 (~390px) tuned */
-
 .home {
   overflow-x: clip;
   max-width: 100%;
 }
 
-.choiceDivider {
-  border: none;
-  height: 1px;
-  margin: 33px 0 29px;
-  background: var(--divider);
-}
-
-.choiceGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: stretch;
-  grid-auto-rows: 1fr;
-}
-
-.quickSection {
-  margin-top: 32px;
-  padding-bottom: 8px;
-}
-
-.quickTitle {
-  composes: sectionTitle from "../../components/home/home-shared.module.css";
-}
-
-.quickStack {
+/* ---- Hero greeting (left of avatar) ---- */
+.heroCopy {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.greeting {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.statusLine {
+  margin: 4px 0 0;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.35;
+}
+
+.statusLine strong {
+  color: #b39afa;
+  font-weight: 700;
+}
+
+.statusSub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.35;
+}
+
+.chips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-top: 14px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(139, 108, 245, 0.12);
+  min-width: 0;
+}
+
+.chip span {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.chip b {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.chip i {
+  font-size: 9px;
+  font-weight: 500;
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.chip svg {
+  flex-shrink: 0;
+  color: #c4b5fd;
+}
+
+/* ---- Body cards — spacing matches mock (~16px) ---- */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.primaryCard {
+  padding: 18px 20px;
+  border-radius: 24px;
+}
+
+.nextCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--home-card);
+  border: 1px solid var(--home-card-border);
+  margin-bottom: 16px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.nextCard:hover,
+.nextCard:focus-visible {
+  border-color: rgba(167, 139, 250, 0.35);
+  outline: none;
+}
+
+.nextCard:active {
+  transform: scale(0.99);
+}
+
+.nextMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nextLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a78bfa;
+  margin-bottom: 4px;
+}
+
+.nextRole {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.nextCompany {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nextMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.nextMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nextMeta svg {
+  color: rgba(196, 181, 253, 0.85);
+}
+
+.readyRing :global(.ring-wrap) {
+  filter: drop-shadow(0 0 10px rgba(139, 108, 245, 0.45));
+}
+
+.nextChev {
+  color: rgba(255, 255, 255, 0.32);
+  flex-shrink: 0;
+}
+
+.secondaryCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 24px;
+  border: 1px solid var(--home-card-border);
+  background: var(--home-card);
+  color: #fff;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.secondaryCard:hover,
+.secondaryCard:focus-visible {
+  border-color: rgba(255, 255, 255, 0.16);
+  outline: none;
+}
+
+.secondaryCard:active {
+  transform: scale(0.99);
+}
+
+.secondaryIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.secondaryBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.secondaryTitle {
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.secondarySub {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.35;
+}
+
+.secondaryChev {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: auto;
+}
+
+.recent {
+  margin-top: 24px;
+}
+
+.sectionLabel {
+  margin: 0 0 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.recentRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: var(--home-card);
+  border: 1px solid var(--home-card-border);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.recentRow:active {
+  opacity: 0.85;
+}
+
+.recentRow:focus-visible {
+  outline: 2px solid rgba(196, 181, 253, 0.55);
+  outline-offset: 2px;
+}
+
+.recentScore {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(139, 108, 245, 0.55), rgba(91, 58, 214, 0.4));
+  border: 1px solid rgba(196, 181, 253, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.recentBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recentTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recentMeta {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.recentAction {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 650;
+  color: #c4b5fd;
 }

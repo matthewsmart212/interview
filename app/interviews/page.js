@@ -3,72 +3,90 @@
 import Link from "next/link";
 import {
   AppShell,
-  PageSection,
   InterviewCard,
-  EmptyStateCard,
-  PrimaryButton,
+  SheetPageTitle,
 } from "../../components/ui";
-import PageHeader from "../../components/PageHeader";
-import { Plus, Calendar } from "../../components/Icons";
+import { Plus } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import s from "./interviews.module.css";
 
 export default function InterviewsPage() {
-  const { INTERVIEWS } = useAppDb();
-  const upcoming = INTERVIEWS.filter((i) => i.status === "upcoming").sort(
-    (a, b) => a.daysAway - b.daysAway
-  );
-  const past = INTERVIEWS.filter((i) => i.status === "past");
+  const db = useAppDb();
+  const journey = journeyStateFromDb(db);
+  const { upcoming, nearestUpcoming } = journey;
+
+  // Latest past interview first
+  const past = [...journey.past].sort((a, b) => b.daysAway - a.daysAway);
+
+  const speech = journey.hasUpcoming
+    ? upcoming.length === 1
+      ? "You've got one upcoming interview."
+      : `You've got ${upcoming.length} upcoming.`
+    : "Add your next interview and I'll build a prep plan around it.";
 
   return (
-    <AppShell navActive="interviews">
-      <PageHeader
-        icon="calendar"
-        title="My Interviews"
-        description="Upcoming and past interviews"
-        right={
+    <AppShell
+      navActive="interviews"
+      className={s.page}
+      coachPose="presenting"
+      coachTitle="Your interviews"
+      coachSpeech={speech}
+      heroVariant="interviews"
+      messageVariant="compact"
+      sheetVariant="elevated"
+      messageClampLines={2}
+    >
+      <SheetPageTitle
+        action={
           <Link href="/interviews/new" className={s.addBtn}>
             <Plus size={15} stroke={2.6} /> Add
           </Link>
         }
-      />
+      >
+        Interviews
+      </SheetPageTitle>
 
-      {INTERVIEWS.length === 0 ? (
-        <EmptyStateCard
-          icon={Calendar}
-          title="No interviews yet"
-          description="Add your first interview and we'll build a prep plan around it."
-        >
-          <PrimaryButton href="/interviews/new">Add an interview</PrimaryButton>
-        </EmptyStateCard>
-      ) : (
-        <>
-          <PageSection title="Upcoming interviews">
-            <div className={`stack ${s.interviewStack}`}>
-              {upcoming.map((iv, i) => (
-                <InterviewCard interview={iv} key={iv.id} featured={i === 0} />
-              ))}
-            </div>
-          </PageSection>
-
-          {past.length > 0 && (
-            <PageSection title="Past interviews">
-              <div className={`stack ${s.interviewStack}`}>
-                {past.map((iv) => (
-                  <InterviewCard interview={iv} key={iv.id} />
-                ))}
-              </div>
-            </PageSection>
-          )}
-
-          <p className={s.skipNote}>
-            Preparing without a set date?{" "}
-            <Link href="/mock" className="link-btn">
-              Start a practice mock →
+      <section className={s.block}>
+        <p className={s.sectionLabel}>Upcoming</p>
+        {upcoming.length > 0 ? (
+          <div className={s.interviewStack}>
+            {upcoming.map((iv) => (
+              <InterviewCard
+                interview={iv}
+                key={iv.id}
+                featured={iv.id === nearestUpcoming?.id}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className={s.upcomingEmpty}>
+            <p className={s.upcomingEmptyTitle}>No upcoming interviews</p>
+            <p className={s.upcomingEmptySub}>
+              Add your next interview to start preparing.
+            </p>
+            <Link href="/interviews/new" className={s.upcomingEmptyBtn}>
+              <Plus size={15} stroke={2.6} /> Add an interview
             </Link>
-          </p>
-        </>
-      )}
+          </div>
+        )}
+      </section>
+
+      {past.length > 0 ? (
+        <section className={s.block}>
+          <p className={s.sectionLabel}>Past</p>
+          <div className={s.interviewStack}>
+            {past.map((iv) => (
+              <InterviewCard interview={iv} key={iv.id} quiet />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <p className={s.practiseLink}>
+        Just want to practise?{" "}
+        <Link href="/mock">Start a mock →</Link>
+      </p>
     </AppShell>
   );
 }

@@ -1,86 +1,57 @@
-.wrap {
-  padding: calc(14px + env(safe-area-inset-top)) 22px
-    calc(26px + env(safe-area-inset-bottom));
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+.welcomeScreen {
+  min-height: 100dvh;
+  min-height: 100svh;
 }
 
-.hero {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.heroText {
-  padding-top: 10px;
-  max-width: 58%;
-}
-
-.title {
-  margin: 0;
-  line-height: 1;
-}
-.logo {
-  max-width: 100%;
-}
-
-.sub {
-  margin-top: 14px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--text-2);
-}
-
-.avatar {
-  width: 152px;
-  height: 210px;
-  flex-shrink: 0;
-  border-radius: 24px;
+.welcomeStage :global(.noHeader) {
+  /* placeholder for specificity */
 }
 
 .features {
-  margin-top: 22px;
-  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
 }
+
 .feature {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 8px;
+  gap: 12px;
+  padding: 11px 2px;
 }
+
 .feature + .feature {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
-.feature .fIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--brand-050);
-  color: var(--brand);
+
+.fIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
-.feature .fText {
-  font-size: 14.5px;
+
+.fText {
+  font-size: 14px;
   font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .actions {
-  margin-top: 22px;
+  margin-top: 8px;
 }
+
 .signin {
   display: block;
   width: 100%;
   text-align: center;
   margin-top: 14px;
-  color: var(--brand);
+  color: rgba(255, 255, 255, 0.78);
   font-weight: 600;
   font-size: 15px;
   background: none;

@@ -1,4 +1,32 @@
-/* mock history list + detail (light theme) */
+/* mock history list + detail */
+
+.sheetTitle {
+  margin: 0 0 12px;
+  font-size: 17px;
+  font-weight: 650;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.detailTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.detailCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.detailSub {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
 
 .row {
   display: flex;

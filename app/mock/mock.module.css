@@ -1,7 +1,74 @@
-/* ---------- Mock hub — coach-led, app-aligned ---------- */
-
 .shell {
   overflow-x: clip;
+}
+
+.homeSheet {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sheetHeadCopy {
+  flex: 1;
+  min-width: 0;
+}
+
+.sheetTitle {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.sheetSub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.58);
+  max-width: 280px;
+}
+
+.sheetLead {
+  margin: -6px 0 14px;
+  font-size: 14.5px;
+  font-weight: 550;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: -0.01em;
+}
+
+.sheetBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 0 0 12px;
+  font-family: inherit;
+}
+
+.coachTipPanel {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* ---------- coach scene: avatar left, speech card right ---------- */
@@ -150,30 +217,24 @@
 /* ---------- big choice cards ---------- */
 
 .choiceStack {
-  margin-top: 20px;
+  margin-top: 2px;
 }
 
 .bigChoice {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
+  text-decoration: none;
   text-align: left;
   overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 0% 0%,
-      rgba(124, 92, 255, 0.1),
-      rgba(124, 92, 255, 0) 48%
-    ),
-    var(--card);
-  border: 1px solid rgba(167, 139, 250, 0.16);
-  border-radius: var(--radius-card);
-  padding: 16px 16px;
-  margin-bottom: 11px;
-  box-shadow: var(--shadow-sm), var(--card-inner);
-  backdrop-filter: blur(14px);
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 10px;
   color: inherit;
   font-family: inherit;
   cursor: pointer;
@@ -187,20 +248,43 @@
 }
 
 .bigChoicePrimary {
-  padding: 22px 18px;
-  margin-bottom: 14px;
-  background: var(--gradient-primary);
-  border-color: rgba(196, 181, 253, 0.42);
-  box-shadow: var(--glow-purple-sm), 0 0 24px rgba(124, 92, 255, 0.22);
+  min-height: 150px;
+  max-height: 168px;
+  padding: 16px 14px;
+  margin-bottom: 10px;
+  background: var(--cta-gradient);
+  border: var(--cta-border);
+  box-shadow: var(--cta-shadow), var(--cta-highlight);
+}
+
+.bigChoicePrimary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 80% at 15% 0%,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0) 58%
+  );
+  pointer-events: none;
+}
+
+.bigChoicePrimary > * {
+  position: relative;
+}
+
+.bigChoiceSecondary {
+  min-height: 118px;
+  max-height: 138px;
 }
 
 .bigChoicePrimary .bigChoiceTitle {
-  font-size: 16.5px;
+  font-size: 16px;
   color: #fff;
 }
 
 .bigChoicePrimary .bigChoiceSub {
-  font-size: 13px;
+  font-size: 12.5px;
   color: rgba(255, 255, 255, 0.88);
 }
 
@@ -209,9 +293,9 @@
 }
 
 .bigChoicePrimary .bigChoiceIcon {
-  width: 58px;
-  height: 58px;
-  border-radius: 17px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.24);
@@ -221,29 +305,33 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+.bigChoicePrimary .bigChoiceEyebrow {
+  color: rgba(255, 255, 255, 0.72);
+}
+
 .bigChoiceIcon {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: var(--brand-050);
-  color: var(--brand);
-  border: 1px solid rgba(196, 181, 253, 0.12);
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .accent_mic .bigChoiceIcon {
-  background: rgba(251, 191, 36, 0.16);
+  background: rgba(251, 191, 36, 0.14);
   color: #fbbf24;
-  border-color: rgba(251, 191, 36, 0.22);
+  border-color: rgba(251, 191, 36, 0.2);
 }
 
 .accent_calendar .bigChoiceIcon {
-  background: rgba(96, 165, 250, 0.16);
+  background: rgba(96, 165, 250, 0.14);
   color: #93c5fd;
-  border-color: rgba(96, 165, 250, 0.22);
+  border-color: rgba(96, 165, 250, 0.2);
 }
 
 .accent_file .bigChoiceIcon {
@@ -252,7 +340,8 @@
   border-color: rgba(52, 211, 153, 0.2);
 }
 
-.bigChoicePrimary.accent_mic .bigChoiceIcon {
+.bigChoicePrimary.accent_mic .bigChoiceIcon,
+.bigChoicePrimary.accent_calendar .bigChoiceIcon {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.24);
@@ -261,6 +350,16 @@
 .bigChoiceBody {
   flex: 1;
   min-width: 0;
+}
+
+.bigChoiceEyebrow {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .bigChoiceTitle {
@@ -274,28 +373,94 @@
 
 .bigChoiceSub {
   display: block;
-  margin-top: 4px;
+  margin-top: 3px;
   font-size: 12.5px;
-  line-height: 1.45;
-  color: var(--text-2);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .bigChoiceMeta {
   display: block;
-  margin-top: 7px;
+  margin-top: 6px;
   font-size: 11.5px;
   font-weight: 600;
+  color: rgba(196, 181, 253, 0.9);
+}
+
+.bigChoiceCta {
+  display: inline-flex;
+  margin-top: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
   color: #c4b5fd;
 }
 
 .bigChoiceChev {
   flex-shrink: 0;
-  color: var(--muted);
-  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .moreSection {
-  margin-top: 28px;
+  margin-top: 18px;
+}
+
+.navRows {
+  margin-top: 14px;
+}
+
+.navRow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  color: inherit;
+}
+
+.navRow:first-child {
+  border-top: none;
+  padding-top: 2px;
+}
+
+.navRow:active {
+  opacity: 0.85;
+}
+
+.navIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.navTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.navSub {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.navChev {
+  color: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
 }
 
 /* ---------- interview picker ---------- */

@@ -70,6 +70,7 @@ export async function pushLocalToSupabase(
           score: s.masterCv.score,
           summary: s.masterCv.summary,
           sections: s.masterCv.sections,
+          raw_text: s.masterCv.text ?? null,
         },
         { onConflict: "user_id" }
       );
@@ -95,7 +96,6 @@ export async function pushLocalToSupabase(
         has_jd: iv.hasJD,
         jd: iv.jd,
         jd_highlights: iv.jdHighlights,
-        tailored_cv: iv.tailoredCv,
         mock_ids: iv.mockIds,
         updated_at: now,
       }));
@@ -178,12 +178,6 @@ export async function pullSupabaseToLocal(): Promise<{
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
-    const { data: cvHistory } = await supabase
-      .from("cv_history")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-
     const { data: mocks } = await supabase
       .from("mock_sessions")
       .select("*")
@@ -225,6 +219,7 @@ export async function pullSupabaseToLocal(): Promise<{
             updatedAt: masterCv.updated_at || "",
             score: masterCv.score || 0,
             summary: masterCv.summary || "",
+            text: masterCv.raw_text || undefined,
             sections: masterCv.sections || {
               experience: [],
               education: [],
@@ -232,13 +227,6 @@ export async function pullSupabaseToLocal(): Promise<{
             },
           }
         : empty.masterCv,
-      cvHistory: (cvHistory || []).map((h) => ({
-        id: h.id,
-        fileName: h.file_name,
-        uploadedAt: h.uploaded_at,
-        score: h.score,
-        current: Boolean(h.is_current),
-      })),
       interviews: (interviews || []).map((iv) => ({
         id: iv.id,
         role: iv.role,
@@ -255,7 +243,6 @@ export async function pullSupabaseToLocal(): Promise<{
         hasJD: Boolean(iv.has_jd),
         jd: iv.jd,
         jdHighlights: iv.jd_highlights || [],
-        tailoredCv: iv.tailored_cv || { exists: false },
         mockIds: iv.mock_ids || [],
         createdAt: iv.created_at ? Date.parse(iv.created_at) : Date.now(),
         updatedAt: iv.updated_at ? Date.parse(iv.updated_at) : Date.now(),
@@ -263,7 +250,7 @@ export async function pullSupabaseToLocal(): Promise<{
       mockSessions: (mocks || []).map((m) => ({
         id: m.id,
         interviewId: m.interview_id ?? undefined,
-        contextMode: m.context_mode || "generic",
+        contextMode: m.context_mode === "jd" ? "generic" : m.context_mode || "generic",
         contextLabel: m.context_label || "Generic Practice",
         role: m.role,
         company: m.company,

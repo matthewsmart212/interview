@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const BAR = "#302651";
-const PAGE = "#171226";
+const BAR = "#141026";
+const PAGE = "#141026";
 
 export default function StatusBarTheme() {
   const pathname = usePathname();

@@ -1,0 +1,34 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  padding-top: 4px;
+}
+
+.card {
+  padding: 20px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.body {
+  margin: 10px auto 0;
+  max-width: 280px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.cta {
+  margin-top: 18px;
+}

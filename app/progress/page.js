@@ -1,188 +1,177 @@
 "use client";
 
 import Link from "next/link";
-import PageHeader from "../../components/PageHeader";
-import { AppShell, PageSection, ProgressCard } from "../../components/ui";
-import { Mic, Target, Trophy, Clock, ChevronRight } from "../../components/Icons";
+import {
+  AppShell,
+  EmptyProgressState,
+  ReadinessRing,
+  SheetPageTitle,
+} from "../../components/ui";
+import { ChevronRight } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
+import { journeyStateFromDb } from "../../lib/app-journey-state";
 import styles from "./progress.module.css";
 
-const STATS = [
-  { Icon: Mic, num: "12", lab: "Interviews Completed" },
-  { Icon: Target, num: "79%", lab: "Avg. Score" },
-  { Icon: Trophy, num: "92%", lab: "Best Score" },
-  { Icon: Clock, num: "6.5", lab: "Hours Practiced" },
-];
-
-const SKILLS = [
-  { name: "Communication", value: 85 },
-  { name: "Confidence", value: 78 },
-  { name: "Problem Solving", value: 72 },
-  { name: "Clarity", value: 80 },
-  { name: "Structure (STAR)", value: 75 },
-];
-
-const SERIES = [55, 63, 60, 72, 70, 79];
-const XLABELS = ["1 May", "8 May", "15 May", "Today"];
-
-function ScoreChart() {
-  const W = 320;
-  const H = 150;
-  const padL = 8;
-  const padR = 8;
-  const padT = 12;
-  const padB = 10;
-  const plotW = W - padL - padR;
-  const plotH = H - padT - padB;
-
-  const pts = SERIES.map((v, i) => {
-    const x = padL + (i / (SERIES.length - 1)) * plotW;
-    const y = padT + (1 - v / 100) * plotH;
-    return [x, y];
-  });
-
-  const line = pts
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`)
-    .join(" ");
-  const area = `${line} L ${padL + plotW} ${padT + plotH} L ${padL} ${
-    padT + plotH
-  } Z`;
-  const last = pts[pts.length - 1];
-  const grid = [0, 25, 50, 75, 100];
-
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} className={styles.chartSvg}>
-      <defs>
-        <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#b3a0fb" stopOpacity="0.35" />
-          <stop offset="100%" stopColor="#b3a0fb" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {grid.map((g) => {
-        const y = padT + (1 - g / 100) * plotH;
-        return (
-          <line
-            key={g}
-            x1={padL}
-            y1={y}
-            x2={padL + plotW}
-            y2={y}
-            stroke="rgba(255,255,255,0.14)"
-            strokeWidth="1"
-            strokeDasharray="3 4"
-          />
-        );
-      })}
-      <path d={area} fill="url(#area)" />
-      <path
-        d={line}
-        fill="none"
-        stroke="#b3a0fb"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {pts.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r="3" fill="#b3a0fb" />
-      ))}
-      <circle
-        cx={last[0]}
-        cy={last[1]}
-        r="5.5"
-        fill="#fff"
-        stroke="#b3a0fb"
-        strokeWidth="3"
-      />
-    </svg>
-  );
+/** Consistent mock score bands used across Progress rows. */
+function scoreBand(score) {
+  if (score >= 80) return { key: "strong", label: "Strong" };
+  if (score >= 65) return { key: "good", label: "Good" };
+  return { key: "needs", label: "Needs work" };
 }
 
 export default function ProgressPage() {
-  const { MOCK_HISTORY } = useAppDb();
-  const recent = MOCK_HISTORY.slice(0, 3);
+  const db = useAppDb();
+  const journey = journeyStateFromDb(db);
+  const { progress, mocks, hasMocks } = journey;
+  const recent = mocks.slice(0, 6);
+
+  const speech = !hasMocks
+    ? "Complete your first mock to unlock personalised scores and feedback."
+    : `You've done ${progress.mockCount} mock${progress.mockCount === 1 ? "" : "s"}${
+        progress.averageScore != null ? `. Average score ${progress.averageScore}` : ""
+      }. Keep going.`;
+
+  const showInsights =
+    progress.strongest &&
+    progress.weakest &&
+    progress.strongest.name !== progress.weakest.name;
+
+  const readiness = progress.readinessFocus;
+  const streakLabel =
+    progress.streak > 0
+      ? `${progress.streak}-day streak`
+      : null;
 
   return (
-    <AppShell navActive="progress">
-      <PageHeader
-        icon="barChart"
-        title="Your Progress"
-        description="Stats, skills and mock history"
-      />
+    <AppShell
+      navActive="progress"
+      className={styles.page}
+      coachPose="thumbsup"
+      coachTitle="Your progress"
+      coachSpeech={speech}
+      heroVariant="progress"
+      messageVariant="compact"
+      sheetVariant="elevated"
+      messageClampLines={2}
+    >
+      <SheetPageTitle>Progress</SheetPageTitle>
 
-      <PageSection title="Your stats">
-        <div className="stats-grid">
-          {STATS.map(({ Icon, num, lab }) => (
-            <div className="stat" key={lab}>
-              <span className="s-ico">
-                <Icon size={18} />
-              </span>
-              <div className="s-num">{num}</div>
-              <div className="s-lab">{lab}</div>
+      {!hasMocks ? (
+        <EmptyProgressState />
+      ) : (
+        <>
+          <div className={styles.metrics}>
+            {readiness != null ? (
+              <div className={styles.readinessCard}>
+                <div className={styles.readinessCopy}>
+                  <span className={styles.readinessLab}>Interview readiness</span>
+                  <span className={styles.readinessNum}>{readiness}%</span>
+                  <div className={styles.readinessBar} aria-hidden>
+                    <i style={{ width: `${Math.max(0, Math.min(100, readiness))}%` }} />
+                  </div>
+                </div>
+                <ReadinessRing value={readiness} size={56} stroke={6} />
+              </div>
+            ) : null}
+
+            <div className={styles.supportRow}>
+              {progress.averageScore != null ? (
+                <div className={styles.supportCard}>
+                  <span className={styles.supportLab}>Average score</span>
+                  <span className={styles.supportNum}>{progress.averageScore}</span>
+                </div>
+              ) : null}
+              {progress.bestScore != null ? (
+                <div className={styles.supportCard}>
+                  <span className={styles.supportLab}>Best score</span>
+                  <span className={styles.supportNum}>{progress.bestScore}</span>
+                </div>
+              ) : null}
             </div>
-          ))}
-        </div>
-      </PageSection>
 
-      <PageSection>
-        <ProgressCard title="Score over time" badge="79%">
-          <div className={styles.chartWrap}>
-            <ScoreChart />
-            <div className={styles.xlabels}>
-              {XLABELS.map((l) => (
-                <span key={l}>{l}</span>
-              ))}
+            <p className={styles.metaRow}>
+              <span>
+                {progress.mockCount} mock{progress.mockCount === 1 ? "" : "s"}
+              </span>
+              {streakLabel ? (
+                <>
+                  <span className={styles.dot}>·</span>
+                  <span>{streakLabel}</span>
+                </>
+              ) : null}
+            </p>
+          </div>
+
+          {showInsights ? (
+            <div className={styles.insightRow}>
+              <div className={styles.insight}>
+                <span className={styles.insightLab}>Strongest</span>
+                <span className={styles.insightVal}>{progress.strongest.name}</span>
+              </div>
+              <div className={styles.insight}>
+                <span className={styles.insightLab}>Improve</span>
+                <span className={styles.insightVal}>{progress.weakest.name}</span>
+              </div>
+            </div>
+          ) : null}
+
+          {progress.skillAvgs.length > 0 ? (
+            <div className={styles.block}>
+              <p className={styles.sectionLabel}>Skill scores</p>
+              <div className={styles.skills}>
+                {progress.skillAvgs.map((sk) => (
+                  <div className={styles.skillRow} key={sk.name}>
+                    <div className={styles.skillTop}>
+                      <span>{sk.name}</span>
+                      <span className={styles.skillVal}>{sk.value}%</span>
+                    </div>
+                    <div className={styles.meter}>
+                      <i style={{ width: `${sk.value}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <div className={styles.block}>
+            <div className={styles.blockHead}>
+              <p className={styles.sectionLabel}>Recent mocks</p>
+              <Link href="/history" className="link-btn">
+                See all
+              </Link>
+            </div>
+            <div className={styles.list}>
+              {recent.map((mk) => {
+                const band = scoreBand(mk.score);
+                return (
+                  <Link
+                    href={`/history/${mk.id}`}
+                    className={styles.row}
+                    key={mk.id}
+                  >
+                    <span className={`${styles.score} ${styles[band.key]}`}>
+                      {mk.score}
+                    </span>
+                    <span className={styles.body}>
+                      <span className={styles.title}>
+                        {mk.role} · {mk.company}
+                      </span>
+                      <span className={styles.sub}>
+                        {mk.date} · {mk.questions} questions
+                      </span>
+                      <span className={`${styles.band} ${styles[`band_${band.key}`]}`}>
+                        {band.label}
+                      </span>
+                    </span>
+                    <ChevronRight size={16} className={styles.chev} />
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </ProgressCard>
-      </PageSection>
-
-      <PageSection title="Top skills">
-        <div className="card">
-          {SKILLS.map((sk) => (
-            <div className={styles.skillRow} key={sk.name}>
-              <div className={styles.skillTop}>
-                <span>{sk.name}</span>
-                <span className="v">{sk.value}%</span>
-              </div>
-              <div className="meter">
-                <i style={{ width: `${sk.value}%` }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </PageSection>
-
-      <PageSection
-        title="Recent mock interviews"
-        action={
-          <Link href="/history" className="link-btn">
-            See all
-          </Link>
-        }
-      >
-        <div className="card">
-          {recent.map((mk) => (
-            <Link href={`/history/${mk.id}`} className={styles.histRow} key={mk.id}>
-              <span
-                className={`${styles.histScore}${
-                  mk.score >= 80 ? " " + styles.good : mk.score < 65 ? " " + styles.low : ""
-                }`}
-              >
-                {mk.score}
-              </span>
-              <span className={styles.histBody}>
-                <span className={styles.histTitle}>
-                  {mk.role} · {mk.company}
-                </span>
-                <span className={styles.histSub}>
-                  {mk.date} · {mk.questions} questions
-                </span>
-              </span>
-              <ChevronRight size={17} className="chev" />
-            </Link>
-          ))}
-        </div>
-      </PageSection>
+        </>
+      )}
     </AppShell>
   );
 }

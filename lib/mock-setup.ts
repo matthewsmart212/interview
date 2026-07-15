@@ -1,26 +1,24 @@
 /**
- * Persists mock-interview setup choices (context + CV) so the interview flow
- * can read them on entry. Uses sessionStorage — cleared when the tab closes.
+ * Persists mock-interview setup so the interview flow can read it on entry.
+ * sessionStorage — cleared when the tab closes.
+ *
+ * Modes: generic practice OR an upcoming interview (JD comes from that interview).
  */
 
-export type MockContextMode = "generic" | "interview" | "jd";
-export type MockCvType = "master" | "upload" | "tailored" | "none";
+export type MockContextMode = "generic" | "interview";
 
 export interface MockSetupConfig {
-  version: 1;
+  version: 2;
   contextMode: MockContextMode;
-  /** Human-readable label for the confirm screen */
   contextLabel: string;
   interviewId?: string;
-  jdText?: string;
-  jdFileName?: string;
-  cvId: string;
-  cvType: MockCvType;
+  /** Always the user's permanent CV when present. */
+  hasCv: boolean;
   cvLabel: string;
 }
 
 const SETUP_KEY = "ic.mock-setup.v1";
-const SETUP_VERSION = 1;
+const SETUP_VERSION = 2;
 
 function storage(): Storage | null {
   try {
@@ -53,13 +51,9 @@ export function clearMockSetup(): void {
   storage()?.removeItem(SETUP_KEY);
 }
 
-/** Build the interview entry URL; heavy JD text stays in sessionStorage. */
 export function buildInterviewHref(config: MockSetupConfig): string {
   if (config.contextMode === "interview" && config.interviewId) {
     return `/interview?for=${encodeURIComponent(config.interviewId)}`;
-  }
-  if (config.contextMode === "jd") {
-    return "/interview?jd=1";
   }
   return "/interview";
 }

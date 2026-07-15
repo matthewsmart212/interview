@@ -1,0 +1,72 @@
+.wrap {
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+/* Dark frosted message — matches the content panel, not a bright white card */
+.card {
+  max-width: 340px;
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 20px;
+  background: linear-gradient(
+    165deg,
+    rgba(42, 34, 72, 0.72) 0%,
+    rgba(24, 18, 44, 0.78) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 10px 28px rgba(8, 4, 24, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  color: #f5f3fc;
+  pointer-events: auto;
+}
+
+.compact .card {
+  max-width: 300px;
+  padding: 10px 14px;
+  border-radius: 18px;
+}
+
+.title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.compact .title {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: rgba(245, 243, 252, 0.78);
+  font-weight: 500;
+}
+
+.clamp2 .text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.compact .text {
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.compact .title:only-child,
+.compact .text:only-child {
+  margin: 0;
+}
