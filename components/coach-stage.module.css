@@ -189,17 +189,59 @@
   box-shadow: none;
 }
 
-/* Home: solid black card container with a 75px transparent→black fade on top */
+/*
+  Home: black card container behind Next Interview + everything below.
+  Fade lives on a dedicated layer so it cannot be overridden by .panel
+  background: transparent, and solid #000 always fills under the cards.
+*/
 .panelHome {
   --panel-fade: 75px;
-  background: linear-gradient(
-    180deg,
-    transparent 0,
-    #000 var(--panel-fade),
-    #000 100%
-  );
   /* Extra top height so the fade sits above the first card */
   padding-top: calc(var(--panel-fade) + 8px);
+  background: transparent;
+  /* Grow to fill the stage so black reaches the nav even with short content */
+  flex: 1 0 auto;
+  min-height: min(52dvh, 420px);
+}
+
+.homeSheet {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.homeSheetFade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--panel-fade);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    #000 100%
+  );
+}
+
+.homeSheetFill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--panel-fade);
+  bottom: 0;
+  background: #000;
+}
+
+.panelBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  min-height: 0;
 }
 
 /* When used without a top app header (welcome / auth / onboarding) */

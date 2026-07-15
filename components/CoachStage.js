@@ -74,7 +74,18 @@ export default function CoachStage({
         <div
           className={`${styles.panel}${isHome ? ` ${styles.panelHome}` : ""}`}
         >
-          {children}
+          {isHome ? (
+            <>
+              {/* Explicit black sheet behind cards — fade only on the top edge */}
+              <div className={styles.homeSheet} aria-hidden>
+                <div className={styles.homeSheetFade} />
+                <div className={styles.homeSheetFill} />
+              </div>
+              <div className={styles.panelBody}>{children}</div>
+            </>
+          ) : (
+            children
+          )}
         </div>
       </div>
     </div>
