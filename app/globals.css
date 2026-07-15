@@ -948,12 +948,12 @@ body:has(.coach-route) .app-shell {
   right: 0;
   bottom: 0;
   height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
-  /* Match the sheet-bottom tone exactly so nav + sheet read as one surface */
-  background: rgba(19, 15, 34, 0.98);
-  backdrop-filter: blur(22px) saturate(118%);
-  -webkit-backdrop-filter: blur(22px) saturate(118%);
+  /* Solid black — matches the faded room bottom */
+  background: #000;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   /* Barely-there hairline instead of a bright divider */
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
   display: flex;
   align-items: flex-end;
   justify-content: space-around;
