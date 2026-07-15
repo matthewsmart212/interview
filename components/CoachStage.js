@@ -76,7 +76,7 @@ export default function CoachStage({
         >
           {isHome ? (
             <>
-              {/* Explicit black sheet behind cards — fade only on the top edge */}
+              {/* Dark-purple sheet behind cards — fade only on the top edge */}
               <div className={styles.homeSheet} aria-hidden>
                 <div className={styles.homeSheetFade} />
                 <div className={styles.homeSheetFill} />

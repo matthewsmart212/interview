@@ -190,16 +190,18 @@
 }
 
 /*
-  Home: black card container behind Next Interview + everything below.
-  Fade lives on a dedicated layer so it cannot be overridden by .panel
-  background: transparent, and solid #000 always fills under the cards.
+  Home: dark-purple sheet behind Next Interview + everything below.
+  Matches the mock — not pure black. Fade + fill are dedicated layers
+  so they cannot be overridden by .panel { background: transparent }.
 */
 .panelHome {
   --panel-fade: 75px;
+  --sheet: var(--home-sheet, #0d0c14);
   /* Extra top height so the fade sits above the first card */
-  padding-top: calc(var(--panel-fade) + 8px);
+  padding-top: calc(var(--panel-fade) + 4px);
+  padding-bottom: var(--nav-content-gap);
   background: transparent;
-  /* Grow to fill the stage so black reaches the nav even with short content */
+  /* Grow so the sheet reaches the nav even with short content */
   flex: 1 0 auto;
   min-height: min(52dvh, 420px);
 }
@@ -221,8 +223,8 @@
   height: var(--panel-fade);
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 0%,
-    #000 100%
+    rgba(13, 12, 20, 0) 0%,
+    var(--sheet) 100%
   );
 }
 
@@ -232,7 +234,7 @@
   right: 0;
   top: var(--panel-fade);
   bottom: 0;
-  background: #000;
+  background: var(--sheet);
 }
 
 .panelBody {
