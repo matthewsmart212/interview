@@ -42,7 +42,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  /* Fade the room into solid black so the bottom matches the nav */
+  /* Fade into solid black so the bottom matches the nav */
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
@@ -50,6 +50,19 @@
     rgba(0, 0, 0, 0.35) 55%,
     rgba(0, 0, 0, 0.78) 72%,
     rgba(0, 0, 0, 0.95) 88%,
+    #000 100%
+  );
+}
+
+/* Home: keep the room clear through the hero; start the fade at the first card */
+.home .shade {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) calc(var(--coach-top) + var(--coach-h) + 8px),
+    rgba(0, 0, 0, 0.4) calc(var(--coach-top) + var(--coach-h) + 100px),
+    rgba(0, 0, 0, 0.82) 78%,
+    rgba(0, 0, 0, 0.96) 90%,
     #000 100%
   );
 }
