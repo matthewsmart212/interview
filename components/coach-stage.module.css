@@ -1,12 +1,9 @@
 /*
-  Coach stage = static room background (deepest layer) + a single scroll
-  container holding a consistent hero (avatar + speech) and the content panel.
+  Coach stage = static room background + scroll container holding a
+  consistent hero (avatar + speech/greeting) and the content panel.
 
-  On scroll the hero drifts up slowly and fades (parallax) while the panel
-  scrolls at full speed, giving the content more room as the user reads on.
-
-  Avatar + hero sizing is intentionally the SAME on every page so the header
-  section stays consistent screen-to-screen.
+  Avatar sits under the content panel (cards cover it). No parallax —
+  hero and panel scroll together.
 */
 .stage {
   position: relative;
@@ -76,14 +73,13 @@
 /* Consistent header: avatar + speech, same height on every page */
 .hero {
   position: relative;
+  z-index: 1;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-height: calc(var(--coach-top) + var(--coach-h) + 14px);
   padding: 0 var(--pad-x);
-  transform: translate3d(0, 0, 0);
-  will-change: transform, opacity;
 }
 
 .coach {
@@ -132,7 +128,7 @@
   justify-content: flex-end;
   padding-bottom: 6px;
   overflow: visible;
-  z-index: 5;
+  z-index: 1;
 }
 
 .home .coach {
@@ -140,7 +136,7 @@
   right: -12px;
   transform: none;
   top: var(--coach-top);
-  z-index: 5;
+  z-index: 1;
   animation-name: coachEnterHome;
 }
 
@@ -176,19 +172,19 @@
   z-index: 4;
   background: linear-gradient(
     180deg,
-    rgba(26, 20, 48, 0.78) 0%,
-    rgba(17, 13, 32, 0.95) 28%,
-    rgba(15, 11, 28, 0.98) 100%
+    rgba(26, 20, 48, 0.92) 0%,
+    rgba(17, 13, 32, 0.97) 28%,
+    rgba(15, 11, 28, 0.99) 100%
   );
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 -18px 48px rgba(0, 0, 0, 0.45);
   padding-top: 20px;
 }
 
-/* Frosted content panel — flush to the fixed nav */
+/* Frosted content panel — flush to the fixed nav; sits above the avatar */
 .panel {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
