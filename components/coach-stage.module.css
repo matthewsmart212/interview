@@ -120,6 +120,71 @@
   min-height: calc(var(--coach-top) + var(--coach-h) + 10px);
 }
 
+/* Home: asymmetric hero — greeting left, avatar right (matches mockup) */
+.home {
+  --coach-w: min(62vw, 248px);
+  --coach-h: min(38dvh, 290px);
+  --coach-top: calc(32px + env(safe-area-inset-top));
+}
+
+.home .hero {
+  min-height: calc(var(--coach-top) + var(--coach-h) - 72px);
+  justify-content: flex-end;
+  padding-bottom: 6px;
+  overflow: visible;
+  z-index: 5;
+}
+
+.home .coach {
+  left: auto;
+  right: -12px;
+  transform: none;
+  top: var(--coach-top);
+  z-index: 5;
+  animation-name: coachEnterHome;
+}
+
+@keyframes coachEnterHome {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home .avatar {
+  object-position: center bottom;
+}
+
+.home .scroller {
+  overflow-x: clip;
+}
+
+.heroSlot {
+  position: relative;
+  z-index: 3;
+  width: min(62%, 240px);
+  margin-bottom: 4px;
+  animation: speechEnter 0.45s ease-out 0.08s both;
+}
+
+.panelHome {
+  position: relative;
+  z-index: 4;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 20, 48, 0.78) 0%,
+    rgba(17, 13, 32, 0.95) 28%,
+    rgba(15, 11, 28, 0.98) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -18px 48px rgba(0, 0, 0, 0.45);
+  padding-top: 20px;
+}
+
 /* Frosted content panel — flush to the fixed nav */
 .panel {
   position: relative;

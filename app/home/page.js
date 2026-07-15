@@ -6,9 +6,8 @@ import {
   AppShell,
   PrimaryActionCard,
   ReadinessRing,
-  SheetPageTitle,
 } from "../../components/ui";
-import { Mic, Calendar, ChevronRight } from "../../components/Icons";
+import { Mic, Calendar, Clock, ChevronRight, FileText } from "../../components/Icons";
 import { useAppDb } from "../../lib/db/use-app-db";
 import { getSessionUser, pullSupabaseToLocal } from "../../lib/supabase/sync";
 import { getFirstName, loadProfile } from "../../lib/onboarding-store";
@@ -18,7 +17,57 @@ import styles from "./home.module.css";
 function countdownLabel(daysAway) {
   if (daysAway === 0) return "Today";
   if (daysAway === 1) return "Tomorrow";
-  return `in ${daysAway} days`;
+  return `${daysAway} days`;
+}
+
+function countdownPhrase(daysAway) {
+  if (daysAway === 0) return "today";
+  if (daysAway === 1) return "tomorrow";
+  return `${daysAway} days`;
+}
+
+function HomeHero({ firstName, next, hasUpcoming }) {
+  return (
+    <div className={styles.heroCopy}>
+      <h1 className={styles.greeting}>
+        Hi {firstName} <span aria-hidden>👋</span>
+      </h1>
+      {hasUpcoming ? (
+        <>
+          <p className={styles.statusLine}>
+            {next.company} interview in{" "}
+            <strong>{countdownPhrase(next.daysAway)}.</strong>
+          </p>
+          <p className={styles.statusSub}>Let&apos;s make sure you&apos;re ready.</p>
+          <div className={styles.chips}>
+            <span className={styles.chip}>
+              <Calendar size={13} aria-hidden />
+              <span>
+                <b>{next.date}</b>
+                <i>Interview date</i>
+              </span>
+            </span>
+            <span className={styles.chip}>
+              <Clock size={13} aria-hidden />
+              <span>
+                <b>{countdownLabel(next.daysAway)}</b>
+                <i>To go</i>
+              </span>
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className={styles.statusLine}>
+            Ready when you are.
+          </p>
+          <p className={styles.statusSub}>
+            Add your next interview and I&apos;ll help you prepare.
+          </p>
+        </>
+      )}
+    </div>
+  );
 }
 
 function LastPracticeRow({ mock }) {
@@ -34,7 +83,9 @@ function LastPracticeRow({ mock }) {
           </span>
           <span className={styles.recentMeta}>{mock.date}</span>
         </span>
-        <span className={styles.recentAction}>Review feedback</span>
+        <span className={styles.recentAction}>
+          Review feedback <ChevronRight size={14} aria-hidden />
+        </span>
       </Link>
     </div>
   );
@@ -70,25 +121,23 @@ export default function HomePage() {
   const next = journey.nearestUpcoming;
   const lastMock = journey.lastMock;
   const hasUpcoming = journey.hasUpcoming && Boolean(next);
-
-  const speech = hasUpcoming
-    ? `${next.company} is in ${next.daysAway} day${next.daysAway === 1 ? "" : "s"}. Let's get you ready.`
-    : "Add your next interview and I'll help you prepare, practise and improve.";
+  const readiness = journey.nearestReadiness ?? 0;
 
   return (
     <AppShell
       navActive="home"
       className={styles.home}
       coachPose="waving"
-      coachTitle={`Hi ${firstName}`}
-      coachSpeech={speech}
       heroVariant="home"
-      messageVariant="default"
-      sheetVariant="standard"
-      messageClampLines={2}
+      messageVariant="none"
+      heroSlot={
+        <HomeHero
+          firstName={firstName}
+          next={next}
+          hasUpcoming={hasUpcoming}
+        />
+      }
     >
-      <SheetPageTitle>Home</SheetPageTitle>
-
       {hasUpcoming ? (
         <>
           <Link href={`/interviews/${next.id}`} className={styles.nextCard}>
@@ -97,18 +146,23 @@ export default function HomePage() {
               <span className={styles.nextRole}>{next.role}</span>
               <span className={styles.nextCompany}>{next.company}</span>
               <span className={styles.nextMeta}>
-                <Calendar size={12} aria-hidden />
-                {next.date}
-                <span className={styles.dot}>·</span>
-                {countdownLabel(next.daysAway)}
+                <span>
+                  <Calendar size={12} aria-hidden />
+                  {next.date}
+                </span>
+                <span>
+                  <Clock size={12} aria-hidden />
+                  {countdownLabel(next.daysAway)}
+                </span>
               </span>
             </span>
             <ReadinessRing
-              value={journey.nearestReadiness ?? 0}
-              size={48}
-              stroke={5}
+              value={readiness}
+              size={64}
+              stroke={6}
               showLabel
               label="Ready"
+              className={styles.readyRing}
             />
             <ChevronRight size={18} className={styles.nextChev} aria-hidden />
           </Link>
@@ -118,24 +172,21 @@ export default function HomePage() {
               href="/mock"
               icon={Mic}
               title={`Practise for ${next.company}`}
-              sub={`${next.role} · ${countdownLabel(next.daysAway)}`}
+              sub="Start a mock interview"
               className={styles.primaryCard}
             />
 
             <Link href={`/interviews/${next.id}`} className={styles.secondaryCard}>
+              <span className={styles.secondaryIcon} aria-hidden>
+                <FileText size={18} />
+              </span>
               <span className={styles.secondaryBody}>
                 <span className={styles.secondaryTitle}>Continue preparation</span>
                 <span className={styles.secondarySub}>
-                  {journey.openPrepTasks > 0
-                    ? `${journey.openPrepTasks} step${journey.openPrepTasks === 1 ? "" : "s"} left`
-                    : "View your preparation plan"}
+                  View your preparation plan
                 </span>
               </span>
               <ChevronRight size={16} className={styles.secondaryChev} aria-hidden />
-            </Link>
-
-            <Link href="/mock" className={styles.tertiaryLink}>
-              Generic practice
             </Link>
           </div>
 
@@ -147,7 +198,7 @@ export default function HomePage() {
             href="/interviews/new"
             icon={Calendar}
             title="Add your next interview"
-            sub="Get tailored questions and a simple preparation plan."
+            sub="Get a prep plan tailored to the role"
             className={styles.primaryCard}
           />
 
@@ -158,7 +209,7 @@ export default function HomePage() {
             <span className={styles.secondaryBody}>
               <span className={styles.secondaryTitle}>Try a generic mock</span>
               <span className={styles.secondarySub}>
-                Practise common questions in 8–10 minutes.
+                Practise common questions in 8–10 minutes
               </span>
             </span>
             <ChevronRight size={16} className={styles.secondaryChev} aria-hidden />

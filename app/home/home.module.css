@@ -3,33 +3,126 @@
   max-width: 100%;
 }
 
+/* ---- Hero greeting (left of avatar) ---- */
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.greeting {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.statusLine {
+  margin: 4px 0 0;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.35;
+}
+
+.statusLine strong {
+  color: #b39afa;
+  font-weight: 700;
+}
+
+.statusSub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.35;
+}
+
+.chips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin-top: 12px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 0;
+}
+
+.chip span {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.chip b {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.chip i {
+  font-size: 9px;
+  font-weight: 500;
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.chip svg {
+  flex-shrink: 0;
+  color: #c4b5fd;
+}
+
+/* ---- Body cards ---- */
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .primaryCard {
-  padding: 14px;
+  padding: 16px;
 }
 
 .nextCard {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.06);
+  gap: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.055);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 12px;
   text-decoration: none;
   color: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .nextCard:hover,
 .nextCard:focus-visible {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(167, 139, 250, 0.35);
   outline: none;
 }
 
@@ -42,65 +135,78 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
 .nextLabel {
   font-size: 10.5px;
-  font-weight: 650;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: #a78bfa;
+  margin-bottom: 2px;
 }
 
 .nextRole {
-  font-size: 15px;
-  font-weight: 650;
+  font-size: 16.5px;
+  font-weight: 700;
   color: #fff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .nextCompany {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.62);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .nextMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.nextMeta span {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  margin-top: 4px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
 }
 
-.dot {
-  opacity: 0.55;
+.nextMeta svg {
+  color: rgba(196, 181, 253, 0.85);
+}
+
+.readyRing :global(.ring-wrap) {
+  filter: drop-shadow(0 0 10px rgba(139, 108, 245, 0.45));
 }
 
 .nextChev {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.32);
   flex-shrink: 0;
 }
 
-/* Quieter secondary action */
 .secondaryCard {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  border-radius: 16px;
+  padding: 14px 16px;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.045);
   color: #fff;
   text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
@@ -115,11 +221,12 @@
 }
 
 .secondaryIcon {
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.85);
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,13 +242,13 @@
 }
 
 .secondaryTitle {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 650;
   line-height: 1.25;
 }
 
 .secondarySub {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.55);
   line-height: 1.35;
@@ -153,32 +260,15 @@
   margin-left: auto;
 }
 
-/* Compact tertiary text action */
-.tertiaryLink {
-  display: block;
-  text-align: center;
-  padding: 6px 8px 2px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.62);
-  text-decoration: none;
-}
-
-.tertiaryLink:hover,
-.tertiaryLink:focus-visible {
-  color: rgba(255, 255, 255, 0.88);
-  outline: none;
-}
-
 .recent {
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .sectionLabel {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 650;
-  letter-spacing: 0.03em;
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
 }
@@ -187,8 +277,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   text-decoration: none;
   color: inherit;
   transition: opacity 0.15s ease;
@@ -201,18 +293,18 @@
 .recentRow:focus-visible {
   outline: 2px solid rgba(196, 181, 253, 0.55);
   outline-offset: 2px;
-  border-radius: 10px;
 }
 
 .recentScore {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.08);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(139, 108, 245, 0.55), rgba(91, 58, 214, 0.4));
+  border: 1px solid rgba(196, 181, 253, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
@@ -242,6 +334,9 @@
 
 .recentAction {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   font-size: 12px;
   font-weight: 650;
   color: #c4b5fd;

@@ -8,13 +8,8 @@ import styles from "./coach-stage.module.css";
 /**
  * Full-bleed interview room + coach avatar + content panel.
  *
- * The room is a static backdrop; the hero (avatar + speech) and the content
- * panel share one scroll container. On scroll the hero drifts up slowly and
- * fades while the panel scrolls at full speed — a parallax that hands more
- * of the screen to the content as the user reads on.
- *
- * heroVariant only selects the avatar pose now; avatar/header sizing is the
- * same across every page for a consistent header section.
+ * heroVariant "home" places the avatar on the right and accepts a custom
+ * heroSlot (greeting + chips) on the left — matching the home mockup.
  */
 export default function CoachStage({
   pose = "welcoming",
@@ -27,11 +22,17 @@ export default function CoachStage({
   messageVariant = "default",
   sheetVariant = "standard",
   messageClampLines,
+  heroSlot = null,
 }) {
   const scrollerRef = useRef(null);
   const heroRef = useRef(null);
 
-  const showMessage = messageVariant !== "none" && Boolean(title || speech);
+  const isHome = heroVariant === "home";
+  const showMessage =
+    !isHome &&
+    !heroSlot &&
+    messageVariant !== "none" &&
+    Boolean(title || speech);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -48,7 +49,6 @@ export default function CoachStage({
       raf = 0;
       const t = scroller.scrollTop;
       const h = hero.offsetHeight || 1;
-      // Hero moves up at ~0.6x (translate back down by 0.4t); panel scrolls 1x.
       const y = t * 0.4;
       const opacity = Math.max(0, 1 - t / (h * 0.85));
       hero.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
@@ -69,7 +69,8 @@ export default function CoachStage({
   const stageClass = [
     styles.stage,
     noHeader ? styles.noHeader : "",
-    showMessage ? "" : styles.noMessage,
+    showMessage || heroSlot || isHome ? "" : styles.noMessage,
+    isHome ? styles.home : "",
     className,
   ]
     .filter(Boolean)
@@ -91,7 +92,9 @@ export default function CoachStage({
             />
           </div>
 
-          {showMessage ? (
+          {heroSlot ? (
+            <div className={styles.heroSlot}>{heroSlot}</div>
+          ) : showMessage ? (
             <div className={styles.speechWrap}>
               <CoachMessage
                 title={title}
@@ -103,7 +106,11 @@ export default function CoachStage({
           ) : null}
         </div>
 
-        <div className={styles.panel}>{children}</div>
+        <div
+          className={`${styles.panel}${isHome ? ` ${styles.panelHome}` : ""}`}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

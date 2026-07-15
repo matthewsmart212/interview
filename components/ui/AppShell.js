@@ -26,6 +26,7 @@ export default function AppShell({
   messageVariant = "default",
   sheetVariant = "standard",
   messageClampLines,
+  heroSlot = null,
 }) {
   const withNav = !noNav;
   const page = (
@@ -72,6 +73,7 @@ export default function AppShell({
           messageVariant={messageVariant}
           sheetVariant={sheetVariant}
           messageClampLines={messageClampLines}
+          heroSlot={heroSlot}
         >
           {page}
         </CoachStage>

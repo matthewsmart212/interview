@@ -11,6 +11,8 @@ export default function ReadinessRing({
   showLabel = false,
   label,
   className = "",
+  color = "#a78bfa",
+  track = "rgba(167, 139, 250, 0.18)",
 }) {
   const pct = Math.max(0, Math.min(100, value));
   const display = label ?? `${pct}%`;
@@ -21,8 +23,8 @@ export default function ReadinessRing({
         value={pct}
         size={size}
         stroke={stroke}
-        color="#fff"
-        track="rgba(255,255,255,0.2)"
+        color={color}
+        track={track}
         animated
       >
         <span className={styles.value} style={{ fontSize: size * 0.22 }}>
