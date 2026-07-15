@@ -127,7 +127,7 @@ export default function HomePage() {
     <AppShell
       navActive="home"
       className={styles.home}
-      coachPose="waving"
+      coachPose="idle"
       heroVariant="home"
       messageVariant="none"
       heroSlot={
